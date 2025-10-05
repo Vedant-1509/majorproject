@@ -1,0 +1,100 @@
+POST http://localhost:5000/api/v1/donor-register
+Content-Type: application/json
+
+{
+    "name": "test",
+    "email": "vrm@gmail.com",
+    "password": "test1234"
+    
+}
+
+###
+POST http://localhost:5000/api/v1/donor-login
+Content-Type: application/json
+
+{
+    "email":"vrm@gmail.com",
+    "password":"test1234"
+}
+
+###
+POST http://localhost:5000/api/v1/donor-profile
+Content-Type: application/json
+
+{
+  "token": "52ee38891310e751ed39d59c5be613f59eda14dd2065b7b37af62f99f3766113",
+  "bio": "Passionate about helping the community and donating blood.",
+  "address": {
+    "street": "123 Park Street",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "country": "India",
+    "zip": "400001",
+    "lat": 19.0760,
+    "lng": 72.8777
+  },
+  "phone": "+919876543210",
+  "skills": ["First Aid", "Teaching", "Cooking"],
+  "interests": ["Blood Donation", "Food Donation", "Educational Support"],
+  "availability": "weekends",
+  "preferences": {
+    "volunteerInvolvement": true,
+    "monetaryDonation": true,
+    "donationCategories": ["Health", "Education"],
+    "preferredFrequency": "monthly"
+  },
+  "bloodType": "O+",
+  "lastBloodDonationDate": "2025-08-15"
+}
+
+###
+PUT  http://localhost:5000/api/v1/donor-updateprofile
+Content-Type: application/json
+
+{
+  "token": "45167f83eccba554a345f81c0a18ae7b016de9d75eee4893143b76ddf99d2391",
+  "bio": "Updated bio: actively helping in community events and blood drives.",
+  "address": {
+    "street": "456 New Park Street",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "country": "India",
+    "zip": "400002",
+    "lat": 19.0759,
+    "lng": 72.8777
+  },
+  "phone": "+919812345678",
+  "skills": ["First Aid", "Event Management"],
+  "interests": ["Blood Donation", "Educational Support"],
+  "availability": "weekdays",
+  "preferences": {
+    "volunteerInvolvement": true,
+    "monetaryDonation": true,
+    "donationCategories": ["Health", "Education"],
+    "preferredFrequency": "monthly"
+  },
+  "bloodType": "O+",
+  "lastBloodDonationDate": "2025-09-01",
+  "participationScore": 5
+}
+
+###
+POST http://localhost:5000/api/v2/ngo-register
+Content-Type: application/json
+
+{
+    "name": "testngo",
+    "email": "vrmngo@gmail.com",
+    "password": "testngo1234"
+    
+}
+
+###
+POST http://localhost:5000/api/v2/ngo-login
+Content-Type: application/json
+
+{
+    "email": "vrmngo@gmail.com",
+    "password": "testngo1234"
+    
+}
