@@ -16,18 +16,27 @@ import {
   getReports,
   getDashboardStats,
   adminLogin,
+  adminhello,
+  adminsignup
 } from "../controller/admin.controller.js";
-const router = express.Router();
+const adminrouter = express.Router();
 
-router.post("/admin/login", adminLogin);
-router.get("/ngos/pending", getPendingNGOs);
-router.post("/ngos/verify/:ngoId", verifyNGO);
-router.post("/ngos/reject/:ngoId", rejectNGO);
-router.get("/ngos/verify-darpan/:urn", verifyNGOByDarpan);
-router.get("/ngos/all", getAllNGOs);
-router.put("/campaigns/disable/:campaignId", disableCampaign);
-router.get("/reports", getReports);
+adminrouter.route("/admin").get(adminhello);//done
+adminrouter.route("/admin/signup").post(adminsignup);//done
+adminrouter.post("/admin/login", adminLogin);//done
+adminrouter.get("/ngos/pending", getPendingNGOs);//done
+adminrouter.patch("/ngos/verify/:ngoId", verifyNGO);
+// adminrouter.patch("/ngos/verify/:ngoId", (req, res) => {
+//   console.log("Params received:", req.params);
+//   res.send("Test");
+// });
 
-router.get("/dashboard/stats", getDashboardStats);
+adminrouter.post("/ngos/reject/:ngoId", rejectNGO);
+adminrouter.get("/ngos/verify-darpan/:urn", verifyNGOByDarpan);
+adminrouter.get("/ngos/all", getAllNGOs);
+adminrouter.put("/campaigns/disable/:campaignId", disableCampaign);
+adminrouter.get("/reports", getReports);
 
-export default router;
+adminrouter.get("/dashboard/stats", getDashboardStats);
+
+export default adminrouter;

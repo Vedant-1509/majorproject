@@ -3,9 +3,38 @@ import NgoDocument from "../models/NgoDocument.model.js";
 import Campaign from "../models/campaign.model.js";
 import Report from "../models/report.model.js";
 import User from "../models/user.model.js";
-import axios from "axios";
+import NgoProfile from "../models/ngoProfile.model.js";
 
-export const adminLogin = async (req, res) => {
+
+import axios from "axios";
+import bcrypt from "bcrypt";
+import crypto from "crypto";
+
+export const adminhello = (req, res) => {
+  res.send("Hello from admin controller");
+}
+
+export const adminsignup = async (req, res) => {//done
+  try {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email and password are required" });
+    }
+    const existingAdmin = await User.findOne({ email });
+    if (existingAdmin) {
+      return res.status(400).json({ message: "Admin with this email already exists" });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newAdmin = new User({ name, email, password: hashedPassword, role: "admin" });
+    await newAdmin.save();
+    res.status(201).json({ message: "Admin registered successfully" });
+  } catch (error) {
+    console.error("Admin Signup Error:", error);
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+}
+
+export const adminLogin = async (req, res) => {//done
   try {
     const { email, password } = req.body;
 
@@ -43,12 +72,33 @@ export const adminLogin = async (req, res) => {
 
 export const getPendingNGOs = async (req, res) => {
   try {
-    const ngos = await Ngo.find({ status: "pending" });
-    res.json({ success: true, ngos });
+    // 1️⃣ Find pending NGOs and select only needed fields
+    const ngos = await Ngo.find({ status: "pending" }, "name email phone profilePicture status website verified createdAt")
+      .populate({
+        path: "profile", // virtual in Ngo schema
+        select: "description address phone registrationNumber mission focusAreas socialLinks preferences urnNumber verified createdAt",
+      });
+
+    // 2️⃣ Fetch documents for all pending NGOs in one query
+    const ngoIds = ngos.map((ngo) => ngo._id);
+    const documents = await NgoDocument.find({ ngoId: { $in: ngoIds } });
+
+    // 3️⃣ Map documents to corresponding NGO
+    const ngosWithDocs = ngos.map((ngo) => {
+      const doc = documents.find((d) => d.ngoId.toString() === ngo._id.toString());
+      return {
+        ...ngo.toObject(),
+        documents: doc || null,
+      };
+    });
+
+    res.json({ success: true, ngos: ngosWithDocs });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
 
 // Verify NGO details via Darpan API
 export const verifyNGOByDarpan = async (req, res) => {
@@ -70,26 +120,29 @@ export const verifyNGOByDarpan = async (req, res) => {
   }
 };
 
-// Approve an NGO after verifying documents
+// Approve NGO
 export const verifyNGO = async (req, res) => {
   try {
+    const { ngoId } = req.params;
+    console.log("Received NGO ID:", ngoId);
+
+    // Update the NGO status and verifiedByAdmin flag
     const ngo = await Ngo.findByIdAndUpdate(
-      req.params.ngoId,
-      { status: "approved", verifiedByAdmin: true, approvedAt: new Date() },
-      { new: true }
+      ngoId,
+      { status: "approved", verifiedByAdmin: true },
+      { new: true } // return the updated document
     );
 
-    await NgoDocument.findOneAndUpdate(
-      { ngoId: req.params.ngoId },
-      { status: "approved" }
-    );
+    if (!ngo) {
+      return res.status(404).json({ success: false, message: "NGO not found" });
+    }
 
-    if (!ngo) return res.status(404).json({ message: "NGO not found" });
     res.json({ success: true, message: "NGO approved successfully", ngo });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 // Reject NGO with remarks
 export const rejectNGO = async (req, res) => {
@@ -107,19 +160,34 @@ export const rejectNGO = async (req, res) => {
     if (!ngo) return res.status(404).json({ message: "NGO not found" });
     res.json({ success: true, message: "NGO rejected", ngo });
   } catch (error) {
+    console.error("NGO Rejection Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// Get all NGOs
+/* ========== Get All NGOs with Documents ========== */
 export const getAllNGOs = async (req, res) => {
   try {
-    const ngos = await Ngo.find();
-    res.json({ success: true, ngos });
+    // Fetch all NGOs
+    const ngos = await Ngo.find().populate("_id", "name email profilePicture website verified createdAt");
+
+    // For each NGO, fetch its documents
+    const ngosWithDocs = await Promise.all(
+      ngos.map(async (ngo) => {
+        const documents = await NgoDocument.findOne({ ngoId: ngo._id });
+        return {
+          ...ngo.toObject(),
+          documents: documents || null,
+        };
+      })
+    );
+
+    res.json({ success: true, ngos: ngosWithDocs });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 
 /* =============================

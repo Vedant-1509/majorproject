@@ -1,1 +1,36 @@
-GET http://localhost:5000/api/admin
+POST http://localhost:5000/api/admin/signup
+Content-Type: application/json
+
+{
+  "name": "admin",
+  "email": "superadmin@gmail.com",
+  "password": "admin1234"
+}
+
+### Admin Login ###
+POST http://localhost:5000/api/admin/login
+Content-Type: application/json
+
+{
+  "email": "superadmin@gmail.com",
+  "password": "admin1234"
+}
+
+###
+GET http://localhost:5000/api/ngos/pending
+
+###
+GET http://localhost:5000/api/ngos/all
+
+###
+### Approve NGO (admin route, no JWT)
+PATCH http://localhost:5000/api/ngos/verify/68e3608ff45268365d14789c
+Content-Type: application/json
+
+{
+  "adminToken": "e13849678eea6fe2b4645648f8cdc4147a2307bb0ae8f449a054d7b4e8a54b2a"
+}
+
+### Verify NGO
+PATCH http://localhost:5000/api/ngos/verify/68e3bbfa02afafc9ddfcc384
+Content-Type: application/json
