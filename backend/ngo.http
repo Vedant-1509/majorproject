@@ -1,0 +1,55 @@
+POST http://localhost:5000/api/v2/register
+Content-Type: application/json
+
+{
+  "name": "Helping Hands NGO",
+  "email": "helpinghands@example.com",
+  "password": "securePassword123",
+  "website": "https://helpinghands.org"
+}
+
+
+###
+###login 
+
+POST http://localhost:5000/api/v2/login
+Content-Type: application/json
+
+{
+  "email": "helpinghands@example.com",
+  "password": "securePassword123"  
+}
+
+### ------------------------------
+### Create NGO Profile
+### ------------------------------
+POST http://localhost:5000/api/v2/create-profile
+Content-Type: application/json
+
+{
+  "token": "95fd4a8f4df54cbc6a08b05c3ca2c3b6df7e0817559acaf7debc8eab67f822be",
+  "description": "We provide education and healthcare to underprivileged children.",
+  "address": {
+    "street": "123 Main Street",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "country": "India",
+    "zip": "400001"
+  },
+  "phone": "9876543210",
+  "registrationNumber": "URN123456",
+  "mission": "Empower children through education",
+  "focusAreas": ["Education", "Healthcare"],
+  "socialLinks": {
+    "website": "https://helpinghands.org",
+    "facebook": "https://facebook.com/helpinghands",
+    "twitter": "https://twitter.com/helpinghands",
+    "instagram": "https://instagram.com/helpinghands",
+    "linkedin": "https://linkedin.com/company/helpinghands"
+  },
+  "preferences": {
+    "acceptVolunteers": true,
+    "acceptDonations": true
+  },
+  "urnNumber": "URN123456"
+}

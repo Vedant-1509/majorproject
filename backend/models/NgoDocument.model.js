@@ -8,12 +8,6 @@ const NgoDocumentSchema = new mongoose.Schema({
   registrationCertificate: { type: String },
   financialReport: { type: String },
   submittedAt: { type: Date, default: Date.now },
-  status: {
-    type: String,
-    enum: ["pending", "approved", "rejected"],
-    default: "pending",
-  },
-  remarks: { type: String },
 });
 
 const NgoDocument = mongoose.model("NgoDocument", NgoDocumentSchema);
