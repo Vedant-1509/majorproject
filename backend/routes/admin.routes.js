@@ -16,10 +16,12 @@ import {
   getReports,
   getDashboardStats,
   adminLogin,
+  register,
 } from "../controller/admin.controller.js";
 const router = express.Router();
 
 router.post("/admin/login", adminLogin);
+router.post("/admin/signup", register);
 router.get("/ngos/pending", getPendingNGOs);
 router.post("/ngos/verify/:ngoId", verifyNGO);
 router.post("/ngos/reject/:ngoId", rejectNGO);

@@ -5,17 +5,18 @@ import mongoose from 'mongoose';
 import router from './routes/donor.routes.js';
 import ngoRouter from './routes/ngo.routes.js';
 import adminrouter from './routes/admin.routes.js';
+import path from 'path';
 dotenv.config()
 
 const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
-
+app.use('/uploads', express.static(path.join(path.resolve(), 'uploads')));
 app.use("/api/v1", router)
 app.use("/api/v2", ngoRouter)
 app.use("/api", adminrouter)
-app.use(express.static("uploads"))
+
 
 
 

@@ -15,7 +15,12 @@ const NgoProfileSchema = new mongoose.Schema({
   phone: { type: String },
   registrationNumber: { type: String }, // official NGO registration number (like URN)
   mission: { type: String, default: "" },
-  focusAreas: [String], // e.g., Education, Healthcare, Environment
+  focusAreas: [String],
+  urnNumber: { type: String ,unique: true},
+  isCompleted: { type: Boolean, default: false },
+  verifiedByAdmin: { type: Boolean, default: false },
+  
+  approvedAt: { type: Date },
 
   socialLinks: {
     website: String,

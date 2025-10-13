@@ -1,9 +1,54 @@
+import bcrypt from "bcrypt";
+import crypto from "crypto";
 import Ngo from "../models/ngo.model.js";
 import NgoDocument from "../models/NgoDocument.model.js";
 import Campaign from "../models/campaign.model.js";
 import Report from "../models/report.model.js";
 import User from "../models/user.model.js";
 import axios from "axios";
+
+
+
+export const register = async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+
+        if (!name || !password || !email) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
+         const existingUser = await User.findOne({
+            $or: [{ email }]
+        });
+
+        const user = await User.findOne({ email });
+        if (user) {
+            return res.status(400).json({ message: "User already exists" });
+        }
+        
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        const newUser = new User({
+            name,
+            email,
+            password: hashedPassword,
+            role: "admin"
+        });
+        
+        await newUser.save();
+        
+        return res.status(201).json({ message: "User created successfully" });
+
+    } catch (error) {
+        console.log("BODY:", req.body);
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error", error: error.message });
+    }
+}
+
+
+
+
 
 export const adminLogin = async (req, res) => {
   try {

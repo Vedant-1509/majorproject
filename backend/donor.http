@@ -4,7 +4,9 @@ Content-Type: application/json
 {
     "name": "test",
     "email": "vrm@gmail.com",
-    "password": "test1234"
+    "password": "test1234",
+    "confirmPassword": "test1234",
+    "mobileNumber": "9876543210"
     
 }
 
@@ -13,8 +15,8 @@ POST http://localhost:5000/api/v1/donor-login
 Content-Type: application/json
 
 {
-    "email":"vrm@gmail.com",
-    "password":"test1234"
+    "email":"test1@gmail.com",
+    "password":"14725836"
 }
 
 ###
@@ -22,8 +24,9 @@ POST http://localhost:5000/api/v1/donor-profile
 Content-Type: application/json
 
 {
-  "token": "52ee38891310e751ed39d59c5be613f59eda14dd2065b7b37af62f99f3766113",
+  "token": "523427ead8709dd6de20f27cfe54de6aa95b4314be2585847c04eff4019672f1",
   "bio": "Passionate about helping the community and donating blood.",
+  "PAN": "ABCDE1234F",
   "address": {
     "street": "123 Park Street",
     "city": "Mumbai",
@@ -33,7 +36,6 @@ Content-Type: application/json
     "lat": 19.0760,
     "lng": 72.8777
   },
-  "phone": "+919876543210",
   "skills": ["First Aid", "Teaching", "Cooking"],
   "interests": ["Blood Donation", "Food Donation", "Educational Support"],
   "availability": "weekends",
@@ -79,22 +81,9 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:5000/api/v2/ngo-register
+POST  http://localhost:5000/api/v1/donor-user
 Content-Type: application/json
 
 {
-    "name": "testngo",
-    "email": "vrmngo@gmail.com",
-    "password": "testngo1234"
-    
-}
-
-###
-POST http://localhost:5000/api/v2/ngo-login
-Content-Type: application/json
-
-{
-    "email": "vrmngo@gmail.com",
-    "password": "testngo1234"
-    
+  "token":"a3b7e58451f8eefb53c50cd30309077217bd781ec5e05f3195786deb80322069"
 }

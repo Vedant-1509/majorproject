@@ -1,139 +1,23 @@
-// import bcrypt from "bcrypt";
-// import crypto from "crypto";
-// import Ngo from "../models/ngo.model.js";
-// import NgoProfile from "../models/ngoProfile.model.js";
 
-
-// // Test endpoint
-// export const ngoHello = (req, res) => {
-//   res.send("Hello from NGO controller");
-// }
-
-// // Register NGO
-// export const register = async (req, res) => {
-//   try {
-//     const { name, email, password, website } = req.body;
-
-//     if (!name || !email) {
-//       return res.status(400).json({ message: "Name and email are required" });
-//     }
-
-//     const existingNgo = await Ngo.findOne({ email });
-//     if (existingNgo) {
-//       return res.status(400).json({ message: "NGO already exists" });
-//     }
-
-//     let hashedPassword;
-//     if (password) {
-//       hashedPassword = await bcrypt.hash(password, 10);
-//     }
-
-//     const newNgo = new Ngo({
-//       name,
-//       email,
-//       password: hashedPassword,
-//       role: "ngo",
-//       website
-//     });
-
-//     await newNgo.save();
-
-//     // create empty profile
-//     const profile = new NgoProfile({ ngo: newNgo._id });
-//     await profile.save();
-
-//     return res.status(201).json({ message: "NGO registered successfully", ngo: newNgo });
-//   } catch (error) {
-//     console.error("Register Error:", error);
-//     return res.status(500).json({ message: "Internal Server Error", error: error.message });
-//   }
-// };
-
-// // Login NGO
-// export const login = async (req, res) => {
-//   try {
-//     const { email, password } = req.body;
-//     if (!email) return res.status(400).json({ message: "Email is required" });
-
-//     const ngo = await Ngo.findOne({ email });
-//     if (!ngo) return res.status(404).json({ message: "Invalid email or password" });
-
-//     if (ngo.password) {
-//       const isValid = await bcrypt.compare(password, ngo.password);
-//       if (!isValid) return res.status(404).json({ message: "Invalid email or password" });
-//     }
-
-//     const token = crypto.randomBytes(32).toString("hex");
-//     await Ngo.updateOne({ _id: ngo._id }, { token });
-
-//     return res.status(200).json({ message: "Login successful", token });
-//   } catch (error) {
-//     console.error("Login Error:", error);
-//     return res.status(500).json({ message: "Internal Server Error", error: error.message });
-//   }
-// };
-
-// // Create NGO Profile
-// export const createProfile = async (req, res) => {
-//   try {
-//     const { token, description, address, phone, registrationNumber, mission, focusAreas, socialLinks, preferences, isCompleted } = req.body;
-
-//     if (!token) return res.status(400).json({ message: "Token is required" });
-
-//     const ngo = await Ngo.findOne({ token });
-//     if (!ngo) return res.status(404).json({ message: "Invalid NGO" });
-
-//     const existingProfile = await NgoProfile.findOne({ ngo: ngo._id });
-//     if (existingProfile) return res.status(400).json({ message: "Profile already exists for this NGO" });
-
-//     const profile = new NgoProfile({
-//       ngo: ngo._id,
-//       description,
-//       address,
-//       phone,
-//       registrationNumber,
-//       mission,
-//       focusAreas,
-//       socialLinks,
-//       preferences,
-//       isCompleted
-//     });
-
-//     await profile.save();
-//     return res.status(201).json({ message: "Profile created successfully", profile });
-//   } catch (error) {
-//     console.error("Create Profile Error:", error);
-//     return res.status(500).json({ message: "Internal Server Error", error: error.message });
-//   }
-// };
-
-// // Update NGO Profile
-// export const updateProfile = async (req, res) => {
-//   try {
-//     const { token, ...updateData } = req.body;
-
-//     if (!token) return res.status(400).json({ message: "Token is required" });
-
-//     const ngo = await Ngo.findOne({ token });
-//     if (!ngo) return res.status(404).json({ message: "Invalid NGO" });
-
-//     const profile = await NgoProfile.findOne({ ngo: ngo._id });
-//     if (!profile) return res.status(404).json({ message: "Profile not found" });
-
-//     Object.assign(profile, updateData, { updatedAt: Date.now() });
-//     await profile.save();
-
-//     return res.status(200).json({ message: "Profile updated successfully", profile });
-//   } catch (error) {
-//     console.error("Update Profile Error:", error);
-//     return res.status(500).json({ message: "Internal Server Error", error: error.message });
-//   }
-// };
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import Ngo from "../models/ngo.model.js";
 import NgoProfile from "../models/ngoProfile.model.js";
 import NgoDocument from "../models/NgoDocument.model.js";
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadDir = './uploads/ngo';
+    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
 
 /* ────────────────────────────────
    📍 Test Endpoint
@@ -209,7 +93,7 @@ export const login = async (req, res) => {
     const token = crypto.randomBytes(32).toString("hex");
     await Ngo.updateOne({ _id: ngo._id }, { token });
 
-    return res.status(200).json({ message: "Login successful", token });
+    return res.status(200).json({ message: "Login successful", token, ngo });
   } catch (error) {
     console.error("Login Error:", error);
     return res
@@ -354,5 +238,57 @@ export const submitDocuments = async (req, res) => {
       message: "Error submitting documents",
       error: error.message,
     });
+  }
+};
+export const getNgo = async (req, res) => {
+  try {
+    const { token } = req.body;
+    if (!token) {
+      return res.status(400).json({ message: "Token is required" });
+    }
+    const ngo = await Ngo.findOne({ token });
+    if (!ngo) {
+      return res.status(404).json({ message: "NGO not found" });
+    }
+
+    const profile = await NgoProfile.findOne({ ngo: ngo._id });
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+    return res.status(200).json({ ngo, profile });
+
+  }catch (error) {
+    console.error("Error fetching NGO:", error);
+    return res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+}
+
+
+export const updateNGOProfilePicture = async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    if (!token) return res.status(400).json({ message: 'Token is required' });
+    if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
+
+    const ngo = await Ngo.findOne({ token });
+    if (!ngo) return res.status(404).json({ message: 'NGO not found' });
+
+    // Optional: Delete old profile picture if not default
+    if (ngo.profilePicture && ngo.profilePicture !== 'default.jpg') {
+      const oldPath = `./uploads/${ngo.profilePicture}`;
+      if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+    }
+
+    ngo.profilePicture = req.file.filename;
+    await ngo.save();
+
+    return res.status(200).json({ 
+      message: 'Profile picture updated successfully', 
+      profilePicture: ngo.profilePicture 
+    });
+  } catch (error) {
+    console.error('Error updating NGO profile picture:', error);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 };
