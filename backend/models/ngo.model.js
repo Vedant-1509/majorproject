@@ -9,7 +9,6 @@ const NgoSchema = new mongoose.Schema({
   profilePicture: { type: String, default: "default.jpg" },
   website: { type: String },
 
-  // ✅ Verification fields
   status: {
     type: String,
     enum: ["pending", "approved", "rejected"],

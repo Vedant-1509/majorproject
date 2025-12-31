@@ -7,6 +7,7 @@ const NgoDocumentSchema = new mongoose.Schema({
   panCard: { type: String, required: true },
   registrationCertificate: { type: String },
   financialReport: { type: String },
+  isSubmitted: { type: Boolean, default: false },
   submittedAt: { type: Date, default: Date.now },
   status: {
     type: String,

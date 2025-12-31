@@ -17,18 +17,22 @@ import {
   getDashboardStats,
   adminLogin,
   register,
+  getApprovedNGOs,
+  getRejectedNGOs,
 } from "../controller/admin.controller.js";
 const router = express.Router();
 
 router.post("/admin/login", adminLogin);
 router.post("/admin/signup", register);
 router.get("/ngos/pending", getPendingNGOs);
+router.get("/ngos/approved", getApprovedNGOs);
+router.get("/ngos/rejected", getRejectedNGOs);
 router.post("/ngos/verify/:ngoId", verifyNGO);
 router.post("/ngos/reject/:ngoId", rejectNGO);
 router.get("/ngos/verify-darpan/:urn", verifyNGOByDarpan);
 router.get("/ngos/all", getAllNGOs);
 router.put("/campaigns/disable/:campaignId", disableCampaign);
-router.get("/reports", getReports);
+router.get("/admin/reports", getReports);
 
 router.get("/dashboard/stats", getDashboardStats);
 
