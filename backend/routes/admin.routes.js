@@ -10,30 +10,27 @@ import {
   getPendingNGOs,
   verifyNGO,
   rejectNGO,
-  verifyNGOByDarpan,
   getAllNGOs,
   disableCampaign,
   getReports,
-  getDashboardStats,
   adminLogin,
-  register,
+  registerAdmin,
   getApprovedNGOs,
   getRejectedNGOs,
 } from "../controller/admin.controller.js";
 const router = express.Router();
 
 router.post("/admin/login", adminLogin);
-router.post("/admin/signup", register);
+router.post("/admin/signup", registerAdmin);
 router.get("/ngos/pending", getPendingNGOs);
 router.get("/ngos/approved", getApprovedNGOs);
 router.get("/ngos/rejected", getRejectedNGOs);
-router.post("/ngos/verify/:ngoId", verifyNGO);
+router.patch("/ngos/verify/:ngoId", verifyNGO);
 router.post("/ngos/reject/:ngoId", rejectNGO);
-router.get("/ngos/verify-darpan/:urn", verifyNGOByDarpan);
 router.get("/ngos/all", getAllNGOs);
 router.put("/campaigns/disable/:campaignId", disableCampaign);
 router.get("/admin/reports", getReports);
 
-router.get("/dashboard/stats", getDashboardStats);
+
 
 export default router;

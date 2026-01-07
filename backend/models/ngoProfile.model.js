@@ -1,10 +1,15 @@
 import mongoose from "mongoose";
 
 const NgoProfileSchema = new mongoose.Schema({
-  ngo: { type: mongoose.Schema.Types.ObjectId, ref: "Ngo", required: true }, // reference to NGO
+  ngo: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Ngo",
+    required: true,
+    unique: true, // one profile per NGO
+  },
 
-  // basic info
   description: { type: String, default: "" },
+
   address: {
     street: String,
     city: String,
@@ -12,14 +17,23 @@ const NgoProfileSchema = new mongoose.Schema({
     country: String,
     zip: String,
   },
+
   phone: { type: String },
-  registrationNumber: { type: String }, // official NGO registration number (like URN)
+
+  registrationNumber: { type: String },
+
+  urnNumber: {
+    type: String,
+    unique: true,
+    sparse: true, // avoids unique-null issues
+  },
+
   mission: { type: String, default: "" },
-  focusAreas: [String],
-  urnNumber: { type: String ,unique: true},
-  isCompleted: { type: Boolean, default: false },
+
+  focusAreas: [{ type: String }],
+
   verifiedByAdmin: { type: Boolean, default: false },
-  
+
   approvedAt: { type: Date },
 
   socialLinks: {
@@ -35,11 +49,7 @@ const NgoProfileSchema = new mongoose.Schema({
     acceptDonations: { type: Boolean, default: true },
   },
 
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-});
+  isCompleted: { type: Boolean, default: false },
+}, { timestamps: true });
 
-
-
-const NgoProfile = mongoose.model("NgoProfile", NgoProfileSchema);
-export default NgoProfile;
+export default mongoose.model("NgoProfile", NgoProfileSchema);

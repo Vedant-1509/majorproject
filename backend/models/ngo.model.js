@@ -1,20 +1,36 @@
 import mongoose from "mongoose";
+import { NGO_STATUS_VALUES, NGO_STATUS } from "../constants/ngoStatus.js";
 
 const NgoSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String },
-  role: { type: String, enum: ["ngo"], default: "ngo" },
-  token: { type: String },
+  name: { type: String, required: true, trim: true },
+
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    index: true,
+  },
+
+  password: { type: String, select: false },
+
+  role: {
+    type: String,
+    enum: ["ngo"],
+    default: "ngo",
+    immutable: true, // cannot be changed later
+  },
+
   profilePicture: { type: String, default: "default.jpg" },
+
   website: { type: String },
 
   status: {
     type: String,
-    enum: ["pending", "approved", "rejected"],
-    default: "pending",
+    enum: NGO_STATUS_VALUES, // 🔒 allowed values only
+    default: NGO_STATUS.REGISTERED,
+    index: true,
   },
-});
+}, { timestamps: true });
 
-const Ngo = mongoose.model("Ngo", NgoSchema);
-export default Ngo;
+export default mongoose.model("Ngo", NgoSchema);

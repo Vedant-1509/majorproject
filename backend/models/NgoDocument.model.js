@@ -1,21 +1,30 @@
 import mongoose from "mongoose";
 
 const NgoDocumentSchema = new mongoose.Schema({
-  ngoId: { type: mongoose.Schema.Types.ObjectId, ref: "Ngo", required: true },
+  ngoId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Ngo",
+    required: true,
+    index: true,
+  },
+
   trustDeed: { type: String, required: true },
   certificate80G: { type: String, required: true },
   panCard: { type: String, required: true },
+
   registrationCertificate: { type: String },
   financialReport: { type: String },
+
   isSubmitted: { type: Boolean, default: false },
-  submittedAt: { type: Date, default: Date.now },
+
   status: {
     type: String,
     enum: ["pending", "approved", "rejected"],
     default: "pending",
+    index: true,
   },
-  remarks: { type: String },
-});
 
-const NgoDocument = mongoose.model("NgoDocument", NgoDocumentSchema);
-export default NgoDocument;
+  remarks: { type: String },
+}, { timestamps: true });
+
+export default mongoose.model("NgoDocument", NgoDocumentSchema);
