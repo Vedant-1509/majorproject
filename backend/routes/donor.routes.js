@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { donorhello,getUser,register,login,createProfile,updateProfile,updateProfilePicture } from "../controller/donor.controller.js";
-
+import { donorhello,getUser,register,login,upsertProfile,updateProfile,updateProfilePicture } from "../controller/donor.controller.js";
+import { donorAuth } from "../middlewares/authMiddleware.js";
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import express from "express";
 
 // Configure Multer storage
 const storage = multer.diskStorage({
@@ -19,13 +20,14 @@ const storage = multer.diskStorage({
 });
 
 export const upload = multer({ storage });
-const router = Router();
+const router = express.Router();
+router.get("/donor", donorhello);
 
-router.route("/donor").get(donorhello);
-router.route("/donor-register").post(register)
-router.route("/donor-login").post(login)
-router.route("/donor-profile").post(createProfile)
-router.route("/donor-updateprofile").put(updateProfile)
+router.post("/donor-register", register);
+router.post("/donor-login",login)
+
+router.post("/profile", donorAuth, upsertProfile);
+
 router.route("/donor-user").post(getUser)
 router.post('/donor-profile-picture', upload.single('profilePicture'), updateProfilePicture);
 export default router

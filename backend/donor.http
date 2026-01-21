@@ -15,46 +15,16 @@ POST http://localhost:5000/api/v1/donor-login
 Content-Type: application/json
 
 {
-    "email":"test1@gmail.com",
-    "password":"14725836"
+    "email":"vrm@gmail.com",
+    "password":"test1234"
 }
 
 ###
-POST http://localhost:5000/api/v1/donor-profile
+POST  http://localhost:5000/api/v1/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NWVhM2RjYWRhODEwNmY5OTlkZThjZiIsInJvbGUiOiJkb25vciIsImlhdCI6MTc2NzgxMTI4MywiZXhwIjoxNzY4NDE2MDgzfQ.NACNdYp5qBCSsMOYYYc-vzUfGyuP1B0FPKfcR1hulws
 Content-Type: application/json
 
 {
-  "token": "523427ead8709dd6de20f27cfe54de6aa95b4314be2585847c04eff4019672f1",
-  "bio": "Passionate about helping the community and donating blood.",
-  "PAN": "ABCDE1234F",
-  "address": {
-    "street": "123 Park Street",
-    "city": "Mumbai",
-    "state": "Maharashtra",
-    "country": "India",
-    "zip": "400001",
-    "lat": 19.0760,
-    "lng": 72.8777
-  },
-  "skills": ["First Aid", "Teaching", "Cooking"],
-  "interests": ["Blood Donation", "Food Donation", "Educational Support"],
-  "availability": "weekends",
-  "preferences": {
-    "volunteerInvolvement": true,
-    "monetaryDonation": true,
-    "donationCategories": ["Health", "Education"],
-    "preferredFrequency": "monthly"
-  },
-  "bloodType": "O+",
-  "lastBloodDonationDate": "2025-08-15"
-}
-
-###
-PUT  http://localhost:5000/api/v1/donor-updateprofile
-Content-Type: application/json
-
-{
-  "token": "45167f83eccba554a345f81c0a18ae7b016de9d75eee4893143b76ddf99d2391",
   "bio": "Updated bio: actively helping in community events and blood drives.",
   "address": {
     "street": "456 New Park Street",
@@ -87,3 +57,37 @@ Content-Type: application/json
 {
   "token":"a3b7e58451f8eefb53c50cd30309077217bd781ec5e05f3195786deb80322069"
 }
+
+
+### ===============================
+### Create / Upsert Donor Profile
+### (Address included → Geo encoded)
+### ===============================
+POST http://localhost:5000/api/v1/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NjdjNjk5NjY1ODdlMWYyOWJkZTJkMSIsInJvbGUiOiJkb25vciIsImlhdCI6MTc2ODQwODczNCwiZXhwIjoxNzY5MDEzNTM0fQ.4o2yID2r_z9uzA52KUIYLYZq42gao9LAVMyIg5A36cg
+
+{
+  "bio": "Volunteer interested in healthcare and disaster relief",
+  "PAN": "ABCDE1234F",
+  "address": {
+    "street": "India Gate",
+    "city": "New Delhi",
+    "state": "Delhi",
+    "country": "India",
+    "zip": "110001"
+  },
+  "skills": ["First Aid", "Teaching"],
+  "interests": ["Healthcare & Medical Aid", "Disaster Relief"],
+  "availability": "weekends",
+  "bloodType": "O-",
+  "preferences": {
+    "volunteerInvolvement": true,
+    "monetaryDonation": false,
+    "preferredFrequency": "monthly"
+  }
+}
+
+
+###
+GET http://localhost:5000/api/v1/donor

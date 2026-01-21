@@ -1,10 +1,12 @@
 import bcrypt from "bcrypt";
-import crypto from "crypto";
+import jwt from "jsonwebtoken";
 import Donor from "../models/donor.model.js";
 import donorProfile from "../models/donarProfile.model.js";
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+
+import { geocodeAddress } from "../services/geocode.service.js";
 
 // Configure Multer storage
 const storage = multer.diskStorage({
@@ -23,128 +25,315 @@ export const upload = multer({ storage });
 
 export const donorhello = (req, res) => {
   res.send("Hello from donor controller");
-}
+}//done
 
 export const register = async (req, res) => {
-    try {
-        const { name, email, password, confirmPassword, mobileNumber } = req.body;
-
-        if (!name || !password || !email || !confirmPassword || !mobileNumber) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
-
-        if (password !== confirmPassword) {
-            return res.status(400).json({ message: "Password and Confirm Password do not match" });
-        }
-         const existingUser = await Donor.findOne({
-            $or: [{ email }, { mobileNumber }]
-        });
-
-        const user = await Donor.findOne({ email });
-        if (user) {
-            return res.status(400).json({ message: "User already exists" });
-        }
-        
-        const hashedPassword = await bcrypt.hash(password, 10);
-        
-        const newUser = new Donor({
-            name,
-            email,
-            password: hashedPassword,
-            mobileNumber,
-            role: "donor"
-        });
-        
-        await newUser.save();
-        
-        return res.status(201).json({ message: "User created successfully" });
-
-    } catch (error) {
-        console.log("BODY:", req.body);
-        console.error(error);
-        return res.status(500).json({ message: "Internal Server Error", error: error.message });
-    }
-}
-
-export const login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        if (!email || !password) {
-            return res.status(400).json({ message: "Email and password are required" });
-        }
-        const user = await Donor.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ message: "Invalid email or password" });
-        }
-        const isValidPassword = await bcrypt.compare(password, user.password);
-        if (!isValidPassword) {
-            return res.status(404).json({ message: "Invalid email or password" });
-        }
-
-        const token = crypto.randomBytes(32).toString("hex")
-        await Donor.updateOne({ _id: user._id }, { token })
-        return res.status(200).json({ message: "Login successful", token, user})
-    } catch (error) {
-        return res.status(500).json({ message: "Internal Server Error", error: error.messag })
-    }
-
-}
-
-export const createProfile = async (req, res) => {
   try {
-    const {
-      token,
-      bio,
-      PAN,
-      address,
-      skills,
-      interests,
-      availability,
-      preferences,
-      bloodType,
-      lastBloodDonationDate
-    } = req.body;
+    const { name, email, password, confirmPassword, mobileNumber } = req.body;
 
-    if (!token) {
-      return res.status(400).json({ message: "Token is required" });
+    if (!name || !email || !password || !confirmPassword || !mobileNumber) {
+      return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Find user by token
-    const user = await Donor.findOne({ token });
-    if (!user) {
-      return res.status(404).json({ message: "Invalid user" });
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
     }
 
-    // Check if profile already exists
-    const existing = await donorProfile.findOne({ userId: user._id });
-    if (existing) {
-      return res.status(400).json({ message: "Profile already exists for this user" });
-    }
-
-    const profile = new donorProfile({
-      userId: user._id,
-      bio: bio || "",
-      PAN: PAN || "",
-      address,
-      skills: skills || [],
-      interests: interests || [],
-      availability: availability || "anytime",
-      preferences: preferences || {},
-      bloodType: bloodType || null,
-      lastBloodDonationDate: lastBloodDonationDate || null,
-      participationScore: 0,
-      isCompleted: true
+    const existingUser = await Donor.findOne({
+      $or: [{ email }, { mobileNumber }],
     });
 
-    user.isCompleted = true;
-    await user.save();
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await Donor.create({
+      name,
+      email,
+      password: hashedPassword,
+      mobileNumber,
+      role: "donor",
+    });
+
+    return res.status(201).json({ message: "User created successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+};//done
+
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
+    const user = await Donor.findOne({ email }).select("+password");
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    return res.status(200).json({
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+};//done
+
+// export const createProfile = async (req, res) => {
+//   try {
+//     const {
+//       token,
+//       bio,
+//       PAN,
+//       address,
+//       skills,
+//       interests,
+//       availability,
+//       preferences,
+//       bloodType,
+//       lastBloodDonationDate
+//     } = req.body;
+
+//     if (!token) {
+//       return res.status(400).json({ message: "Token is required" });
+//     }
+
+//     // Find user by token
+//     const user = await Donor.findOne({ token });
+//     if (!user) {
+//       return res.status(404).json({ message: "Invalid user" });
+//     }
+
+//     // Check if profile already exists
+//     const existing = await donorProfile.findOne({ userId: user._id });
+//     if (existing) {
+//       return res.status(400).json({ message: "Profile already exists for this user" });
+//     }
+
+//     const profile = new donorProfile({
+//       userId: user._id,
+//       bio: bio || "",
+//       PAN: PAN || "",
+//       address,
+//       skills: skills || [],
+//       interests: interests || [],
+//       availability: availability || "anytime",
+//       preferences: preferences || {},
+//       bloodType: bloodType || null,
+//       lastBloodDonationDate: lastBloodDonationDate || null,
+//       participationScore: 0,
+//       isCompleted: true
+//     });
+
+//     user.isCompleted = true;
+//     await user.save();
+
+//     await profile.save();
+
+//     return res.status(201).json({ message: "Profile created successfully", profile });
+//   } catch (error) {
+//     console.error("Error creating profile:", error);
+//     return res.status(500).json({ message: "Internal Server Error", error: error.message });
+//   }
+// };
+
+// export const upsertProfile = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+
+//     const {
+//       bio,
+//       PAN,
+//       address,
+//       skills,
+//       interests,
+//       availability,
+//       preferences,
+//       bloodType,
+//       lastBloodDonationDate,
+//     } = req.body;
+
+//     const updateData = {};
+
+//     if (bio !== undefined) updateData.bio = bio;
+//     if (PAN !== undefined) updateData.PAN = PAN;
+//     if (address !== undefined) updateData.address = address;
+//     if (skills !== undefined) updateData.skills = skills;
+//     if (interests !== undefined) updateData.interests = interests;
+//     if (availability !== undefined) updateData.availability = availability;
+//     if (preferences !== undefined) updateData.preferences = preferences;
+//     if (bloodType !== undefined) updateData.bloodType = bloodType;
+//     if (lastBloodDonationDate !== undefined)
+//       updateData.lastBloodDonationDate = lastBloodDonationDate;
+
+//     let profile = await donorProfile.findOne({ userId });
+
+//     // CREATE
+//     if (!profile) {
+//       profile = await donorProfile.create({
+//         userId,
+//         ...updateData,
+//         participationScore: 0,
+//         isCompleted: true,
+//       });
+
+//       // ONE user update, no fetch needed
+//       await Donor.findByIdAndUpdate(userId, { isCompleted: true });
+
+//       return res.status(201).json({
+//         message: "Profile created successfully",
+//         profile,
+//       });
+//     }
+
+//     // UPDATE (no user DB call at all)
+//     Object.assign(profile, updateData, { updatedAt: Date.now() });
+//     await profile.save();
+
+//     return res.status(200).json({
+//       message: "Profile updated successfully",
+//       profile,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       message: "Internal Server Error",
+//       error: error.message,
+//     });
+//   }
+// };
+
+// export const upsertProfile = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+//     const { address, ...rest } = req.body;
+
+//     const updateData = { ...rest };
+
+//     if (address) {
+//       const { latitude, longitude } = await geocodeAddress(address);
+
+//       updateData.address = address;
+//       updateData.location = {
+//         type: "Point",
+//         coordinates: [longitude, latitude],
+//       };
+//     }
+
+//     let profile = await donorProfile.findOne({ userId });
+
+//     if (!profile) {
+//       if (!updateData.location) {
+//         return res.status(400).json({
+//           message: "Address is required to create profile",
+//         });
+//       }
+
+//       profile = await donorProfile.create({
+//         userId,
+//         ...updateData,
+//       });
+
+//       await Donor.findByIdAndUpdate(userId, { isCompleted: true });
+
+//       return res.status(201).json({
+//         message: "Profile created successfully",
+//         profile,
+//       });
+//     }
+
+//     Object.assign(profile, updateData);
+//     await profile.save();
+
+//     return res.status(200).json({
+//       message: "Profile updated successfully",
+//       profile,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       message: error.message,
+//     });
+//   }
+// };
+
+export const upsertProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { address, ...rest } = req.body;
+
+    const updateData = { ...rest };
+
+    if (address) {
+      //const addressString = buildAddressString(address);
+
+      const { latitude, longitude } = await geocodeAddress(address);
+
+      updateData.address = {
+        city: address.city,
+        state: address.state,
+        country: address.country,
+      };
+
+      updateData.location = {
+        type: "Point",
+        coordinates: [longitude, latitude],
+      };
+    }
+
+    let profile = await donorProfile.findOne({ userId });
+
+    if (!profile) {
+      if (!updateData.location) {
+        return res.status(400).json({
+          message: "Address (city, state, country) is required to create profile",
+        });
+      }
+
+      profile = await donorProfile.create({
+        userId,
+        ...updateData,
+      });
+
+      await Donor.findByIdAndUpdate(userId, { isCompleted: true });
+
+      return res.status(201).json({
+        message: "Profile created successfully",
+        profile,
+      });
+    }
+
+    Object.assign(profile, updateData);
     await profile.save();
 
-    return res.status(201).json({ message: "Profile created successfully", profile });
+    return res.status(200).json({
+      message: "Profile updated successfully",
+      profile,
+    });
   } catch (error) {
-    console.error("Error creating profile:", error);
-    return res.status(500).json({ message: "Internal Server Error", error: error.message });
+    return res.status(500).json({
+      message: error.message,
+    });
   }
 };
 

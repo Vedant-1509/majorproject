@@ -1,10 +1,3 @@
-// import { Router } from "express";
-// import { adminhello } from "../controller/admin.controller.js";
-
-// const adminrouter = Router();
-// adminrouter.route("/admin").get(adminhello); 
-// export default adminrouter;
-
 import express from "express";
 import {
   getPendingNGOs,
