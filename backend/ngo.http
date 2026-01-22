@@ -13,7 +13,6 @@ GET http://localhost:5000/api/v2/
 
 ###
 ###login 
-
 POST http://localhost:5000/api/v2/login
 Content-Type: application/json
 
@@ -27,7 +26,7 @@ Content-Type: application/json
 ### Create / Update NGO Profile
 POST http://localhost:5000/api/v2/create-profile
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTdlODliMTAwNjk0MmM2ZmQ2OTM3MiIsInJvbGUiOiJuZ28iLCJpYXQiOjE3NjczNjg4NjMsImV4cCI6MTc2Nzk3MzY2M30.yBGfaX2p-cvDeit9Oe53TYcBV2Fl6wjlxvM-J8nqcXc 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzEwZWJkZjMxMTY2YTEzMGY4MWJlOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTAxNzE5NCwiZXhwIjoxNzY5NjIxOTk0fQ.Rtv-DQojqDUjP1jSbCKSfRrH0T8Ji2v2rcvExTXig_o
 
 {
   "description": "We provide education and healthcare to underprivileged children.",
@@ -60,4 +59,71 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTdlODliM
 ### Get Profile
 POST http://localhost:5000/api/v2/getngo-profile
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTdlODliMTAwNjk0MmM2ZmQ2OTM3MiIsInJvbGUiOiJuZ28iLCJpYXQiOjE3NjczNjg4NjMsImV4cCI6MTc2Nzk3MzY2M30.yBGfaX2p-cvDeit9Oe53TYcBV2Fl6wjlxvM-J8nqcXc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzBlYjQ5ZTkzZWJlNTRjNjRhZTcyYyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzY5MDE1MDY1LCJleHAiOjE3Njk2MTk4NjV9.I758ikiccFLMA66lcEYkFbpPtQQKOSDhkOqRQJnEYa4
+
+
+
+### --------------------------------------------
+### 1️⃣ CREATE CAMPAIGN (MONETARY)
+### --------------------------------------------
+POST  http://localhost:5000/api/v2/campaigns
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzBlYjQ5ZTkzZWJlNTRjNjRhZTcyYyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTAxNjMxMiwiZXhwIjoxNzY5NjIxMTEyfQ.mpT0m33BYkf3lJ040D7PzQ3y_7WKCfs-96QxajkKEXE
+Content-Type: application/json
+
+{
+  "title": "Flood Relief Fund",
+  "description": "Emergency support for flood-affected families",
+  "category": "Disaster Relief",
+  "campaignType": "MONETARY",
+  "startDate": "2026-01-20",
+  "endDate": "2026-03-31",
+  "monetary": {
+    "targetAmount": 500000,
+    "minDonation": 100
+  }
+}
+
+### --------------------------------------------
+### 2️⃣ CREATE CAMPAIGN (VOLUNTEER)
+### --------------------------------------------
+POST  http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzEwZWJkZjMxMTY2YTEzMGY4MWJlOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTAxOTI4NCwiZXhwIjoxNzY5NjI0MDg0fQ.9kDdkaDMHZX3o1oVlm57zJ2jYecNeW0KvF7DPNPLwTY
+Content-Type: application/json
+
+{
+  "title": "Medical Camp Volunteers",
+  "description": "Looking for healthcare volunteers",
+  "category": "Healthcare & Medical Aid",
+  "campaignType": "VOLUNTEER",
+  "volunteer": {
+    "requiredSkills": ["First Aid", "Nursing"],
+    "slotsAvailable": 25,
+    "commitmentType": "weekly"
+  }
+}
+
+### --------------------------------------------
+### 3️⃣ CREATE CAMPAIGN (GOODS)
+### --------------------------------------------
+POST http://localhost:5000/api/v2/campaigns
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzBlYjQ5ZTkzZWJlNTRjNjRhZTcyYyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTAxNjMxMiwiZXhwIjoxNzY5NjIxMTEyfQ.mpT0m33BYkf3lJ040D7PzQ3y_7WKCfs-96QxajkKEXE
+Content-Type: application/json
+
+{
+  "title": "Winter Clothes Drive",
+  "description": "Collecting winter clothes for homeless",
+  "category": "Community Service",
+  "campaignType": "GOODS",
+  "goods": {
+    "goodsType": ["Jackets", "Blankets"],
+    "quantityRequired": 300,
+    "pickupAvailable": true
+  }
+}
+
+### --------------------------------------------
+### 4️⃣ GET ALL NGO CAMPAIGNS
+### --------------------------------------------
+GET  http://localhost:5000/api/v2/get-ngo-campaigns
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzEwZWJkZjMxMTY2YTEzMGY4MWJlOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTAxOTI4NCwiZXhwIjoxNzY5NjI0MDg0fQ.9kDdkaDMHZX3o1oVlm57zJ2jYecNeW0KvF7DPNPLwTY
+

@@ -5,7 +5,7 @@ const NgoProfileSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Ngo",
     required: true,
-    unique: true, // one profile per NGO
+    unique: true, 
   },
 
   description: { type: String, default: "" },

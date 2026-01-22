@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { donorhello,getUser,register,login,upsertProfile,updateProfile,updateProfilePicture } from "../controller/donor.controller.js";
+import { donorhello,getUser,register,login,upsertProfile,updateProfile,updateProfilePicture,logViewEvent,logClickEvent } from "../controller/donor.controller.js";
 import { donorAuth } from "../middlewares/authMiddleware.js";
 import multer from 'multer';
 import path from 'path';
@@ -27,6 +27,8 @@ router.post("/donor-register", register);
 router.post("/donor-login",login)
 
 router.post("/profile", donorAuth, upsertProfile);
+router.post("/view", donorAuth, logViewEvent);
+router.post("/click", donorAuth, logClickEvent);
 
 router.route("/donor-user").post(getUser)
 router.post('/donor-profile-picture', upload.single('profilePicture'), updateProfilePicture);

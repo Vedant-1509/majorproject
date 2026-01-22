@@ -419,3 +419,61 @@ export const updateProfilePicture = async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+export const logViewEvent = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { campaignId } = req.body;
+
+    if (!campaignId) {
+      return res.status(400).json({ message: "campaignId is required" });
+    }
+
+    // Optional: ensure campaign exists & is active
+    const campaign = await Campaign.findOne({
+      _id: campaignId,
+      status: "ACTIVE"
+    }).select("_id");
+
+    if (!campaign) {
+      return res.status(404).json({ message: "Campaign not found or inactive" });
+    }
+
+    await InteractionEvent.create({
+      userId,
+      campaignId,
+      eventType: "VIEW"
+    });
+
+    res.sendStatus(200);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to log view event",
+      error: error.message
+    });
+  }
+};
+
+export const logClickEvent = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { campaignId } = req.body;
+
+    if (!campaignId) {
+      return res.status(400).json({ message: "campaignId is required" });
+    }
+
+    await InteractionEvent.create({
+      userId,
+      campaignId,
+      eventType: "CLICK"
+    });
+
+    res.sendStatus(200);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to log click event",
+      error: error.message
+    });
+  }
+};

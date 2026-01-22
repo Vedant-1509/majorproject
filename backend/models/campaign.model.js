@@ -1,60 +1,105 @@
 import mongoose from "mongoose";
 
-const CampaignSchema = new mongoose.Schema({
-  // Reference to NGO who created the campaign
-  ngoId: { type: mongoose.Schema.Types.ObjectId, ref: "Ngo", required: true },
-
-  // Core campaign details
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  category: {
-    type: String,
-    enum: [
-      "Education",
-      "Healthcare",
-      "Environment",
-      "Animal Welfare",
-      "Women Empowerment",
-      "Disaster Relief",
-      "Other",
-    ],
-    default: "Other",
-  },
-  goalAmount: { type: Number, required: true },
-  collectedAmount: { type: Number, default: 0 },
-  startDate: { type: Date, required: true },
-  endDate: { type: Date, required: true },
-  image: { type: String }, // campaign banner image
-
-  // Campaign status control
-  status: {
-    type: String,
-    enum: ["active", "completed", "disabled", "pending_approval"],
-    default: "pending_approval",
-  },
-
-  // Track user reports for misuse
-  reports: [
-    {
-      userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-      reason: { type: String },
-      reportedAt: { type: Date, default: Date.now },
+const campaignSchema = new mongoose.Schema(
+  {
+    // 🔗 NGO who owns the campaign
+    ngoId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "NGO",
+      required: true,
+      index: true
     },
-  ],
 
-  // Admin actions
-  isDisabledByAdmin: { type: Boolean, default: false },
-  adminRemark: { type: String },
+    // 🏷️ Basic info
+    title: {
+      type: String,
+      required: true,
+      trim: true
+    },
 
-  // Metadata
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-});
+    description: {
+      type: String,
+      required: true
+    },
 
-CampaignSchema.pre("save", function (next) {
-  this.updatedAt = Date.now();
-  next();
-});
+    // 📂 Category used by recommendation engine
+    category: {
+      type: String,
+      enum: [
+        "Healthcare & Medical Aid",
+        "Disaster Relief",
+        "Education Support",
+        "Animal Welfare",
+        "Environment & Cleanliness",
+        "Child Welfare",
+        "Women Empowerment"
+      ],
+      required: true,
+      index: true
+    },
 
-const Campaign = mongoose.model("Campaign", CampaignSchema);
-export default Campaign;
+    // 🔁 Campaign type
+    campaignType: {
+      type: String,
+      enum: ["MONETARY", "VOLUNTEER", "GOODS"],
+      required: true,
+      index: true
+    },
+
+    // 🚦 Lifecycle state
+    status: {
+      type: String,
+      enum: ["ACTIVE", "PAUSED", "COMPLETED"],
+      default: "ACTIVE",
+      index: true
+    },
+
+    // ⏳ Duration
+    startDate: { type: Date },
+    endDate: { type: Date },
+
+    // 🔍 ML-oriented scores (derived later)
+    urgencyScore: {
+      type: Number,
+      default: 0
+    },
+
+    trustScore: {
+      type: Number,
+      default: 0
+    },
+
+    // 💰 Monetary Donation Fields
+    monetary: {
+      targetAmount: { type: Number },
+      collectedAmount: { type: Number, default: 0 },
+      minDonation: { type: Number, default: 50 }
+    },
+
+    // 🙋 Volunteer Campaign Fields
+    volunteer: {
+      requiredSkills: [{ type: String }],
+      slotsAvailable: { type: Number },
+      commitmentType: {
+        type: String,
+        enum: ["one-time", "weekly", "monthly"]
+      }
+    },
+
+    // 📦 Goods Donation Fields
+    goods: {
+      goodsType: [{ type: String }],
+      quantityRequired: { type: Number },
+      pickupAvailable: { type: Boolean, default: false }
+    },
+
+    // 📊 Popularity signals (derived)
+    viewCount: { type: Number, default: 0 },
+    donationCount: { type: Number, default: 0 }
+  },
+  {
+    timestamps: true
+  }
+);
+
+export default mongoose.model("Campaign", campaignSchema);

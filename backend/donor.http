@@ -71,11 +71,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NjdjNjk5N
   "bio": "Volunteer interested in healthcare and disaster relief",
   "PAN": "ABCDE1234F",
   "address": {
-    "street": "India Gate",
-    "city": "New Delhi",
-    "state": "Delhi",
+    "street": "Chilpun Guhaghar Road",
+    "city": "Chiplun",
+    "state": "Maharashtra",
     "country": "India",
-    "zip": "110001"
+    "zip": "415605"
   },
   "skills": ["First Aid", "Teaching"],
   "interests": ["Healthcare & Medical Aid", "Disaster Relief"],

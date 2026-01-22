@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import crypto from "crypto";
 import Ngo from "../models/ngo.model.js";
 import NgoProfile from "../models/ngoProfile.model.js";
 import NgoDocument from "../models/NgoDocument.model.js";
+import Campaign from "../models/campaign.model.js";
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
@@ -115,7 +115,7 @@ export const login = async (req, res) => {
 
     // ✅ JWT creation
     const token = jwt.sign(
-      { id: ngo._id, role: ngo.role },
+      { id: ngo._id, role: ngo.role, status: ngo.status },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -127,6 +127,7 @@ export const login = async (req, res) => {
         id: ngo._id,
         name: ngo.name,
         email: ngo.email,
+        role: ngo.role,
         status: ngo.status,
       },
     });
@@ -201,7 +202,7 @@ export const submitDocuments = async (req, res) => {
         : null,
       isSubmitted: true,
     });
-    
+
     await newDocs.save();
 
     await Ngo.findByIdAndUpdate(ngoId, {
@@ -223,6 +224,138 @@ export const submitDocuments = async (req, res) => {
     });
   }
 };
+/*
+───────────────────────────────
+   🚩 Create Campaign
+──────────────────────────────── */
+
+export const createCampaign = async (req, res) => {
+  try {
+    const ngoId = req.user.id;
+
+    // 1️⃣ Fetch NGO status
+    const ngo = await Ngo.findById(ngoId).select("status");
+
+    if (!ngo) {
+      return res.status(404).json({
+        message: "NGO not found"
+      });
+    }
+
+    // 2️⃣ Status gate (IMPORTANT)
+    if (ngo.status !== NGO_STATUS.APPROVED) {
+      return res.status(403).json({
+        message: "Campaign creation allowed only for accepted NGOs"
+      });
+    }
+
+    const {
+      title,
+      description,
+      category,
+      campaignType,
+      startDate,
+      endDate,
+      monetary,
+      volunteer,
+      goods
+    } = req.body;
+
+    // 3️⃣ Basic validation
+    if (!title || !description || !category || !campaignType) {
+      return res.status(400).json({
+        message: "Missing required fields"
+      });
+    }
+
+    // 4️⃣ Campaign data preparation
+    const campaignData = {
+      ngoId,
+      title,
+      description,
+      category,
+      campaignType,
+      startDate,
+      endDate
+    };
+
+    if (campaignType === "MONETARY") campaignData.monetary = monetary;
+    if (campaignType === "VOLUNTEER") campaignData.volunteer = volunteer;
+    if (campaignType === "GOODS") campaignData.goods = goods;
+
+    // 5️⃣ Create campaign
+    const campaign = await Campaign.create(campaignData);
+
+    res.status(201).json({
+      message: "Campaign created successfully",
+      campaign
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to create campaign",
+      error: error.message
+    });
+  }
+};
+/* ────────────────────────────────
+   🚩 Update Campaign Status
+──────────────────────────────── */
+
+export const updateCampaignStatus = async (req, res) => {
+  try {
+    const ngoId = req.user.id;
+    const { id: campaignId } = req.params;
+    const { status } = req.body;
+
+    const allowedStatuses = ["ACTIVE", "PAUSED", "COMPLETED"];
+
+    if (!allowedStatuses.includes(status)) {
+      return res.status(400).json({
+        message: "Invalid campaign status"
+      });
+    }
+
+    const campaign = await Campaign.findOneAndUpdate(
+      { _id: campaignId, ngoId },
+      { status },
+      { new: true }
+    );
+
+    if (!campaign) {
+      return res.status(404).json({
+        message: "Campaign not found or unauthorized"
+      });
+    }
+
+    res.json({
+      message: `Campaign status updated to ${status}`,
+      campaign
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to update campaign status",
+      error: error.message
+    });
+  }
+};
+
+
+export const getNgoCampaigns = async (req, res) => {
+  try {
+    const ngoId = req.user.id;
+
+    const campaigns = await Campaign.find({ ngoId }).sort({
+      createdAt: -1
+    });
+
+    res.json(campaigns);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch campaigns"
+    });
+  }
+};
+
 
 export const getNgo = async (req, res) => {
   try {

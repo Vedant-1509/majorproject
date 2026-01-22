@@ -7,7 +7,9 @@ import {
   createOrUpdateProfile,
   submitDocuments,
   getNgo,
-  updateNGOProfilePicture
+  createCampaign,
+  updateCampaignStatus,
+  getNgoCampaigns
 } from "../controller/ngo.controller.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import multer from 'multer';
@@ -21,6 +23,11 @@ router.post("/register", register);
 router.post("/login", login);
 router.post("/create-profile", authMiddleware,createOrUpdateProfile);
 router.post("/getngo-profile",authMiddleware,getNgo);
+
+
+router.post("/create-campaign",authMiddleware,createCampaign);
+router.post("/update-campaign-status",authMiddleware,updateCampaignStatus);
+router.get("/get-ngo-campaigns",authMiddleware,getNgoCampaigns);
 
 router.post(
   "/submit-documents",
