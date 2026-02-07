@@ -2,11 +2,13 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Donor from "../models/donor.model.js";
 import donorProfile from "../models/donarProfile.model.js";
+import Campaign from "../models/campaign.model.js";
+import InteractionEvent from "../models/InteractionEvent.js";
+import UserInterestProfile from "../models/UserInterestProfile.js";
+import { getCandidateCampaigns } from "../services/similairitySearchService.js";
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
-
-import { geocodeAddress } from "../services/geocode.service.js";
 
 // Configure Multer storage
 const storage = multer.diskStorage({
@@ -277,6 +279,66 @@ export const login = async (req, res) => {
 //   }
 // };
 
+// export const upsertProfile = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+//     const { address, ...rest } = req.body;
+
+//     const updateData = { ...rest };
+
+//     if (address) {
+//       //const addressString = buildAddressString(address);
+
+//       const { latitude, longitude } = await geocodeAddress(address);
+
+//       updateData.address = {
+//         city: address.city,
+//         state: address.state,
+//         country: address.country,
+//       };
+
+//       updateData.location = {
+//         type: "Point",
+//         coordinates: [longitude, latitude],
+//       };
+//     }
+
+//     let profile = await donorProfile.findOne({ userId });
+
+//     if (!profile) {
+//       if (!updateData.location) {
+//         return res.status(400).json({
+//           message: "Address (city, state, country) is required to create profile",
+//         });
+//       }
+
+//       profile = await donorProfile.create({
+//         userId,
+//         ...updateData,
+//       });
+
+//       await Donor.findByIdAndUpdate(userId, { isCompleted: true });
+
+//       return res.status(201).json({
+//         message: "Profile created successfully",
+//         profile,
+//       });
+//     }
+
+//     Object.assign(profile, updateData);
+//     await profile.save();
+
+//     return res.status(200).json({
+//       message: "Profile updated successfully",
+//       profile,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       message: error.message,
+//     });
+//   }
+// };
+
 export const upsertProfile = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -284,27 +346,25 @@ export const upsertProfile = async (req, res) => {
 
     const updateData = { ...rest };
 
+    // 📍 Address handling (NO geocoding)
     if (address) {
-      //const addressString = buildAddressString(address);
-
-      const { latitude, longitude } = await geocodeAddress(address);
-
       updateData.address = {
         city: address.city,
         state: address.state,
         country: address.country,
-      };
-
-      updateData.location = {
-        type: "Point",
-        coordinates: [longitude, latitude],
+        landmark: address.landmark || null,
       };
     }
 
     let profile = await donorProfile.findOne({ userId });
 
+    // 🆕 Create profile
     if (!profile) {
-      if (!updateData.location) {
+      if (
+        !address?.city ||
+        !address?.state ||
+        !address?.country
+      ) {
         return res.status(400).json({
           message: "Address (city, state, country) is required to create profile",
         });
@@ -323,6 +383,7 @@ export const upsertProfile = async (req, res) => {
       });
     }
 
+    // ♻️ Update profile (partial updates allowed)
     Object.assign(profile, updateData);
     await profile.save();
 
@@ -331,11 +392,14 @@ export const upsertProfile = async (req, res) => {
       profile,
     });
   } catch (error) {
+    console.error("Error in upsertProfile:", error);
     return res.status(500).json({
       message: error.message,
     });
   }
 };
+
+
 
 export const updateProfile = async (req, res) => {
   try {
@@ -420,6 +484,9 @@ export const updateProfilePicture = async (req, res) => {
   }
 };
 
+
+
+//logging users actions: view, click
 export const logViewEvent = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -475,5 +542,97 @@ export const logClickEvent = async (req, res) => {
       message: "Failed to log click event",
       error: error.message
     });
+  }
+};
+
+const EVENT_WEIGHTS = {
+  IMPRESSION: 0.5,
+  VIEW: 1,
+  CLICK: 2,
+  DONATION: 5
+};
+
+// export const updateUserInterestProfile = async (userId) => {
+//   const events = await InteractionEvent.find({ userId })
+//     .sort({ createdAt: -1 })
+//     .limit(50)
+//     .lean();
+
+//   const categoryScores = {};
+
+//   for (const event of events) {
+//     const weight = EVENT_WEIGHTS[event.eventType];
+//     if (!weight) continue;
+
+//     categoryScores[event.campaignCategory] =
+//       (categoryScores[event.campaignCategory] || 0) + weight;
+//   }
+
+//   await UserInterestProfile.findOneAndUpdate(
+//     { userId },
+//     { categoryScores, updatedAt: new Date() },
+//     { upsert: true }
+//   );
+
+//   return categoryScores;
+// };
+
+export const updateUserInterestProfile = async (userId) => {
+  const events = await InteractionEvent.find({ userId })
+    .sort({ createdAt: -1 })
+    .limit(50)
+    .lean();
+
+  const categoryScores = {};
+
+  for (const event of events) {
+    const weight = EVENT_WEIGHTS[event.eventType];
+    if (!weight) continue;
+
+    categoryScores[event.campaignCategory] =
+      (categoryScores[event.campaignCategory] || 0) + weight;
+  }
+
+  // 🔹 Normalization
+  const maxScore = Math.max(...Object.values(categoryScores), 1);
+  const normalizedScores = {};
+
+  for (const category in categoryScores) {
+    normalizedScores[category] = categoryScores[category] / maxScore;
+  }
+
+  await UserInterestProfile.findOneAndUpdate(
+    { userId },
+    {
+      categoryScores: normalizedScores,
+      updatedAt: new Date()
+    },
+    { upsert: true }
+  );
+
+  return normalizedScores;
+};
+
+
+// export const getCandidateCampaigns = async (userId) => {
+//   const userProfile = await donorProfile.findOne({ userId }).lean();
+//   const queryText = await buildQueryTextForUser(userId, userProfile);
+//   if (!queryText) return [];
+
+//   return findSimilarCampaigns(queryText, { topK: 10 });
+// };
+
+export const donorRecommendations = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+
+    const campaigns = await getCandidateCampaigns(userId);
+
+    return res.status(200).json({
+      success: true,
+      data: campaigns
+    });
+  } catch (err) {
+    next(err);
   }
 };

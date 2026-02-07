@@ -25,7 +25,7 @@ router.post("/create-profile", authMiddleware,createOrUpdateProfile);
 router.post("/getngo-profile",authMiddleware,getNgo);
 
 
-router.post("/create-campaign",authMiddleware,createCampaign);
+router.post("/create-campaign",authMiddleware,createCampaign);//creating the campaign
 router.post("/update-campaign-status",authMiddleware,updateCampaignStatus);
 router.get("/get-ngo-campaigns",authMiddleware,getNgoCampaigns);
 

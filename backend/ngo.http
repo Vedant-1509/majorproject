@@ -8,6 +8,69 @@ Content-Type: application/json
   "website": "https://helpinghands.org"
 }
 
+### NGO 2
+POST http://localhost:5000/api/v2/register
+Content-Type: application/json
+
+{
+  "name": "Care for All Trust",
+  "email": "info@careforall.org",
+  "password": "careAll@456",
+  "website": "https://www.careforall.org"
+}
+
+###
+
+### NGO 3
+POST http://localhost:5000/api/v2/register
+Content-Type: application/json
+
+{
+  "name": "Hope Lives NGO",
+  "email": "support@hopelives.org",
+  "password": "hopeLives789",
+  "website": "https://www.hopelives.org"
+}
+
+###
+
+### NGO 4
+POST http://localhost:5000/api/v2/register
+Content-Type: application/json
+
+{
+  "name": "Green Earth Initiative",
+  "email": "admin@greenearth.org",
+  "password": "greenEarth321",
+  "website": "https://www.greenearth.org"
+}
+
+###
+
+### NGO 5
+POST http://localhost:5000/api/v2/register
+Content-Type: application/json
+
+{
+  "name": "Bright Future Foundation",
+  "email": "hello@brightfuture.org",
+  "password": "brightFuture654",
+  "website": "https://www.brightfuture.org"
+}
+
+###
+
+### NGO 6
+POST http://localhost:5000/api/v2/register
+Content-Type: application/json
+
+{
+  "name": "Relief & Rescue Society",
+  "email": "contact@reliefrescue.org",
+  "password": "reliefRescue987",
+  "website": "https://www.reliefrescue.org"
+}
+
 ###
 GET http://localhost:5000/api/v2/
 
@@ -26,7 +89,7 @@ Content-Type: application/json
 ### Create / Update NGO Profile
 POST http://localhost:5000/api/v2/create-profile
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzEwZWJkZjMxMTY2YTEzMGY4MWJlOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTAxNzE5NCwiZXhwIjoxNzY5NjIxOTk0fQ.Rtv-DQojqDUjP1jSbCKSfRrH0T8Ji2v2rcvExTXig_o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzEwZWJkZjMxMTY2YTEzMGY4MWJlOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTk3MTk3MSwiZXhwIjoxNzcwNTc2NzcxfQ.rvZUJdE8ED0E493sCgB10w6I7iqEPrDMO-nyWha5BJk
 
 {
   "description": "We provide education and healthcare to underprivileged children.",
@@ -59,15 +122,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzEwZWJkZ
 ### Get Profile
 POST http://localhost:5000/api/v2/getngo-profile
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzBlYjQ5ZTkzZWJlNTRjNjRhZTcyYyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzY5MDE1MDY1LCJleHAiOjE3Njk2MTk4NjV9.I758ikiccFLMA66lcEYkFbpPtQQKOSDhkOqRQJnEYa4
-
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzEwZWJkZjMxMTY2YTEzMGY4MWJlOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTk3MjM3OCwiZXhwIjoxNzcwNTc3MTc4fQ.uWrZ9lKbn9kC54pzEOntZEEgGQy0ck7ndZzm5-qf7OI
 
 ### --------------------------------------------
 ### 1️⃣ CREATE CAMPAIGN (MONETARY)
 ### --------------------------------------------
-POST  http://localhost:5000/api/v2/campaigns
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzBlYjQ5ZTkzZWJlNTRjNjRhZTcyYyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTAxNjMxMiwiZXhwIjoxNzY5NjIxMTEyfQ.mpT0m33BYkf3lJ040D7PzQ3y_7WKCfs-96QxajkKEXE
+POST  http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzEwZWJkZjMxMTY2YTEzMGY4MWJlOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTk3MjM3OCwiZXhwIjoxNzcwNTc3MTc4fQ.uWrZ9lKbn9kC54pzEOntZEEgGQy0ck7ndZzm5-qf7OI
 Content-Type: application/json
 
 {
@@ -101,29 +162,4 @@ Content-Type: application/json
     "commitmentType": "weekly"
   }
 }
-
-### --------------------------------------------
-### 3️⃣ CREATE CAMPAIGN (GOODS)
-### --------------------------------------------
-POST http://localhost:5000/api/v2/campaigns
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzBlYjQ5ZTkzZWJlNTRjNjRhZTcyYyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTAxNjMxMiwiZXhwIjoxNzY5NjIxMTEyfQ.mpT0m33BYkf3lJ040D7PzQ3y_7WKCfs-96QxajkKEXE
-Content-Type: application/json
-
-{
-  "title": "Winter Clothes Drive",
-  "description": "Collecting winter clothes for homeless",
-  "category": "Community Service",
-  "campaignType": "GOODS",
-  "goods": {
-    "goodsType": ["Jackets", "Blankets"],
-    "quantityRequired": 300,
-    "pickupAvailable": true
-  }
-}
-
-### --------------------------------------------
-### 4️⃣ GET ALL NGO CAMPAIGNS
-### --------------------------------------------
-GET  http://localhost:5000/api/v2/get-ngo-campaigns
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzEwZWJkZjMxMTY2YTEzMGY4MWJlOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTAxOTI4NCwiZXhwIjoxNzY5NjI0MDg0fQ.9kDdkaDMHZX3o1oVlm57zJ2jYecNeW0KvF7DPNPLwTY
 

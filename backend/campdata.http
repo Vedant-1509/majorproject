@@ -1,0 +1,326 @@
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTVjYTgwNTdiZmQ1OGFkZDViZCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDM4MjgzOCwiZXhwIjoxNzcwOTg3NjM4fQ.tq6EBeGXVdTQXl3lwodZELDZwi1X-MiLhmVcgw6m58Y
+Content-Type: application/json
+
+{
+  "title": "Earthquake Rehabilitation Drive",
+  "description": "Rebuilding homes and livelihoods after the earthquake",
+  "category": "Disaster Relief",
+  "campaignType": "MONETARY",
+  "startDate": "2026-02-01",
+  "endDate": "2026-04-30",
+  "monetary": {
+    "targetAmount": 800000,
+    "minDonation": 200
+  }
+}
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTQwYTgwNTdiZmQ1OGFkZDViNyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDM4MjkzMywiZXhwIjoxNzcwOTg3NzMzfQ.ioDo0s921fb2-fIetqoJwK6g7Sy5KR_uQTG2C9IAgDo
+Content-Type: application/json
+
+{
+  "title": "Rural Education Support",
+  "description": "Providing books and digital learning tools to rural students",
+  "category": "Education",
+  "campaignType": "MONETARY",
+  "startDate": "2026-01-15",
+  "endDate": "2026-05-15",
+  "monetary": {
+    "targetAmount": 300000,
+    "minDonation": 100
+  }
+}
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTQwYTgwNTdiZmQ1OGFkZDViNyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDM4MjkzMywiZXhwIjoxNzcwOTg3NzMzfQ.ioDo0s921fb2-fIetqoJwK6g7Sy5KR_uQTG2C9IAgDo
+Content-Type: application/json
+
+{
+  "title": "Midday Meal Expansion",
+  "description": "Nutritious meals for underprivileged school children",
+  "category": "Hunger",
+  "campaignType": "MONETARY",
+  "startDate": "2026-02-10",
+  "endDate": "2026-06-10",
+  "monetary": {
+    "targetAmount": 450000,
+    "minDonation": 50
+  }
+}
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer <YOUR_TOKEN>
+Content-Type: application/json
+
+{
+  "title": "Women Skill Development Program",
+  "description": "Vocational training for women in low-income communities",
+  "category": "Women Empowerment",
+  "campaignType": "MONETARY",
+  "startDate": "2026-01-25",
+  "endDate": "2026-07-25",
+  "monetary": {
+    "targetAmount": 600000,
+    "minDonation": 200
+  }
+}
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTI1YTgwNTdiZmQ1OGFkZDVhNyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDM4MjY0MiwiZXhwIjoxNzcwOTg3NDQyfQ.ibEn7ZCbR085C3u3y---8bnt34Xn3DpnOvXuXuD2VjQ
+Content-Type: application/json
+
+{
+  "title": "Cancer Treatment Assistance",
+  "description": "Financial help for cancer patients from poor families",
+  "category": "Healthcare",
+  "campaignType": "MONETARY",
+  "startDate": "2026-02-05",
+  "endDate": "2026-05-31",
+  "monetary": {
+    "targetAmount": 1000000,
+    "minDonation": 500
+  }
+}
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTJiYTgwNTdiZmQ1OGFkZDVhYyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDQwMjYyMSwiZXhwIjoxNzcxMDA3NDIxfQ.S2SfmQKIyzrut1hQ51LF_n5feCm9Hyf0DvqEFjTZbMo
+Content-Type: application/json
+
+{
+  "title": "Clean Drinking Water Initiative",
+  "description": "Installing water purifiers in remote villages",
+  "category": "Water Conservation",
+  "campaignType": "MONETARY",
+  "startDate": "2026-01-20",
+  "endDate": "2026-04-20",
+  "monetary": {
+    "targetAmount": 350000,
+    "minDonation": 150
+  }
+}
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTMwYTgwNTdiZmQ1OGFkZDViMSIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDM4MzAzNCwiZXhwIjoxNzcwOTg3ODM0fQ.Zbjdq-E3aC674eHBSB2Jqq6xNNq5a0xbK-vsOT9cEZE
+Content-Type: application/json
+
+{
+  "title": "Tree Plantation Drive",
+  "description": "Planting trees to combat climate change",
+  "category": "Environment & Cleanliness",
+  "campaignType": "MONETARY",
+  "startDate": "2026-02-01",
+  "endDate": "2026-08-01",
+  "monetary": {
+    "targetAmount": 250000,
+    "minDonation": 100
+  }
+}
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTQwYTgwNTdiZmQ1OGFkZDViNyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDM4MjkzMywiZXhwIjoxNzcwOTg3NzMzfQ.ioDo0s921fb2-fIetqoJwK6g7Sy5KR_uQTG2C9IAgDo
+Content-Type: application/json
+
+{
+  "title": "Orphan Child Care Fund",
+  "description": "Education and shelter support for orphaned children",
+  "category": "Child Welfare",
+  "campaignType": "MONETARY",
+  "startDate": "2026-01-10",
+  "endDate": "2026-12-31",
+  "monetary": {
+    "targetAmount": 900000,
+    "minDonation": 300
+  }
+}
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTI1YTgwNTdiZmQ1OGFkZDVhNyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDM4MjY0MiwiZXhwIjoxNzcwOTg3NDQyfQ.ibEn7ZCbR085C3u3y---8bnt34Xn3DpnOvXuXuD2VjQ
+Content-Type: application/json
+
+{
+  "title": "Old Age Home Support",
+  "description": "Medical and food support for senior citizens",
+  "category": "Elderly Care",
+  "campaignType": "MONETARY",
+  "startDate": "2026-02-15",
+  "endDate": "2026-06-15",
+  "monetary": {
+    "targetAmount": 400000,
+    "minDonation": 200
+  }
+}
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTI1YTgwNTdiZmQ1OGFkZDVhNyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDM4MjY0MiwiZXhwIjoxNzcwOTg3NDQyfQ.ibEn7ZCbR085C3u3y---8bnt34Xn3DpnOvXuXuD2VjQ
+Content-Type: application/json
+
+{
+  "title": "Mental Health Awareness Campaign",
+  "description": "Free counseling and mental health workshops",
+  "category": "Healthcare",
+  "campaignType": "MONETARY",
+  "startDate": "2026-02-01",
+  "endDate": "2026-05-01",
+  "monetary": { "targetAmount": 300000, "minDonation": 100 }
+}
+
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTJiYTgwNTdiZmQ1OGFkZDVhYyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDM4Mjc2OSwiZXhwIjoxNzcwOTg3NTY5fQ.md1-73cqi-PKBznySRoAkfFz9D_27Ov03hBMOyUWKSk
+Content-Type: application/json
+
+{
+  "title": "Flood Preparedness Program",
+  "description": "Emergency kits and awareness for flood-prone areas",
+  "category": "Disaster Relief",
+  "campaignType": "MONETARY",
+  "startDate": "2026-03-01",
+  "endDate": "2026-06-30",
+  "monetary": {
+    "targetAmount": 500000,
+    "minDonation": 150
+  }
+}
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTJiYTgwNTdiZmQ1OGFkZDVhYyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDQwMjYyMSwiZXhwIjoxNzcxMDA3NDIxfQ.S2SfmQKIyzrut1hQ51LF_n5feCm9Hyf0DvqEFjTZbMo
+Content-Type: application/json
+
+{
+  "title": "Disability Support Fund",
+  "description": "Assistive devices for people with disabilities",
+  "category": "Healthcare",
+  "campaignType": "MONETARY",
+  "startDate": "2026-01-18",
+  "endDate": "2026-06-18",
+  "monetary": { "targetAmount": 550000, "minDonation": 200 }
+}
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTQwYTgwNTdiZmQ1OGFkZDViNyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDM4MjkzMywiZXhwIjoxNzcwOTg3NzMzfQ.ioDo0s921fb2-fIetqoJwK6g7Sy5KR_uQTG2C9IAgDo
+Content-Type: application/json
+
+{
+  "title": "School Infrastructure Improvement",
+  "description": "Renovating classrooms and toilets in schools",
+  "category": "Education",
+  "campaignType": "MONETARY",
+  "startDate": "2026-02-10",
+  "endDate": "2026-07-10",
+  "monetary": { "targetAmount": 700000, "minDonation": 250 }
+}
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTJiYTgwNTdiZmQ1OGFkZDVhYyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDQwMjYyMSwiZXhwIjoxNzcxMDA3NDIxfQ.S2SfmQKIyzrut1hQ51LF_n5feCm9Hyf0DvqEFjTZbMo
+Content-Type: application/json
+
+{
+  "title": "Animal Rescue & Care",
+  "description": "Medical aid and shelter for stray animals",
+  "category": "Animal Welfare",
+  "campaignType": "MONETARY",
+  "startDate": "2026-01-12",
+  "endDate": "2026-04-12",
+  "monetary": { "targetAmount": 200000, "minDonation": 100 }
+}
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTJiYTgwNTdiZmQ1OGFkZDVhYyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDQwMjYyMSwiZXhwIjoxNzcxMDA3NDIxfQ.S2SfmQKIyzrut1hQ51LF_n5feCm9Hyf0DvqEFjTZbMo
+Content-Type: application/json
+
+{
+  "title": "Farmer Support Fund",
+  "description": "Helping farmers with seeds and irrigation",
+  "category": "Rural Development",
+  "campaignType": "MONETARY",
+  "startDate": "2026-02-20",
+  "endDate": "2026-06-20",
+  "monetary": { "targetAmount": 650000, "minDonation": 200 }
+}
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTQwYTgwNTdiZmQ1OGFkZDViNyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDM4MjkzMywiZXhwIjoxNzcwOTg3NzMzfQ.ioDo0s921fb2-fIetqoJwK6g7Sy5KR_uQTG2C9IAgDo
+Content-Type: application/json
+
+{
+  "title": "Digital Literacy Program",
+  "description": "Teaching basic computer skills to youth",
+  "category": "Education",
+  "campaignType": "MONETARY",
+  "startDate": "2026-01-22",
+  "endDate": "2026-05-22",
+  "monetary": { "targetAmount": 280000, "minDonation": 100 }
+}
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTI1YTgwNTdiZmQ1OGFkZDVhNyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDM4MjY0MiwiZXhwIjoxNzcwOTg3NDQyfQ.ibEn7ZCbR085C3u3y---8bnt34Xn3DpnOvXuXuD2VjQ
+Content-Type: application/json
+
+{
+  "title": "Slum Health Camp",
+  "description": "Free medical checkups in urban slums",
+  "category": "Healthcare",
+  "campaignType": "MONETARY",
+  "startDate": "2026-03-01",
+  "endDate": "2026-04-30",
+  "monetary": { "targetAmount": 350000, "minDonation": 150 }
+}
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTI1YTgwNTdiZmQ1OGFkZDVhNyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDM4MjY0MiwiZXhwIjoxNzcwOTg3NDQyfQ.ibEn7ZCbR085C3u3y---8bnt34Xn3DpnOvXuXuD2VjQ
+Content-Type: application/json
+
+{
+  "title": "Sanitary Pad Distribution",
+  "description": "Menstrual hygiene support for girls",
+  "category": "Women Empowerment",
+  "campaignType": "MONETARY",
+  "startDate": "2026-01-15",
+  "endDate": "2026-05-15",
+  "monetary": { "targetAmount": 220000, "minDonation": 50 }
+}
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTQwYTgwNTdiZmQ1OGFkZDViNyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDM4MjkzMywiZXhwIjoxNzcwOTg3NzMzfQ.ioDo0s921fb2-fIetqoJwK6g7Sy5KR_uQTG2C9IAgDo
+Content-Type: application/json
+
+{
+  "title": "Skill Training for Youth",
+  "description": "Job-oriented training programs",
+  "category": "Scholarships & Higher Education",
+  "campaignType": "MONETARY",
+  "startDate": "2026-02-05",
+  "endDate": "2026-08-05",
+  "monetary": { "targetAmount": 750000, "minDonation": 300 }
+}
+
+###
+POST http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTJiYTgwNTdiZmQ1OGFkZDVhYyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3MDQwMjYyMSwiZXhwIjoxNzcxMDA3NDIxfQ.S2SfmQKIyzrut1hQ51LF_n5feCm9Hyf0DvqEFjTZbMo
+Content-Type: application/json
+
+{
+  "title": "Emergency Medical Fund",
+  "description": "Immediate help for critical patients",
+  "category": "Healthcare",
+  "campaignType": "MONETARY",
+  "startDate": "2026-01-05",
+  "endDate": "2026-12-31",
+  "monetary": { "targetAmount": 1200000, "minDonation": 500 }
+}

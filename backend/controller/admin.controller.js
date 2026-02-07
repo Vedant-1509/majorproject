@@ -213,13 +213,16 @@ export const verifyNGO = async (req, res) => {
       </html>
     `;
 
-    // 📧 Send email (non-blocking)
-    try {
-      await sendEmail(ngo.email, "NGO Approval Confirmation", html);
-    } catch (emailErr) {
-      console.error("Email sending failed:", emailErr.message);
-    }
+    // 📧 Send email in background (NON-BLOCKING)
+    setImmediate(async () => {
+      try {
+        await sendEmail(ngo.email, "NGO Approval Confirmation", html);
+      } catch (emailErr) {
+        console.error("Email sending failed:", emailErr.message);
+      }
+    });
 
+    // ✅ Respond immediately
     res.json({
       success: true,
       message: "NGO approved successfully and email sent",
@@ -232,7 +235,7 @@ export const verifyNGO = async (req, res) => {
       message: error.message
     });
   }
-};//done
+};
 
 export const rejectNGO = async (req, res) => {
   try {

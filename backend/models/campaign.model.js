@@ -26,14 +26,74 @@ const campaignSchema = new mongoose.Schema(
     category: {
       type: String,
       enum: [
-        "Healthcare & Medical Aid",
+        // 🏥 Health & Well-being
+        "Healthcare",
+        "Mental Health Support",
+        "Disability Support",
+        "Nutrition & Hunger Relief",
+
+        // 🚨 Emergency & Crisis
         "Disaster Relief",
-        "Education Support",
-        "Animal Welfare",
-        "Environment & Cleanliness",
+        "Emergency Medical Response",
+        "Pandemic & Epidemic Support",
+
+        // 🎓 Education & Skill
+        "Education",
+        "Scholarships & Higher Education",
+        "Skill Development & Vocational Training",
+        "Digital Literacy",
+
+        // 👶 Social Welfare
         "Child Welfare",
-        "Women Empowerment"
-      ],
+        "Orphan Care",
+        "Women Empowerment",
+        "Elderly Care",
+        "Homelessness Support",
+
+        // 🐾 Animal & Wildlife
+        "Animal Welfare",
+        "Wildlife Conservation",
+        "Stray Animal Support",
+
+        // 🌱 Environment & Sustainability
+        "Environment & Cleanliness",
+        "Climate Change Action",
+        "Afforestation & Tree Plantation",
+        "Water Conservation",
+        "Renewable Energy & Sustainability",
+
+        // 🏘️ Community & Development
+        "Rural Development",
+        "Urban Poverty Alleviation",
+        "Slum Development",
+        "Housing & Shelter",
+        "Hunger",
+
+        // ⚖️ Rights & Inclusion
+        "Human Rights",
+        "Legal Aid & Justice",
+        "Refugee & Migrant Support",
+        "Caste & Minority Welfare",
+
+        // 🧑‍🤝‍🧑 Employment & Economy
+        "Livelihood Support",
+        "Microfinance & Self Employment",
+        "Farmer Welfare & Agriculture",
+
+        // 🧠 Research & Innovation
+        "Medical Research",
+        "Social Research & Policy",
+        "Technology for Social Good",
+
+        // 🎭 Culture & Heritage
+        "Art & Culture Preservation",
+        "Heritage Conservation",
+        "Sports Development",
+
+        // 🛐 Faith & Spiritual
+        "Faith-Based Charity",
+        "Community Service & Volunteering"
+      ], 
       required: true,
       index: true
     },

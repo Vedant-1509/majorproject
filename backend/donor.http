@@ -21,34 +21,37 @@ Content-Type: application/json
 
 ###
 POST  http://localhost:5000/api/v1/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NWVhM2RjYWRhODEwNmY5OTlkZThjZiIsInJvbGUiOiJkb25vciIsImlhdCI6MTc2NzgxMTI4MywiZXhwIjoxNzY4NDE2MDgzfQ.NACNdYp5qBCSsMOYYYc-vzUfGyuP1B0FPKfcR1hulws
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5N2Y5MzYzNjJlMDIxYjkxZTVhMGI4ZCIsInJvbGUiOiJkb25vciIsImlhdCI6MTc2OTk2ODQ4NiwiZXhwIjoxNzcwNTczMjg2fQ.gDdXPBIOcot2M9jmhVnvP09qGL5gcj2TJ2um2dISbuE
 
 {
   "bio": "Updated bio: actively helping in community events and blood drives.",
+
   "address": {
-    "street": "456 New Park Street",
     "city": "Mumbai",
     "state": "Maharashtra",
     "country": "India",
-    "zip": "400002",
-    "lat": 19.0759,
-    "lng": 72.8777
+    "landmark": "Near New Park"
   },
-  "phone": "+919812345678",
+
   "skills": ["First Aid", "Event Management"],
+
   "interests": ["Blood Donation", "Educational Support"],
+
   "availability": "weekdays",
+
   "preferences": {
     "volunteerInvolvement": true,
     "monetaryDonation": true,
-    "donationCategories": ["Health", "Education"],
+    "donationCategories": ["Healthcare & Medical Aid", "Education Support"],
     "preferredFrequency": "monthly"
   },
+
   "bloodType": "O+",
   "lastBloodDonationDate": "2025-09-01",
   "participationScore": 5
 }
+
 
 ###
 POST  http://localhost:5000/api/v1/donor-user
@@ -91,3 +94,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NjdjNjk5N
 
 ###
 GET http://localhost:5000/api/v1/donor
+
+
+
+###
+POST  http://localhost:5000/api/v1/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5N2Y5MzYzNjJlMDIxYjkxZTVhMGI4ZCIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3MDQzOTQ5MiwiZXhwIjoxNzcxMDQ0MjkyfQ.uNSbKjFxx6wlfCqEga7CNhbbH95xsSfbBHrlJ5j1ssM

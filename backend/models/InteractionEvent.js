@@ -16,25 +16,33 @@ const interactionEventSchema = new mongoose.Schema(
       index: true
     },
 
-    eventType: {
+    // 🔥 ADD THIS
+    campaignCategory: {
       type: String,
-      enum: ["VIEW", "CLICK", "DONATION"],
       required: true,
       index: true
     },
 
-    // Used only for DONATION
+    eventType: {
+      type: String,
+      enum: ["IMPRESSION", "VIEW", "CLICK", "DONATION"],
+      required: true,
+      index: true
+    },
+
     amount: {
       type: Number,
       default: null
     }
   },
-  {
-    timestamps: true
-  }
+  { timestamps: true }
 );
 
-// Optional compound index for faster aggregation
-interactionEventSchema.index({ userId: 1, eventType: 1, createdAt: -1 });
+interactionEventSchema.index({
+  userId: 1,
+  campaignCategory: 1,
+  eventType: 1,
+  createdAt: -1
+});
 
 export default mongoose.model("InteractionEvent", interactionEventSchema);

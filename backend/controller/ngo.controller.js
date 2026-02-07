@@ -4,6 +4,7 @@ import Ngo from "../models/ngo.model.js";
 import NgoProfile from "../models/ngoProfile.model.js";
 import NgoDocument from "../models/NgoDocument.model.js";
 import Campaign from "../models/campaign.model.js";
+import { createCampaignEmbedding } from "../services/buildCampaignEmbeddingText.js";
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
@@ -229,6 +230,75 @@ export const submitDocuments = async (req, res) => {
    🚩 Create Campaign
 ──────────────────────────────── */
 
+// export const createCampaign = async (req, res) => {
+//   try {
+//     const ngoId = req.user.id;
+
+//     // 1️⃣ Fetch NGO status
+//     const ngo = await Ngo.findById(ngoId).select("status");
+
+//     if (!ngo) {
+//       return res.status(404).json({
+//         message: "NGO not found"
+//       });
+//     }
+
+//     // 2️⃣ Status gate (IMPORTANT)
+//     if (ngo.status !== NGO_STATUS.APPROVED) {
+//       return res.status(403).json({
+//         message: "Campaign creation allowed only for accepted NGOs"
+//       });
+//     }
+
+//     const {
+//       title,
+//       description,
+//       category,
+//       campaignType,
+//       startDate,
+//       endDate,
+//       monetary,
+//       volunteer,
+//       goods
+//     } = req.body;
+
+//     // 3️⃣ Basic validation
+//     if (!title || !description || !category || !campaignType) {
+//       return res.status(400).json({
+//         message: "Missing required fields"
+//       });
+//     }
+
+//     // 4️⃣ Campaign data preparation
+//     const campaignData = {
+//       ngoId,
+//       title,
+//       description,
+//       category,
+//       campaignType,
+//       startDate,
+//       endDate
+//     };
+
+//     if (campaignType === "MONETARY") campaignData.monetary = monetary;
+//     if (campaignType === "VOLUNTEER") campaignData.volunteer = volunteer;
+//     if (campaignType === "GOODS") campaignData.goods = goods;
+
+//     // 5️⃣ Create campaign
+//     const campaign = await Campaign.create(campaignData);
+
+//     res.status(201).json({
+//       message: "Campaign created successfully",
+//       campaign
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       message: "Failed to create campaign",
+//       error: error.message
+//     });
+//   }
+// };
+
 export const createCampaign = async (req, res) => {
   try {
     const ngoId = req.user.id;
@@ -283,13 +353,24 @@ export const createCampaign = async (req, res) => {
     if (campaignType === "VOLUNTEER") campaignData.volunteer = volunteer;
     if (campaignType === "GOODS") campaignData.goods = goods;
 
-    // 5️⃣ Create campaign
+    // 5️⃣ Create campaign (SOURCE OF TRUTH)
     const campaign = await Campaign.create(campaignData);
 
+    // 6️⃣ 🔥 ASYNC embedding ingestion (derived data)
+    createCampaignEmbedding(campaign).catch(err => {
+      console.error(
+        "Embedding creation failed for campaign:",
+        campaign._id,
+        err.message
+      );
+    });
+
+    // 7️⃣ Respond immediately
     res.status(201).json({
       message: "Campaign created successfully",
       campaign
     });
+
   } catch (error) {
     res.status(500).json({
       message: "Failed to create campaign",
@@ -297,6 +378,9 @@ export const createCampaign = async (req, res) => {
     });
   }
 };
+
+
+
 /* ────────────────────────────────
    🚩 Update Campaign Status
 ──────────────────────────────── */

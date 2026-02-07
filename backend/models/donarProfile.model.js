@@ -29,16 +29,6 @@ const profileSchema = new mongoose.Schema({
     },
   },
 
-  location: {
-    type: {
-      type: String,
-      enum: ["Point"],
-    },
-    coordinates: {
-      type: [Number], // [lng, lat]
-    },
-  },
-
 
   skills: [{ type: String }], // e.g. ["First Aid", "Teaching", "Cooking"]
 
@@ -97,75 +87,3 @@ profileSchema.pre("save", function (next) {
 
 const donorProfile = mongoose.model("donorProfile", profileSchema);
 export default donorProfile;
-
-// import mongoose from "mongoose";
-
-// const profileSchema = new mongoose.Schema(
-//   {
-//     userId: {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "Donor",
-//       required: true,
-//     },
-
-//     // address: {
-//     //   street: String,
-//     //   city: String,
-//     //   state: String,
-//     //   country: String,
-//     //   zip: String,
-//     // },
-
-//     address: {
-//       city: {
-//         type: String,
-//         required: true,
-//         trim: true,
-//       },
-//       state: {
-//         type: String,
-//         required: true,
-//         trim: true,
-//       },
-//       country: {
-//         type: String,
-//         required: true,
-//         trim: true,
-//       },
-//       landmark: {
-//         type: String,
-//         trim: true,
-//         default: null, // explicitly optional
-//       },
-//     },
-
-//     location: {
-//       type: {
-//         type: String,
-//         enum: ["Point"],
-//       },
-//       coordinates: {
-//         type: [Number], // [lng, lat]
-//       },
-//     },
-
-//     skills: [String],
-//     interests: [String],
-//     availability: {
-//       type: String,
-//       enum: ["weekdays", "weekends", "anytime"],
-//       default: "anytime",
-//     },
-
-//     participationScore: { type: Number, default: 0 },
-//   },
-//   { timestamps: true }
-// );
-
-// profileSchema.index(
-//   { location: "2dsphere" },
-//   { partialFilterExpression: { location: { $exists: true } } }
-// );
-
-// export default mongoose.model("donorProfile", profileSchema);
-
