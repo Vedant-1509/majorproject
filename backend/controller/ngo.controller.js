@@ -230,121 +230,6 @@ export const submitDocuments = async (req, res) => {
 ───────────────────────────────
    🚩 Create Campaign
 ──────────────────────────────── */
-// export const createCampaign = async (req, res) => {
-//   try {
-//     const ngoId = req.user.id;
-
-//     // 1️⃣ Fetch NGO status
-//     const ngo = await Ngo.findById(ngoId).select("status");
-
-//     if (!ngo) {
-//       return res.status(404).json({
-//         message: "NGO not found"
-//       });
-//     }
-
-//     // 2️⃣ Status gate
-//     if (ngo.status !== NGO_STATUS.APPROVED) {
-//       return res.status(403).json({
-//         message: "Campaign creation allowed only for accepted NGOs"
-//       });
-//     }
-
-//     // 3️⃣ Extract request body
-//     const {
-//       title,
-//       description,
-//       category,
-//       campaignType,
-//       startDate,
-//       endDate,
-//       monetary,
-//       volunteer,
-//       goods,
-//       address // 👈 NEW
-//     } = req.body || {};
-
-//     // 4️⃣ Basic validation
-//     if (!title || !description || !category || !campaignType) {
-//       return res.status(400).json({
-//         message: "Missing required fields"
-//       });
-//     }
-
-//     // 5️⃣ Handle address + geocoding
-//     let locationData = {};
-
-//     if (address) {
-//       const { city, state, country, landmark } = address;
-
-//       if (!city || !state || !country) {
-//         return res.status(400).json({
-//           message: "Address must include city, state, and country"
-//         });
-//       }
-
-//       const fullAddress = `${city}, ${state}, ${country}`;
-
-//       // 🔥 Get coordinates
-//       const coordinates = await getCoordinatesFromAddress(fullAddress);
-
-//       locationData = {
-//         address: {
-//           city,
-//           state,
-//           country,
-//           landmark: landmark || null
-//         },
-//         location: {
-//           type: "Point",
-//           coordinates // [lng, lat]
-//         }
-//       };
-//     }
-
-//     // 6️⃣ Campaign data preparation
-//     const campaignData = {
-//       ngoId,
-//       title,
-//       description,
-//       category,
-//       campaignType,
-//       startDate,
-//       endDate,
-//       ...locationData // 👈 Inject location
-//     };
-
-//     if (campaignType === "MONETARY") campaignData.monetary = monetary;
-//     if (campaignType === "VOLUNTEER") campaignData.volunteer = volunteer;
-//     if (campaignType === "GOODS") campaignData.goods = goods;
-
-//     // 7️⃣ Create campaign
-//     const campaign = await Campaign.create(campaignData);
-
-//     // 8️⃣ Async embedding ingestion
-//     createCampaignEmbedding(campaign).catch(err => {
-//       console.error(
-//         "Embedding creation failed for campaign:",
-//         campaign._id,
-//         err.message
-//       );
-//     });
-
-//     // 9️⃣ Response
-//     res.status(201).json({
-//       message: "Campaign created successfully",
-//       campaign
-//     });
-
-//   } catch (error) {
-//     console.error("Error in createCampaign:", error);
-//     res.status(500).json({
-//       message: "Failed to create campaign",
-//       error: error.message
-//     });
-//   }
-// };
-
 export const createCampaign = async (req, res) => {
   try {
     const ngoId = req.user.id;
@@ -462,14 +347,8 @@ export const createCampaign = async (req, res) => {
     // 8️⃣ Create campaign
     const campaign = await Campaign.create(campaignData);
 
-    // 9️⃣ Async embedding ingestion
-    createCampaignEmbedding(campaign).catch(err => {
-      console.error(
-        "Embedding creation failed for campaign:",
-        campaign._id,
-        err.message
-      );
-    });
+    // 9️⃣ Embedding ingestion
+    await createCampaignEmbedding(campaign);
 
     // 🔟 Response
     res.status(201).json({

@@ -82,15 +82,23 @@ export const createCampaignEmbedding = async (campaign) => {
     const text = buildCampaignEmbeddingText(campaign);
     const vector = await generateEmbedding(text);
 
-    await CampaignEmbedding.create({
-      campaignId: campaign._id,
-      embedding: vector,
-      metadata: {
-        ngoId: campaign.ngoId,
-        category: campaign.category,
-        campaignType: campaign.campaignType
+    await CampaignEmbedding.findOneAndUpdate(
+      { campaignId: campaign._id },
+      {
+        campaignId: campaign._id,
+        embedding: vector,
+        metadata: {
+          ngoId: campaign.ngoId,
+          category: campaign.category,
+          campaignType: campaign.campaignType
+        }
+      },
+      {
+        upsert: true,
+        new: true,
+        setDefaultsOnInsert: true
       }
-    });
+    );
   } catch (error) {
     console.error(
       "Error saving campaign embedding:",

@@ -1,3 +1,5 @@
+import { normalizeCategoryScores } from "./categoryScores.js";
+
 /**
  * 🔥 LRBS (Location + Relevance Based Scoring)
  * Single file implementation
@@ -122,17 +124,30 @@ const getLocationScore = (distance) => {
    🧠 LRBS Core Function
 ================================ */
 
-export const computeLRBSScore = (userProfile, campaign) => {
+export const computeLRBSScore = (userProfile, campaign, interestProfile = null) => {
   let categoryScore = 0;
   let locationScore = 0;
   let urgencyScore = 0;
   let distance = null;
 
   // 🎯 1. Category Score
-  if (userProfile?.categoryScores && campaign?.category) {
-    categoryScore =
-      userProfile.categoryScores[campaign.category] || 0;
-  }
+  const categoryScores = normalizeCategoryScores(
+    interestProfile?.categoryScores ?? userProfile?.categoryScores
+  );
+
+  const interestScore =
+    campaign?.category && Object.keys(categoryScores).length > 0
+      ? Number(categoryScores[campaign.category] || 0)
+      : 0;
+
+  const preferenceScore =
+    campaign?.category &&
+    Array.isArray(userProfile?.preferences?.donationCategories) &&
+    userProfile.preferences.donationCategories.includes(campaign.category)
+      ? 1
+      : 0;
+
+  categoryScore = Math.max(interestScore, preferenceScore);
 
   // 📍 2. Location Score
   const userCoords = userProfile?.location?.coordinates;

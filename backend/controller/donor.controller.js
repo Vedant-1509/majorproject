@@ -6,7 +6,7 @@ import Campaign from "../models/campaign.model.js";
 import InteractionEvent from "../models/InteractionEvent.js";
 import UserInterestProfile from "../models/UserInterestProfile.js";
 import { getCandidateCampaigns } from "../services/similairitySearchService.js";
-import {getCoordinatesFromAddress} from "../services/geocode.service.js ";
+import {getCoordinatesFromAddress} from "../services/geocode.service.js";
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
@@ -671,10 +671,11 @@ export const logDonationEvent = async (req, res) => {
   try {
     const userId = req.user.id;
     const { campaignId, amount } = req.body;
+    const donationAmount = Number(amount);
 
-    if (!campaignId || !amount) {
+    if (!campaignId || !Number.isFinite(donationAmount) || donationAmount <= 0) {
       return res.status(400).json({
-        message: "campaignId and amount required"
+        message: "campaignId and a valid positive amount are required"
       });
     }
 
@@ -685,7 +686,7 @@ export const logDonationEvent = async (req, res) => {
       campaignId,
       campaignCategory,
       eventType: "DONATION",
-      metadata: { amount }
+      amount: donationAmount
     });
 
     res.sendStatus(200);
@@ -727,8 +728,8 @@ export const updateUserInterestProfile = async (userId) => {
     let weight = baseWeight;
 
     // extra strength for donation amount
-    if (event.eventType === "DONATION" && event.metadata?.amount) {
-      weight *= Math.log(event.metadata.amount + 1);
+    if (event.eventType === "DONATION" && Number.isFinite(event.amount) && event.amount > 0) {
+      weight *= Math.log(event.amount + 1);
     }
 
     categoryScores[event.campaignCategory] =
@@ -762,7 +763,7 @@ export const updateUserInterestProfile = async (userId) => {
 export const donorRecommendations = async (req, res, next) => {
   try {
     const userId = req.user.id;
-
+    console.log("Generating recommendations for user:", userId);
     const campaigns = await getCandidateCampaigns(userId);
 
     return res.status(200).json({
