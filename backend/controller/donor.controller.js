@@ -6,6 +6,7 @@ import Campaign from "../models/campaign.model.js";
 import InteractionEvent from "../models/InteractionEvent.js";
 import UserInterestProfile from "../models/UserInterestProfile.js";
 import { getCandidateCampaigns } from "../services/similairitySearchService.js";
+import {getCoordinatesFromAddress} from "../services/geocode.service.js ";
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
@@ -339,6 +340,66 @@ export const login = async (req, res) => {
 //   }
 // };
 
+// export const upsertProfile = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+//     const { address, ...rest } = req.body;
+
+//     const updateData = { ...rest };
+
+//     // 📍 Address handling (NO geocoding)
+//     if (address) {
+//       updateData.address = {
+//         city: address.city,
+//         state: address.state,
+//         country: address.country,
+//         landmark: address.landmark || null,
+//       };
+//     }
+
+//     let profile = await donorProfile.findOne({ userId });
+
+//     // 🆕 Create profile
+//     if (!profile) {
+//       if (
+//         !address?.city ||
+//         !address?.state ||
+//         !address?.country
+//       ) {
+//         return res.status(400).json({
+//           message: "Address (city, state, country) is required to create profile",
+//         });
+//       }
+
+//       profile = await donorProfile.create({
+//         userId,
+//         ...updateData,
+//       });
+
+//       await Donor.findByIdAndUpdate(userId, { isCompleted: true });
+
+//       return res.status(201).json({
+//         message: "Profile created successfully",
+//         profile,
+//       });
+//     }
+
+//     // ♻️ Update profile (partial updates allowed)
+//     Object.assign(profile, updateData);
+//     await profile.save();
+
+//     return res.status(200).json({
+//       message: "Profile updated successfully",
+//       profile,
+//     });
+//   } catch (error) {
+//     console.error("Error in upsertProfile:", error);
+//     return res.status(500).json({
+//       message: error.message,
+//     });
+//   }
+// };
+
 export const upsertProfile = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -346,13 +407,32 @@ export const upsertProfile = async (req, res) => {
 
     const updateData = { ...rest };
 
-    // 📍 Address handling (NO geocoding)
+    // 📍 Address + Geocoding
     if (address) {
+      const { city, state, country, landmark } = address;
+
+      if (!city || !state || !country) {
+        return res.status(400).json({
+          message: "Address must include city, state, and country",
+        });
+      }
+
+      // 🔥 Convert to string for geocoding
+      const fullAddress = `${city}, ${state}, ${country}`;
+
+      // 🔥 Get coordinates
+      const coordinates = await getCoordinatesFromAddress(fullAddress);
+
       updateData.address = {
-        city: address.city,
-        state: address.state,
-        country: address.country,
-        landmark: address.landmark || null,
+        city,
+        state,
+        country,
+        landmark: landmark || null,
+      };
+
+      updateData.location = {
+        type: "Point",
+        coordinates, // [lng, lat]
       };
     }
 
@@ -360,13 +440,10 @@ export const upsertProfile = async (req, res) => {
 
     // 🆕 Create profile
     if (!profile) {
-      if (
-        !address?.city ||
-        !address?.state ||
-        !address?.country
-      ) {
+      if (!address?.city || !address?.state || !address?.country) {
         return res.status(400).json({
-          message: "Address (city, state, country) is required to create profile",
+          message:
+            "Address (city, state, country) is required to create profile",
         });
       }
 
@@ -432,7 +509,7 @@ export const updateProfile = async (req, res) => {
   }
 };
 
-
+//to be done: add profile picture update, and also add delete old picture if not default
 export const getUser = async (req, res) => {
   try {
     const { token } = req.body;
@@ -444,12 +521,12 @@ export const getUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "Invalid user" });
     }
-    
+
     const profile = await donorProfile.findOne({ userId: user._id });
     if (profile) {
       user.profile = profile; // attach profile to user object
     }
-    return res.status(200).json({ user ,profile});
+    return res.status(200).json({ user, profile });
   }
   catch (error) {
     console.error("Error fetching user:", error);
@@ -487,39 +564,72 @@ export const updateProfilePicture = async (req, res) => {
 
 
 //logging users actions: view, click
-export const logViewEvent = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const { campaignId } = req.body;
+// export const logViewEvent = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+//     const { campaignId } = req.body;
 
-    if (!campaignId) {
-      return res.status(400).json({ message: "campaignId is required" });
-    }
+//     if (!campaignId) {
+//       return res.status(400).json({ message: "campaignId is required" });
+//     }
 
-    // Optional: ensure campaign exists & is active
-    const campaign = await Campaign.findOne({
-      _id: campaignId,
-      status: "ACTIVE"
-    }).select("_id");
+//     // Optional: ensure campaign exists & is active
+//     const campaign = await Campaign.findOne({
+//       _id: campaignId,
+//       status: "ACTIVE"
+//     }).select("_id");
 
-    if (!campaign) {
-      return res.status(404).json({ message: "Campaign not found or inactive" });
-    }
+//     if (!campaign) {
+//       return res.status(404).json({ message: "Campaign not found or inactive" });
+//     }
 
-    await InteractionEvent.create({
-      userId,
-      campaignId,
-      eventType: "VIEW"
-    });
+//     await InteractionEvent.create({
+//       userId,
+//       campaignId,
+//       eventType: "VIEW"
+//     });
 
-    res.sendStatus(200);
-  } catch (error) {
-    res.status(500).json({
-      message: "Failed to log view event",
-      error: error.message
-    });
+//     res.sendStatus(200);
+//   } catch (error) {
+//     res.status(500).json({
+//       message: "Failed to log view event",
+//       error: error.message
+//     });
+//   }
+// };
+
+// export const logClickEvent = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+//     const { campaignId } = req.body;
+
+//     if (!campaignId) {
+//       return res.status(400).json({ message: "campaignId is required" });
+//     }
+
+//     await InteractionEvent.create({
+//       userId,
+//       campaignId,
+//       eventType: "CLICK"
+//     });
+
+//     res.sendStatus(200);
+//   } catch (error) {
+//     res.status(500).json({
+//       message: "Failed to log click event",
+//       error: error.message
+//     });
+//   }
+// };
+
+const getCampaignCategory = async (campaignId) => {
+  const campaign = await Campaign.findById(campaignId).select("category").lean();
+  if (!campaign) {
+    throw new Error("Campaign not found");
   }
+  return campaign.category;
 };
+
 
 export const logClickEvent = async (req, res) => {
   try {
@@ -530,20 +640,70 @@ export const logClickEvent = async (req, res) => {
       return res.status(400).json({ message: "campaignId is required" });
     }
 
+    const campaignCategory = await getCampaignCategory(campaignId);
+
     await InteractionEvent.create({
       userId,
       campaignId,
+      campaignCategory,
       eventType: "CLICK"
     });
 
     res.sendStatus(200);
+    console.log("Response sent, starting background update");
+
+    updateUserInterestProfile(userId)
+      .then(() => console.log("Interest profile updated successfully"))
+      .catch(err => console.error("Interest profile update failed:", err));
+
   } catch (error) {
-    res.status(500).json({
+    res.status(error.message === "Campaign not found" ? 404 : 500).json({
       message: "Failed to log click event",
       error: error.message
     });
   }
 };
+
+
+
+
+export const logDonationEvent = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { campaignId, amount } = req.body;
+
+    if (!campaignId || !amount) {
+      return res.status(400).json({
+        message: "campaignId and amount required"
+      });
+    }
+
+    const campaignCategory = await getCampaignCategory(campaignId);
+
+    await InteractionEvent.create({
+      userId,
+      campaignId,
+      campaignCategory,
+      eventType: "DONATION",
+      metadata: { amount }
+    });
+
+    res.sendStatus(200);
+    console.log("Response sent, starting background update");
+
+    updateUserInterestProfile(userId)
+      .then(() => console.log("Interest profile updated successfully"))
+      .catch(err => console.error("Interest profile update failed:", err));
+
+  } catch (error) {
+    res.status(error.message === "Campaign not found" ? 404 : 500).json({
+      message: "Failed to log donation event",
+      error: error.message
+    });
+  }
+};
+
+
 
 const EVENT_WEIGHTS = {
   IMPRESSION: 0.5,
@@ -551,31 +711,6 @@ const EVENT_WEIGHTS = {
   CLICK: 2,
   DONATION: 5
 };
-
-// export const updateUserInterestProfile = async (userId) => {
-//   const events = await InteractionEvent.find({ userId })
-//     .sort({ createdAt: -1 })
-//     .limit(50)
-//     .lean();
-
-//   const categoryScores = {};
-
-//   for (const event of events) {
-//     const weight = EVENT_WEIGHTS[event.eventType];
-//     if (!weight) continue;
-
-//     categoryScores[event.campaignCategory] =
-//       (categoryScores[event.campaignCategory] || 0) + weight;
-//   }
-
-//   await UserInterestProfile.findOneAndUpdate(
-//     { userId },
-//     { categoryScores, updatedAt: new Date() },
-//     { upsert: true }
-//   );
-
-//   return categoryScores;
-// };
 
 export const updateUserInterestProfile = async (userId) => {
   const events = await InteractionEvent.find({ userId })
@@ -586,15 +721,25 @@ export const updateUserInterestProfile = async (userId) => {
   const categoryScores = {};
 
   for (const event of events) {
-    const weight = EVENT_WEIGHTS[event.eventType];
-    if (!weight) continue;
+    const baseWeight = EVENT_WEIGHTS[event.eventType];
+    if (!baseWeight || !event.campaignCategory) continue;
+
+    let weight = baseWeight;
+
+    // extra strength for donation amount
+    if (event.eventType === "DONATION" && event.metadata?.amount) {
+      weight *= Math.log(event.metadata.amount + 1);
+    }
 
     categoryScores[event.campaignCategory] =
       (categoryScores[event.campaignCategory] || 0) + weight;
   }
 
-  // 🔹 Normalization
-  const maxScore = Math.max(...Object.values(categoryScores), 1);
+  if (Object.keys(categoryScores).length === 0) {
+    return {};
+  }
+
+  const maxScore = Math.max(...Object.values(categoryScores));
   const normalizedScores = {};
 
   for (const category in categoryScores) {
@@ -613,14 +758,6 @@ export const updateUserInterestProfile = async (userId) => {
   return normalizedScores;
 };
 
-
-// export const getCandidateCampaigns = async (userId) => {
-//   const userProfile = await donorProfile.findOne({ userId }).lean();
-//   const queryText = await buildQueryTextForUser(userId, userProfile);
-//   if (!queryText) return [];
-
-//   return findSimilarCampaigns(queryText, { topK: 10 });
-// };
 
 export const donorRecommendations = async (req, res, next) => {
   try {

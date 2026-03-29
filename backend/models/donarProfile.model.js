@@ -29,6 +29,19 @@ const profileSchema = new mongoose.Schema({
     },
   },
 
+  location: {
+  type: {
+    type: String,
+    enum: ["Point"],
+    default: "Point"
+  },
+  coordinates: {
+    type: [Number], // [lng, lat]
+    required: true
+  }
+},
+  
+
 
   skills: [{ type: String }], // e.g. ["First Aid", "Teaching", "Cooking"]
 
@@ -78,6 +91,7 @@ const profileSchema = new mongoose.Schema({
 
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
+  
 });
 
 profileSchema.pre("save", function (next) {

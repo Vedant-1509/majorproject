@@ -24,8 +24,8 @@ GET http://localhost:5000/api/ngos/approved
 GET http://localhost:5000/api/ngos/all
 
 ### Verify NGO (Admin Only)
-PATCH http://localhost:5000/api/ngos/verify/69778a5ca8057bfd58add5bd
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzEwYjkwODg5OWUwNmMyMjBjZDBkNiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2OTAxNjIxMywiZXhwIjoxNzY5MTAyNjEzfQ.a9b41gWGHmsHLgmyHAbnno_9V824jIyheh0YaII8BxI
+PATCH http://localhost:5000/api/ngos/verify/69bbd50099a8229d7dce9208
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YmMwNWU2MGRlNjUzZWRkNjAzM2EyZiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzkyOTk2MCwiZXhwIjoxNzc0MDE2MzYwfQ.oWjLBs1ZIAomegFFx72Uw4bDeXZfzFaP8mz0eYBIQZQ
 Content-Type: application/json
 
 ###

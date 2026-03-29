@@ -23,8 +23,6 @@ router.post("/register", register);
 router.post("/login", login);
 router.post("/create-profile", authMiddleware,createOrUpdateProfile);
 router.post("/getngo-profile",authMiddleware,getNgo);
-
-
 router.post("/create-campaign",authMiddleware,createCampaign);//creating the campaign
 router.post("/update-campaign-status",authMiddleware,updateCampaignStatus);
 router.get("/get-ngo-campaigns",authMiddleware,getNgoCampaigns);
@@ -41,17 +39,6 @@ router.post(
   ]),
   submitDocuments
 );
-router.post(
-  "/submit-documents",
-  authMiddleware,
-  upload.fields([
-    { name: "trustDeed", maxCount: 1 },
-    { name: "certificate80G", maxCount: 1 },
-    { name: "panCard", maxCount: 1 },
-    { name: "registrationCertificate", maxCount: 1 },
-    { name: "financialReport", maxCount: 1 },
-  ]),
-  submitDocuments
-);
+
 //router.post('/ngo-profile-picture', upload.single('profilePicture'),authMiddleware, updateNGOProfilePicture);
 export default router;

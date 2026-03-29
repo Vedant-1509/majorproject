@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { donorhello,getUser,register,login,upsertProfile,updateProfile,updateProfilePicture,logViewEvent,logClickEvent, donorRecommendations } from "../controller/donor.controller.js";
+import { donorhello,getUser,register,login,upsertProfile,updateProfile,updateProfilePicture,logClickEvent, donorRecommendations, logDonationEvent } from "../controller/donor.controller.js";
 import { donorAuth } from "../middlewares/authMiddleware.js";
 import multer from 'multer';
 import path from 'path';
@@ -30,8 +30,9 @@ router.post("/donor-recommendations", donorAuth, donorRecommendations);
 router.post("/profile", donorAuth, upsertProfile);//creation of profile
 
 //actions on the campaigns
-router.post("/view", donorAuth, logViewEvent);
+//router.post("/view", donorAuth, logViewEvent);
 router.post("/click", donorAuth, logClickEvent);
+router.put("/donate", donorAuth,logDonationEvent )
 
 router.route("/donor-user").post(getUser)
 router.post('/donor-profile-picture', upload.single('profilePicture'), updateProfilePicture);

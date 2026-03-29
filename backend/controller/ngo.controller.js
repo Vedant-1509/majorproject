@@ -11,6 +11,7 @@ import fs from 'fs';
 import { NGO_STATUS } from "../constants/ngoStatus.js";
 //service imports
 import { upsertNgoProfile } from "../services/ngoService.js";
+import { getCoordinatesFromAddress } from "../services/geocode.service.js";
 
 
 const storage = multer.diskStorage({
@@ -229,7 +230,6 @@ export const submitDocuments = async (req, res) => {
 ───────────────────────────────
    🚩 Create Campaign
 ──────────────────────────────── */
-
 // export const createCampaign = async (req, res) => {
 //   try {
 //     const ngoId = req.user.id;
@@ -243,13 +243,14 @@ export const submitDocuments = async (req, res) => {
 //       });
 //     }
 
-//     // 2️⃣ Status gate (IMPORTANT)
+//     // 2️⃣ Status gate
 //     if (ngo.status !== NGO_STATUS.APPROVED) {
 //       return res.status(403).json({
 //         message: "Campaign creation allowed only for accepted NGOs"
 //       });
 //     }
 
+//     // 3️⃣ Extract request body
 //     const {
 //       title,
 //       description,
@@ -259,17 +260,49 @@ export const submitDocuments = async (req, res) => {
 //       endDate,
 //       monetary,
 //       volunteer,
-//       goods
-//     } = req.body;
+//       goods,
+//       address // 👈 NEW
+//     } = req.body || {};
 
-//     // 3️⃣ Basic validation
+//     // 4️⃣ Basic validation
 //     if (!title || !description || !category || !campaignType) {
 //       return res.status(400).json({
 //         message: "Missing required fields"
 //       });
 //     }
 
-//     // 4️⃣ Campaign data preparation
+//     // 5️⃣ Handle address + geocoding
+//     let locationData = {};
+
+//     if (address) {
+//       const { city, state, country, landmark } = address;
+
+//       if (!city || !state || !country) {
+//         return res.status(400).json({
+//           message: "Address must include city, state, and country"
+//         });
+//       }
+
+//       const fullAddress = `${city}, ${state}, ${country}`;
+
+//       // 🔥 Get coordinates
+//       const coordinates = await getCoordinatesFromAddress(fullAddress);
+
+//       locationData = {
+//         address: {
+//           city,
+//           state,
+//           country,
+//           landmark: landmark || null
+//         },
+//         location: {
+//           type: "Point",
+//           coordinates // [lng, lat]
+//         }
+//       };
+//     }
+
+//     // 6️⃣ Campaign data preparation
 //     const campaignData = {
 //       ngoId,
 //       title,
@@ -277,21 +310,34 @@ export const submitDocuments = async (req, res) => {
 //       category,
 //       campaignType,
 //       startDate,
-//       endDate
+//       endDate,
+//       ...locationData // 👈 Inject location
 //     };
 
 //     if (campaignType === "MONETARY") campaignData.monetary = monetary;
 //     if (campaignType === "VOLUNTEER") campaignData.volunteer = volunteer;
 //     if (campaignType === "GOODS") campaignData.goods = goods;
 
-//     // 5️⃣ Create campaign
+//     // 7️⃣ Create campaign
 //     const campaign = await Campaign.create(campaignData);
 
+//     // 8️⃣ Async embedding ingestion
+//     createCampaignEmbedding(campaign).catch(err => {
+//       console.error(
+//         "Embedding creation failed for campaign:",
+//         campaign._id,
+//         err.message
+//       );
+//     });
+
+//     // 9️⃣ Response
 //     res.status(201).json({
 //       message: "Campaign created successfully",
 //       campaign
 //     });
+
 //   } catch (error) {
+//     console.error("Error in createCampaign:", error);
 //     res.status(500).json({
 //       message: "Failed to create campaign",
 //       error: error.message
@@ -312,13 +358,14 @@ export const createCampaign = async (req, res) => {
       });
     }
 
-    // 2️⃣ Status gate (IMPORTANT)
+    // 2️⃣ Status gate
     if (ngo.status !== NGO_STATUS.APPROVED) {
       return res.status(403).json({
         message: "Campaign creation allowed only for accepted NGOs"
       });
     }
 
+    // 3️⃣ Extract request body
     const {
       title,
       description,
@@ -328,35 +375,94 @@ export const createCampaign = async (req, res) => {
       endDate,
       monetary,
       volunteer,
-      goods
-    } = req.body;
+      goods,
+      address
+    } = req.body || {};
 
-    // 3️⃣ Basic validation
+    // 4️⃣ Basic validation
     if (!title || !description || !category || !campaignType) {
       return res.status(400).json({
         message: "Missing required fields"
       });
     }
 
-    // 4️⃣ Campaign data preparation
+    // 🔥 NEW: Date validation
+    if (!startDate || !endDate) {
+      return res.status(400).json({
+        message: "startDate and endDate are required"
+      });
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (start >= end) {
+      return res.status(400).json({
+        message: "End date must be after start date"
+      });
+    }
+
+    // 5️⃣ Handle address + geocoding
+    let locationData = {};
+
+    if (address) {
+      const { city, state, country, landmark } = address;
+
+      if (!city || !state || !country) {
+        return res.status(400).json({
+          message: "Address must include city, state, and country"
+        });
+      }
+
+      const fullAddress = `${city}, ${state}, ${country}`;
+
+      const coordinates = await getCoordinatesFromAddress(fullAddress);
+
+      locationData = {
+        address: {
+          city,
+          state,
+          country,
+          landmark: landmark || null
+        },
+        location: {
+          type: "Point",
+          coordinates
+        }
+      };
+    }
+
+    // 6️⃣ Campaign data preparation
     const campaignData = {
       ngoId,
       title,
       description,
       category,
       campaignType,
-      startDate,
-      endDate
+      startDate: start,
+      endDate: end,
+      ...locationData
     };
 
+    // 🔥 Optional: Initial urgencyScore calculation
+    const today = new Date();
+    const diffTime = end - today;
+    const daysLeft = Math.max(
+      Math.ceil(diffTime / (1000 * 60 * 60 * 24)),
+      0
+    );
+
+    campaignData.urgencyScore = 1 / (1 + daysLeft);
+
+    // 7️⃣ Type-specific fields
     if (campaignType === "MONETARY") campaignData.monetary = monetary;
     if (campaignType === "VOLUNTEER") campaignData.volunteer = volunteer;
     if (campaignType === "GOODS") campaignData.goods = goods;
 
-    // 5️⃣ Create campaign (SOURCE OF TRUTH)
+    // 8️⃣ Create campaign
     const campaign = await Campaign.create(campaignData);
 
-    // 6️⃣ 🔥 ASYNC embedding ingestion (derived data)
+    // 9️⃣ Async embedding ingestion
     createCampaignEmbedding(campaign).catch(err => {
       console.error(
         "Embedding creation failed for campaign:",
@@ -365,21 +471,20 @@ export const createCampaign = async (req, res) => {
       );
     });
 
-    // 7️⃣ Respond immediately
+    // 🔟 Response
     res.status(201).json({
       message: "Campaign created successfully",
       campaign
     });
 
   } catch (error) {
+    console.error("Error in createCampaign:", error);
     res.status(500).json({
       message: "Failed to create campaign",
       error: error.message
     });
   }
 };
-
-
 
 /* ────────────────────────────────
    🚩 Update Campaign Status

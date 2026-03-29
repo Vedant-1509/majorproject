@@ -23,6 +23,7 @@ export const donorAuth = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    console.log("Authorization header missing or malformed");
     return res.status(401).json({ message: "Unauthorized" });
   }
 

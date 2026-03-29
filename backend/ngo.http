@@ -89,7 +89,7 @@ Content-Type: application/json
 ### Create / Update NGO Profile
 POST http://localhost:5000/api/v2/create-profile
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzEwZWJkZjMxMTY2YTEzMGY4MWJlOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTk3MTk3MSwiZXhwIjoxNzcwNTc2NzcxfQ.rvZUJdE8ED0E493sCgB10w6I7iqEPrDMO-nyWha5BJk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YmJkNTAwOTlhODIyOWQ3ZGNlOTIwOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzczOTI5NjIxLCJleHAiOjE3NzQ1MzQ0MjF9.8SoZebk3Gy5V2AVqRCzH9_Gl1WqDNlgdiKObNuUdfY0
 
 {
   "description": "We provide education and healthcare to underprivileged children.",
@@ -122,39 +122,48 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzEwZWJkZ
 ### Get Profile
 POST http://localhost:5000/api/v2/getngo-profile
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzEwZWJkZjMxMTY2YTEzMGY4MWJlOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTk3MjM3OCwiZXhwIjoxNzcwNTc3MTc4fQ.uWrZ9lKbn9kC54pzEOntZEEgGQy0ck7ndZzm5-qf7OI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YmJkNTAwOTlhODIyOWQ3ZGNlOTIwOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzczOTI5NjIxLCJleHAiOjE3NzQ1MzQ0MjF9.8SoZebk3Gy5V2AVqRCzH9_Gl1WqDNlgdiKObNuUdfY0 
+
 
 ### --------------------------------------------
 ### 1️⃣ CREATE CAMPAIGN (MONETARY)
 ### --------------------------------------------
 POST  http://localhost:5000/api/v2/create-campaign
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzEwZWJkZjMxMTY2YTEzMGY4MWJlOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTk3MjM3OCwiZXhwIjoxNzcwNTc3MTc4fQ.uWrZ9lKbn9kC54pzEOntZEEgGQy0ck7ndZzm5-qf7OI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YmJkNTAwOTlhODIyOWQ3ZGNlOTIwOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3NDIwNzkyMSwiZXhwIjoxNzc0ODEyNzIxfQ.Yy0tTRBz-m5bTV1FVocHentV9qp0DRFARlk4Wy4Hm6I
 Content-Type: application/json
 
 {
-  "title": "Flood Relief Fund",
-  "description": "Emergency support for flood-affected families",
-  "category": "Disaster Relief",
+  "title": "Medical Aid for Rural Areas",
+  "description": "Providing essential healthcare services and medicines to rural communities",
+  "category": "Healthcare",
   "campaignType": "MONETARY",
-  "startDate": "2026-01-20",
-  "endDate": "2026-03-31",
+
+  "startDate": "2026-04-01T00:00:00.000Z",
+  "endDate": "2026-05-15T00:00:00.000Z",
+
+  "address": {
+    "city": "Aurangabad",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Near District Hospital"
+  },
+
   "monetary": {
-    "targetAmount": 500000,
+    "targetAmount": 600000,
     "minDonation": 100
   }
 }
-
 ### --------------------------------------------
 ### 2️⃣ CREATE CAMPAIGN (VOLUNTEER)
 ### --------------------------------------------
 POST  http://localhost:5000/api/v2/create-campaign
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzEwZWJkZjMxMTY2YTEzMGY4MWJlOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc2OTAxOTI4NCwiZXhwIjoxNzY5NjI0MDg0fQ.9kDdkaDMHZX3o1oVlm57zJ2jYecNeW0KvF7DPNPLwTY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YmJkNTAwOTlhODIyOWQ3ZGNlOTIwOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3NDIwNzkyMSwiZXhwIjoxNzc0ODEyNzIxfQ.Yy0tTRBz-m5bTV1FVocHentV9qp0DRFARlk4Wy4Hm6I
 Content-Type: application/json
 
 {
   "title": "Medical Camp Volunteers",
   "description": "Looking for healthcare volunteers",
-  "category": "Healthcare & Medical Aid",
+  "category": "Healthcare",
   "campaignType": "VOLUNTEER",
   "volunteer": {
     "requiredSkills": ["First Aid", "Nursing"],
@@ -163,3 +172,27 @@ Content-Type: application/json
   }
 }
 
+
+### 1️⃣ CREATE CAMPAIGN (MONETARY)
+### --------------------------------------------
+POST  http://localhost:5000/api/v2/create-campaign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YmJkNTAwOTlhODIyOWQ3ZGNlOTIwOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3NDIwNzkyMSwiZXhwIjoxNzc0ODEyNzIxfQ.Yy0tTRBz-m5bTV1FVocHentV9qp0DRFARlk4Wy4Hm6I
+Content-Type: application/json
+
+{
+  "title": "Beach Cleanup Drive",
+  "description": "Join us in cleaning and preserving our coastal environment",
+  "category": "Environment & Cleanliness",
+  "campaignType": "VOLUNTEER",
+
+  "address": {
+    "city": "Karjat",
+    "state": "Maharashtra",
+    "country": "India"
+  },
+
+  "volunteer": {
+    "requiredVolunteers": 50,
+    "skills": ["Teamwork", "Physical Fitness"]
+  }
+}

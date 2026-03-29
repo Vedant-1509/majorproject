@@ -3,10 +3,10 @@ Content-Type: application/json
 
 {
     "name": "test",
-    "email": "vrm@gmail.com",
+    "email": "crm@gmail.com",
     "password": "test1234",
     "confirmPassword": "test1234",
-    "mobileNumber": "9876543210"
+    "mobileNumber": "9876543215"
     
 }
 
@@ -15,14 +15,14 @@ POST http://localhost:5000/api/v1/donor-login
 Content-Type: application/json
 
 {
-    "email":"vrm@gmail.com",
+    "email":"crm@gmail.com",
     "password":"test1234"
 }
 
 ###
 POST  http://localhost:5000/api/v1/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YmJkNTQzOTlhODIyOWQ3ZGNlOTIyNiIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3Mzk0OTQ0NSwiZXhwIjoxNzc0NTU0MjQ1fQ.n5LjZFhOTskAznjLmJshGyBTV4oB0oxUpDb2LBfyuVQ
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5N2Y5MzYzNjJlMDIxYjkxZTVhMGI4ZCIsInJvbGUiOiJkb25vciIsImlhdCI6MTc2OTk2ODQ4NiwiZXhwIjoxNzcwNTczMjg2fQ.gDdXPBIOcot2M9jmhVnvP09qGL5gcj2TJ2um2dISbuE
 
 {
   "bio": "Updated bio: actively helping in community events and blood drives.",
@@ -71,22 +71,29 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NjdjNjk5NjY1ODdlMWYyOWJkZTJkMSIsInJvbGUiOiJkb25vciIsImlhdCI6MTc2ODQwODczNCwiZXhwIjoxNzY5MDEzNTM0fQ.4o2yID2r_z9uzA52KUIYLYZq42gao9LAVMyIg5A36cg
 
 {
-  "bio": "Volunteer interested in healthcare and disaster relief",
+  "bio": "Passionate about helping communities",
   "PAN": "ABCDE1234F",
+
   "address": {
-    "street": "Chilpun Guhaghar Road",
-    "city": "Chiplun",
+    "city": "Navi Mumbai",
     "state": "Maharashtra",
     "country": "India",
-    "zip": "415605"
+    "landmark": "Near Kalamboli Circle"
   },
+
   "skills": ["First Aid", "Teaching"],
-  "interests": ["Healthcare & Medical Aid", "Disaster Relief"],
+
+  "interests": [
+    "Disaster Relief",
+    "Healthcare & Medical Aid"
+  ],
+
   "availability": "weekends",
-  "bloodType": "O-",
+
   "preferences": {
     "volunteerInvolvement": true,
-    "monetaryDonation": false,
+    "monetaryDonation": true,
+    "donationCategories": ["Disaster Relief"],
     "preferredFrequency": "monthly"
   }
 }
@@ -100,4 +107,13 @@ GET http://localhost:5000/api/v1/donor
 ###
 POST  http://localhost:5000/api/v1/donor-recommendations
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5N2Y5MzYzNjJlMDIxYjkxZTVhMGI4ZCIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3MDQzOTQ5MiwiZXhwIjoxNzcxMDQ0MjkyfQ.uNSbKjFxx6wlfCqEga7CNhbbH95xsSfbBHrlJ5j1ssM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YmJkNTQzOTlhODIyOWQ3ZGNlOTIyNiIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDIwNDQ5MiwiZXhwIjoxNzc0ODA5MjkyfQ.qWWCW3d8ilRWN08rE94gDLPkUFhQn_kGk4YjKdr571c
+###
+POST http://localhost:5000/api/v1/click
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YmJkNTQzOTlhODIyOWQ3ZGNlOTIyNiIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDIwNDQ5MiwiZXhwIjoxNzc0ODA5MjkyfQ.qWWCW3d8ilRWN08rE94gDLPkUFhQn_kGk4YjKdr571c
+
+{
+  "campaignId": "69c142ad0ba4f4a0e37d9a78",
+  "amount": 500
+}

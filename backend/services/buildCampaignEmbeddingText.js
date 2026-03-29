@@ -2,13 +2,50 @@ import axios from "axios";
 import CampaignEmbedding from "../models/CampaignEmbedding.js";
 import 'dotenv/config';
 // 🔹 Manual semantic text construction
+// export const buildCampaignEmbeddingText = (campaign) => {
+//   return `
+//     Title: ${campaign.title}
+//     Description: ${campaign.description}
+//     Category: ${campaign.category}
+//     Campaign Type: ${campaign.campaignType}
+
+//   `.trim();
+// };
+
 export const buildCampaignEmbeddingText = (campaign) => {
   return `
-    Title: ${campaign.title}
-    Description: ${campaign.description}
-    Category: ${campaign.category}
-    Campaign Type: ${campaign.campaignType}
-  `.trim();
+Title: ${campaign.title}
+
+Description: ${campaign.description}
+
+Category: ${campaign.category}
+
+Campaign Type: ${campaign.campaignType}
+
+Location: ${campaign.address?.city || ""}, ${campaign.address?.state || ""}, ${campaign.address?.country || ""}
+
+${
+  campaign.campaignType === "MONETARY"
+    ? `Funding Goal: ${campaign.monetary?.targetAmount || 0}`
+    : ""
+}
+
+${
+  campaign.campaignType === "VOLUNTEER"
+    ? `Required Skills: ${(campaign.volunteer?.requiredSkills || []).join(", ")}`
+    : ""
+}
+
+${
+  campaign.campaignType === "GOODS"
+    ? `Goods Needed: ${(campaign.goods?.goodsType || []).join(", ")}`
+    : ""
+}
+
+Start Date: ${campaign.startDate}
+End Date: ${campaign.endDate}
+
+`.trim();
 };
 
 // 🔹 Generate embedding using Cohere
