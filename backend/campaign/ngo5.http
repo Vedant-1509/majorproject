@@ -1,0 +1,174 @@
+### Register
+POST http://localhost:5000/api/v2/register
+Content-Type: application/json
+
+{
+  "name": "Maharashtra Animal Welfare",
+  "email": "rescue@mahanimalwelfare.org",
+  "password": "securePassword123",
+  "website": "https://mahanimalwelfare.org"
+}
+
+### Login
+POST http://localhost:5000/api/v2/login
+Content-Type: application/json
+
+{
+  "email": "rescue@mahanimalwelfare.org",
+  "password": "securePassword123"  
+}
+
+
+###
+@baseUrl = http://localhost:5000/api/v2
+@token =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2EyN2YxZGFiMzg2NTBlZjM3ZGVmYyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzc0ODU2MTc4LCJleHAiOjE3NzU0NjA5Nzh9.nwnuKEg49HGD67OH284WJ52sXiC_2CZ0pE3wbDPH5pk
+
+### Create Profile
+POST http://localhost:5000/api/v2/create-profile
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "description": "Rescuing and rehabilitating stray animals, and conducting TNR (Trap-Neuter-Return) programs.",
+  "address": {
+    "street": "Plot 42, Sector 15",
+    "city": "Panvel",
+    "state": "Maharashtra",
+    "country": "India",
+    "zip": "410206"
+  },
+  "phone": "9876543215",
+  "registrationNumber": "URN-PNV-005",
+  "mission": "A safe and compassionate environment for all street animals.",
+  "focusAreas": ["Animal Welfare", "Healthcare"],
+  "socialLinks": {
+    "website": "https://mahanimalwelfare.org"
+  },
+  "preferences": {
+    "acceptVolunteers": true,
+    "acceptDonations": true
+  },
+  "urnNumber": "URN-PNV-005"
+}
+
+
+
+### Campaign 1: Dog Food Drive (Goods)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Kibble and Rice Collection",
+  "description": "We need dry dog food and rice to feed over 200 shelter dogs this month.",
+  "category": "Stray Animal Support",
+  "campaignType": "GOODS",
+  "startDate": "2026-04-01T00:00:00.000Z",
+  "endDate": "2026-04-30T00:00:00.000Z",
+  "address": {
+    "city": "Panvel",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Panvel Station Road"
+  },
+  "goods": {
+    "itemRequired": "Dog Food (Pedigree/Chappi) & Rice Sacks",
+    "quantity": 1000
+  }
+}
+
+### Campaign 2: Shelter Expansion (Monetary)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Build a New Recovery Ward",
+  "description": "Raising funds to construct a sterile recovery ward for post-surgery animals.",
+  "category": "Animal Welfare",
+  "campaignType": "MONETARY",
+  "startDate": "2026-05-01T00:00:00.000Z",
+  "endDate": "2026-07-01T00:00:00.000Z",
+  "address": {
+    "city": "Panvel",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Old Mumbai-Pune Highway"
+  },
+  "monetary": {
+    "targetAmount": 500000,
+    "minDonation": 500
+  }
+}
+
+### Campaign 3: Weekend Dog Walkers (Volunteer)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Socialize Our Shelter Pups",
+  "description": "Spend your Sunday morning walking and playing with our healthy shelter dogs to keep them socialized.",
+  "category": "Animal Welfare",
+  "campaignType": "VOLUNTEER",
+  "startDate": "2026-04-12T00:00:00.000Z",
+  "endDate": "2026-06-12T00:00:00.000Z",
+  "address": {
+    "city": "Navi Mumbai",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Kharghar Hills Shelter"
+  },
+  "volunteer": {
+    "volunteersRequired": 30,
+    "rolesNeeded": ["Dog Walker", "Bathing Assistant"]
+  }
+}
+
+### Campaign 4: Old Blankets and Towels (Goods)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Bedding for Sick Animals",
+  "description": "Donate clean, old towels, blankets, and bedsheets for our inpatient animals.",
+  "category": "Animal Welfare",
+  "campaignType": "GOODS",
+  "startDate": "2026-05-15T00:00:00.000Z",
+  "endDate": "2026-06-30T00:00:00.000Z",
+  "address": {
+    "city": "Panvel",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Panvel Clinic"
+  },
+  "goods": {
+    "itemRequired": "Towels, Blankets, Bedsheets",
+    "quantity": 200
+  }
+}
+
+### Campaign 5: Emergency Ambulance Fund (Monetary)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Keep Our Animal Ambulance Running",
+  "description": "Funding required for fuel, maintenance, and medical supplies for our 24/7 rescue ambulance.",
+  "category": "Emergency Medical Response",
+  "campaignType": "MONETARY",
+  "startDate": "2026-04-01T00:00:00.000Z",
+  "endDate": "2026-05-15T00:00:00.000Z",
+  "address": {
+    "city": "Navi Mumbai",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Vashi Toll Naka Base"
+  },
+  "monetary": {
+    "targetAmount": 150000,
+    "minDonation": 200
+  }
+}

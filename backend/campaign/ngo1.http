@@ -1,0 +1,172 @@
+### Register
+POST http://localhost:5000/api/v2/register
+Content-Type: application/json
+
+{
+  "name": "Green Earth Foundation",
+  "email": "contact@greenearththane.org",
+  "password": "securePassword123",
+  "website": "https://greenearththane.org"
+}
+
+### Login
+POST http://localhost:5000/api/v2/login
+Content-Type: application/json
+
+{
+  "email": "contact@greenearththane.org",
+  "password": "securePassword123"  
+}
+
+@BaseURL = http://localhost:5000/api/v2
+@Token1 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2EyNDBjZWY0MGYxN2Y2ZTA3ODNhOSIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzc0ODU1MTgyLCJleHAiOjE3NzU0NTk5ODJ9.qXNUwkdF_UqQ5u4Ik5eEpFL9seByVH6HRrINgGuONcg
+
+### Create Profile
+POST http://localhost:5000/api/v2/create-profile
+Content-Type: application/json
+Authorization: Bearer {{Token1}}
+
+{
+  "description": "Dedicated to urban afforestation and waste management in the Thane district.",
+  "address": {
+    "street": "45 Pokhran Road",
+    "city": "Thane",
+    "state": "Maharashtra",
+    "country": "India",
+    "zip": "400601"
+  },
+  "phone": "9876543211",
+  "registrationNumber": "URN-THN-001",
+  "mission": "Making Thane a greener, cleaner city.",
+  "focusAreas": ["Environment", "Waste Management"],
+  "socialLinks": {
+    "website": "https://greenearththane.org"
+  },
+  "preferences": {
+    "acceptVolunteers": true,
+    "acceptDonations": true
+  },
+  "urnNumber": "URN-THN-001"
+}
+
+
+
+### Campaign 1: Yeoor Hills Clean-up (Volunteer)
+POST {{BaseURL}}/create-campaign
+Authorization: Bearer {{Token1}}
+Content-Type: application/json
+
+{
+  "title": "Yeoor Hills Plastic Clean-up Drive",
+  "description": "Join us for a weekend drive to clear plastic waste from the Yeoor Hills forest area.",
+  "category": "Environment & Cleanliness",
+  "campaignType": "VOLUNTEER",
+  "startDate": "2026-04-10T00:00:00.000Z",
+  "endDate": "2026-04-12T00:00:00.000Z",
+  "address": {
+    "city": "Thane",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Yeoor Hills Main Gate"
+  },
+  "volunteer": {
+    "volunteersRequired": 50,
+    "rolesNeeded": ["Clean-up Crew", "Team Coordinator"]
+  }
+}
+
+### Campaign 2: Tree Plantation Drive (Monetary)
+POST {{BaseURL}}/create-campaign
+Authorization: Bearer {{Token1}}
+Content-Type: application/json
+
+{
+  "title": "10,000 Trees for Thane",
+  "description": "Fundraising to procure saplings and organic fertilizer for our monsoon plantation drive.",
+  "category": "Afforestation & Tree Plantation",
+  "campaignType": "MONETARY",
+  "startDate": "2026-05-01T00:00:00.000Z",
+  "endDate": "2026-06-15T00:00:00.000Z",
+  "address": {
+    "city": "Thane",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Ghodbunder Road"
+  },
+  "monetary": {
+    "targetAmount": 250000,
+    "minDonation": 500
+  }
+}
+
+### Campaign 3: Recycling Bins Donation (Goods)
+POST {{BaseURL}}/create-campaign
+Authorization: Bearer {{Token1}}
+Content-Type: application/json
+
+{
+  "title": "Public Recycling Bins Setup",
+  "description": "We are accepting donations of large, durable dustbins to place in public parks.",
+  "category": "Environment & Cleanliness",
+  "campaignType": "GOODS",
+  "startDate": "2026-04-15T00:00:00.000Z",
+  "endDate": "2026-05-30T00:00:00.000Z",
+  "address": {
+    "city": "Thane",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Upvan Lake"
+  },
+  "goods": {
+    "itemRequired": "Heavy Duty Plastic Bins",
+    "quantity": 100
+  }
+}
+
+### Campaign 4: Environmental Awareness Workshop (Volunteer)
+POST {{BaseURL}}/create-campaign
+Authorization: Bearer {{Token1}}
+Content-Type: application/json
+
+{
+  "title": "School Eco-Awareness Sessions",
+  "description": "Looking for enthusiastic volunteers to teach children about waste segregation.",
+  "category": "Education",
+  "campaignType": "VOLUNTEER",
+  "startDate": "2026-06-01T00:00:00.000Z",
+  "endDate": "2026-06-30T00:00:00.000Z",
+  "address": {
+    "city": "Thane",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Various ZP Schools"
+  },
+  "volunteer": {
+    "volunteersRequired": 15,
+    "rolesNeeded": ["Speaker", "Coordinator"]
+  }
+}
+
+### Campaign 5: Solar Panel Setup for Orphanage (Monetary)
+POST {{BaseURL}}/create-campaign
+Authorization: Bearer {{Token1}}
+Content-Type: application/json
+
+{
+  "title": "Solar Energy for Local Orphanage",
+  "description": "Help us fund a 5kW solar panel setup to provide uninterrupted power to a local children's home.",
+  "category": "Renewable Energy & Sustainability",
+  "campaignType": "MONETARY",
+  "startDate": "2026-04-20T00:00:00.000Z",
+  "endDate": "2026-05-20T00:00:00.000Z",
+  "address": {
+    "city": "Thane",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Kalwa"
+  },
+  "monetary": {
+    "targetAmount": 400000,
+    "minDonation": 1000
+  }
+}

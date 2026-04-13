@@ -1,0 +1,173 @@
+### Register
+POST http://localhost:5000/api/v2/register
+Content-Type: application/json
+
+{
+  "name": "Sahyadri Rural Upliftment",
+  "email": "info@sahyadrikrjt.org",
+  "password": "securePassword123",
+  "website": "https://sahyadrikrjt.org"
+}
+
+### Login
+POST http://localhost:5000/api/v2/login
+Content-Type: application/json
+
+{
+  "email": "info@sahyadrikrjt.org",
+  "password": "securePassword123"  
+}
+###
+@baseUrl = http://localhost:5000/api/v2
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2EyNDUzZWY0MGYxN2Y2ZTA3ODNiMSIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzc0ODU1NzIyLCJleHAiOjE3NzU0NjA1MjJ9.ZKP8FWQn9EAJNaIzxL7oz6ftJ0ZmO1zV0pF-1e1bVeY
+
+### Create Profile
+POST http://localhost:5000/api/v2/create-profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2EyNDUzZWY0MGYxN2Y2ZTA3ODNiMSIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzc0ODU1MjUzLCJleHAiOjE3NzU0NjAwNTN9.cliCnL73EnHx4IfiwIX3yJiIPmVpdOGN2J2TcgHV4pA
+
+{
+  "description": "Working towards empowering tribal and rural communities in the Karjat and Murbad regions.",
+  "address": {
+    "street": "Near Karjat Station",
+    "city": "Karjat",
+    "state": "Maharashtra",
+    "country": "India",
+    "zip": "410201"
+  },
+  "phone": "9876543212",
+  "registrationNumber": "URN-KJT-002",
+  "mission": "Bridging the urban-rural divide through education and basic infrastructure.",
+  "focusAreas": ["Rural Development", "Education"],
+  "socialLinks": {
+    "website": "https://sahyadrikrjt.org"
+  },
+  "preferences": {
+    "acceptVolunteers": true,
+    "acceptDonations": true
+  },
+  "urnNumber": "URN-KJT-002"
+}
+
+###
+
+
+### Campaign 1: Tribal School Renovation (Monetary)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Rebuilding ZP School Classrooms",
+  "description": "Funding required to repair the roof and walls of a primary school before the monsoons.",
+  "category": "Education",
+  "campaignType": "MONETARY",
+  "startDate": "2026-04-01T00:00:00.000Z",
+  "endDate": "2026-05-15T00:00:00.000Z",
+  "address": {
+    "city": "Karjat",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Khandpe Village"
+  },
+  "monetary": {
+    "targetAmount": 350000,
+    "minDonation": 500
+  }
+}
+
+### Campaign 2: Monsoon Gear Distribution (Goods)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Raincoats and Umbrellas for Students",
+  "description": "Collecting rain gear so children in remote villages don't miss school during heavy rains.",
+  "category": "Child Welfare",
+  "campaignType": "GOODS",
+  "startDate": "2026-05-01T00:00:00.000Z",
+  "endDate": "2026-06-10T00:00:00.000Z",
+  "address": {
+    "city": "Karjat",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Base of Bhimashankar Trek"
+  },
+  "goods": {
+    "itemRequired": "Raincoats for ages 6-14",
+    "quantity": 300
+  }
+}
+
+### Campaign 3: Weekend English Tutors (Volunteer)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Spoken English for Rural Youth",
+  "description": "Seeking fluent English speakers to spend their Saturdays teaching high school students.",
+  "category": "Skill Development & Vocational Training",
+  "campaignType": "VOLUNTEER",
+  "startDate": "2026-04-15T00:00:00.000Z",
+  "endDate": "2026-08-15T00:00:00.000Z",
+  "address": {
+    "city": "Karjat",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Karjat Main City Area"
+  },
+  "volunteer": {
+    "volunteersRequired": 10,
+    "rolesNeeded": ["English Tutor"]
+  }
+}
+
+### Campaign 4: Agricultural Seed Donation (Goods)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "High-Yield Seeds for Farmers",
+  "description": "Accepting donations of high-quality rice and vegetable seeds for small-scale farmers.",
+  "category": "Farmer Welfare & Agriculture",
+  "campaignType": "GOODS",
+  "startDate": "2026-04-20T00:00:00.000Z",
+  "endDate": "2026-05-30T00:00:00.000Z",
+  "address": {
+    "city": "Karjat",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Agricultural Produce Market"
+  },
+  "goods": {
+    "itemRequired": "Paddy/Rice Seeds",
+    "quantity": 500
+  }
+}
+
+### Campaign 5: Water Filter Installation (Monetary)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Clean Drinking Water for 5 Hamlets",
+  "description": "Raising funds to install industrial-grade water purifiers in community centers.",
+  "category": "Healthcare",
+  "campaignType": "MONETARY",
+  "startDate": "2026-05-15T00:00:00.000Z",
+  "endDate": "2026-07-01T00:00:00.000Z",
+  "address": {
+    "city": "Karjat",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Pinglas Village"
+  },
+  "monetary": {
+    "targetAmount": 150000,
+    "minDonation": 200
+  }
+}

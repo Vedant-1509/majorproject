@@ -1,0 +1,376 @@
+POST http://localhost:5000/api/v1/donor-register
+Content-Type: application/json
+
+{
+    "name": "Rahul Sharma",
+    "email": "rahul1@gmail.com",
+    "password": "test1234",
+    "confirmPassword": "test1234",
+    "mobileNumber": "9876543210"
+}
+
+###
+POST http://localhost:5000/api/v1/donor-login
+Content-Type: application/json
+
+{
+    "email":"rahul1@gmail.com",
+    "password":"test1234"
+}
+
+###
+POST http://localhost:5000/api/v1/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2MxNTYyYTlmNzM5ZjlmMmQ0MjNlMyIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk4MjUwMiwiZXhwIjoxNzc1NTg3MzAyfQ.Nbf4LLPJcSoEAfnz9b68vyS94g21YVKjqvC9rYHgCZ0
+
+{
+  "bio": "Dedicated environmentalist and healthcare volunteer with 5 years of experience in rural teaching.",
+  "PAN": "ABCDE1234F",
+  "address": {
+    "city": "Pune",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Near Shaniwar Wada"
+  },
+
+  "skills": [
+    {
+      "name": "First Aid",
+      "level": "expert"
+    },
+    {
+      "name": "Organic Farming",
+      "level": "intermediate"
+    }
+  ],
+  "interests": [
+    "Healthcare",
+    "Environment & Cleanliness",
+    "Afforestation & Tree Plantation",
+    "Rural Development"
+  ],
+  "donationTypes": [
+    "money",
+    "blood",
+    "time"
+  ],
+  "availability": "weekends",
+  "participationScore": 15,
+  "bloodType": "B+",
+  "lastBloodDonationDate": "2023-12-15T10:30:00.000Z",
+  "preferences": {
+    "volunteerInvolvement": true,
+    "monetaryDonation": true,
+    "donationCategories": [
+      "Healthcare",
+      "Climate Change Action",
+      "Farmer Welfare & Agriculture"
+    ],
+    "preferredFrequency": "monthly"
+  }
+}
+###
+POST  http://localhost:5000/api/v1/donor-recommendations
+Content-Type: application/json
+Authorization: BearereyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2MxNTYyYTlmNzM5ZjlmMmQ0MjNlMyIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk4MjUwMiwiZXhwIjoxNzc1NTg3MzAyfQ.Nbf4LLPJcSoEAfnz9b68vyS94g21YVKjqvC9rYHgCZ0
+###
+
+POST http://localhost:5000/api/v1/donor-register
+Content-Type: application/json
+
+{
+    "name": "Priya Verma",
+    "email": "priya2@gmail.com",
+    "password": "test1234",
+    "confirmPassword": "test1234",
+    "mobileNumber": "9876543211"
+}
+
+###
+POST http://localhost:5000/api/v1/donor-login
+Content-Type: application/json
+
+{
+    "email":"priya2@gmail.com",
+    "password":"test1234"
+}
+
+###
+POST http://localhost:5000/api/v1/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2E2OTEzYmRkODY2NmRhNTAzZTZhMSIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDg3Mzk4OCwiZXhwIjoxNzc1NDc4Nzg4fQ.9MFvy5Z7hD0BcPtflMS-3hr__dY_YPkFloOz4JfkGEA
+Content-Type: application/json
+
+{
+  "bio": "Dedicated environmentalist and healthcare volunteer with 5 years of experience in rural teaching.",
+  "PAN": "ABCDE1234F",
+  "address": {
+    "city": "Pune",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Near Shaniwar Wada"
+  },
+  "skills": [
+    {
+      "name": "First Aid",
+      "level": "expert"
+    },
+    {
+      "name": "Organic Farming",
+      "level": "intermediate"
+    }
+  ],
+  "interests": [
+    "Healthcare",
+    "Environment & Cleanliness",
+    "Afforestation & Tree Plantation",
+    "Rural Development"
+  ],
+  "donationTypes": [
+    "money",
+    "blood",
+    "time"
+  ],
+  "availability": "weekends",
+  "participationScore": 15,
+  "bloodType": "B+",
+  "lastBloodDonationDate": "2023-12-15T10:30:00.000Z",
+  "preferences": {
+    "volunteerInvolvement": true,
+    "monetaryDonation": true,
+    "donationCategories": [
+      "Healthcare",
+      "Climate Change Action",
+      "Farmer Welfare & Agriculture"
+    ],
+    "preferredFrequency": "monthly"
+  }
+}
+
+###
+POST  http://localhost:5000/api/v1/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2E2OTEzYmRkODY2NmRhNTAzZTZhMSIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDg3Mzk4OCwiZXhwIjoxNzc1NDc4Nzg4fQ.9MFvy5Z7hD0BcPtflMS-3hr__dY_YPkFloOz4JfkGEA 
+###
+
+POST http://localhost:5000/api/v1/donor-register
+Content-Type: application/json
+
+{
+    "name": "Amit Patel",
+    "email": "amit3@gmail.com",
+    "password": "test1234",
+    "confirmPassword": "test1234",
+    "mobileNumber": "9876543212"
+}
+
+###
+POST http://localhost:5000/api/v1/donor-login
+Content-Type: application/json
+
+{
+    "email":"amit3@gmail.com",
+    "password":"test1234"
+}
+
+###
+POST http://localhost:5000/api/v1/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2E3MjI1Y2Q4MTc1ODI1OTM3YzE0YyIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDg3NTIwMiwiZXhwIjoxNzc1NDgwMDAyfQ.3gaVGsKJUkBk47PjhEi-W8SdZyvr0U2fAl7PT6Q1_yg
+Content-Type: application/json
+
+{
+  "bio": "Tech enthusiast helping NGOs with digital tools.",
+  "address": {
+    "city": "Ahmedabad",
+    "state": "Gujarat",
+    "country": "India",
+    "landmark": "SG Highway"
+  },
+  "skills": [
+    {
+      "name": "First Aid",
+      "level": "expert"
+    },
+    {
+      "name": "Organic Farming",
+      "level": "intermediate"
+    }
+  ],
+  "interests": ["Education"],
+  "availability": "weekends",
+  "preferences": {
+    "volunteerInvolvement": true,
+    "monetaryDonation": true,
+    "donationCategories": ["Technology for Social Good"],
+    "preferredFrequency": "one-time"
+  },
+  "bloodType": "O+",
+  "lastBloodDonationDate": "2025-06-01",
+  "participationScore": 8
+}
+
+###
+POST  http://localhost:5000/api/v1/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2E3MjI1Y2Q4MTc1ODI1OTM3YzE0YyIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDg3NTIwMiwiZXhwIjoxNzc1NDgwMDAyfQ.3gaVGsKJUkBk47PjhEi-W8SdZyvr0U2fAl7PT6Q1_yg
+
+###
+
+POST http://localhost:5000/api/v1/donor-register
+Content-Type: application/json
+
+{
+    "name": "Sneha Iyer",
+    "email": "sneha4@gmail.com",
+    "password": "test1234",
+    "confirmPassword": "test1234",
+    "mobileNumber": "9876543213"
+}
+
+###
+POST http://localhost:5000/api/v1/donor-login
+Content-Type: application/json
+
+{
+    "email":"sneha4@gmail.com",
+    "password":"test1234"
+}
+
+###
+POST http://localhost:5000/api/v1/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDc3YjllYWVmNzZmODUyY2Y1ODAzNyIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NTcyOTU2OCwiZXhwIjoxNzc2MzM0MzY4fQ.ehzFOnSMjbWv0T1-BYV_BpYv1Vm1hLruQwiWx_9Lkgw
+
+{
+  "bio": "Focused on environmental sustainability initiatives.",
+  "address": {
+    "city": "Chennai",
+    "state": "Tamil Nadu",
+    "country": "India",
+    "landmark": "T Nagar"
+  },
+  "skills": ["Public Speaking", "Organizing"],
+  "interests": ["Environment & Cleanliness"],
+  "availability": "weekends",
+  "preferences": {
+    "volunteerInvolvement": true,
+    "monetaryDonation": true,
+    "donationCategories": ["Environment"],
+    "preferredFrequency": "monthly"
+  },
+  "bloodType": "AB+",
+  "lastBloodDonationDate": "2025-05-20",
+  "participationScore": 9
+}
+
+###
+POST  http://localhost:5000/api/v1/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YzkyMmY3NDNmOGI2MjVjNWM1Yzk3YSIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDc4OTM2OSwiZXhwIjoxNzc1Mzk0MTY5fQ.CImCBgwFBFCN5RP7i85Pps06fOZPabD20rVqM3Iv10c
+
+
+
+
+
+
+
+
+
+
+
+
+###
+
+POST http://localhost:5000/api/v1/donor-register
+Content-Type: application/json
+
+{
+    "name": "Karan Mehta",
+    "email": "karan5@gmail.com",
+    "password": "test1234",
+    "confirmPassword": "test1234",
+    "mobileNumber": "9876543214"
+}
+
+###
+POST http://localhost:5000/api/v1/donor-login
+Content-Type: application/json
+
+{
+    "email":"karan5@gmail.com",
+    "password":"test1234"
+}
+
+###
+POST http://localhost:5000/api/v1/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YzkyMzJlNDNmOGI2MjVjNWM1Yzk4NCIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDc4OTQyNCwiZXhwIjoxNzc1Mzk0MjI0fQ.oHdCL0jXFVif-YbsqdhW_ZudmualjVSyufVo3kYQY1U
+Content-Type: application/json
+
+{
+  "bio": "Actively participates in disaster relief and food drives.",
+  "address": {
+    "city": "Delhi",
+    "state": "Delhi",
+    "country": "India",
+    "landmark": "Karol Bagh"
+  },
+  "skills": ["Logistics", "Team Management"],
+  "interests": ["Disaster Relief", "Food Donation"],
+  "availability": "weekends",
+  "preferences": {
+    "volunteerInvolvement": true,
+    "monetaryDonation": true,
+    "donationCategories": ["Disaster Relief"],
+    "preferredFrequency": "yearly"
+  },
+  "bloodType": "O-",
+  "lastBloodDonationDate": "2025-04-12",
+  "participationScore": 10
+}
+
+###
+POST  http://localhost:5000/api/v1/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YzkyMzJlNDNmOGI2MjVjNWM1Yzk4NCIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDc4OTQyNCwiZXhwIjoxNzc1Mzk0MjI0fQ.oHdCL0jXFVif-YbsqdhW_ZudmualjVSyufVo3kYQY1U
+
+
+###click
+POST http://localhost:5000/api/v1/click
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YzkyMzJlNDNmOGI2MjVjNWM1Yzk4NCIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDc4OTQyNCwiZXhwIjoxNzc1Mzk0MjI0fQ.oHdCL0jXFVif-YbsqdhW_ZudmualjVSyufVo3kYQY1U
+
+
+{
+  "campaignId": "69c93f260f5d731e5b0f9d9c",
+  "amount": 500
+}
+
+###
+@baseUrl = http://localhost:5000/api/v1
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZTkxZjI4ZmQ5NWU1YmY1Mjc3NSIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDM2OSwiZXhwIjoxNzc1NTY5MTY5fQ.0lIy1siVPQM81hZtFKZY1CXci2htJllILNNCd50DW5A
+
+### ----------------------------------------
+### 1. Get Donor Recommendations
+### ----------------------------------------
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### ----------------------------------------
+### 2. Log Interaction
+### ----------------------------------------
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "campaignId": "69cbd341f28fd95e5bf52a52",
+  "action": "click",
+"features": {
+        "campaignType": "VOLUNTEER",
+        "semanticScore": 0.43088525544411915,
+        "categoryScore": 0,
+        "locationScore": 1,
+        "distance": 0,
+        "urgencyScore": 0.009615384615384616
+      }
+}

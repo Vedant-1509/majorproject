@@ -1,0 +1,217 @@
+
+POST http://localhost:5000/api/v2/login
+Content-Type: application/json
+
+{
+  "email": "info@careforall.org",
+  "password": "careAll@456"
+}
+### NGO 2 – Care for All Trust
+POST http://localhost:5000/api/v2/create-profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTI1YTgwNTdiZmQ1OGFkZDVhNyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzY5NDQyNjA0LCJleHAiOjE3NzAwNDc0MDR9.lGFVowQgdbPpUk8LuCy3Ns1yU7tHMXxf_hbwkmhrWcc
+
+{
+  "description": "Providing essential healthcare services to rural and underserved communities.",
+  "address": {
+    "street": "45 Health Avenue",
+    "city": "Pune",
+    "state": "Maharashtra",
+    "country": "India",
+    "zip": "411001"
+  },
+  "phone": "9123456780",
+  "registrationNumber": "URN234567",
+  "mission": "Accessible healthcare for everyone",
+  "focusAreas": ["Healthcare", "Rural Development"],
+  "socialLinks": {
+    "website": "https://www.careforall.org",
+    "facebook": "https://facebook.com/careforall",
+    "twitter": "https://twitter.com/careforall",
+    "instagram": "https://instagram.com/careforall",
+    "linkedin": "https://linkedin.com/company/careforall"
+  },
+  "preferences": {
+    "acceptVolunteers": true,
+    "acceptDonations": true
+  },
+  "urnNumber": "URN234567"
+}
+
+
+### LOGIN NGO 3 – Hope Lives NGO
+POST http://localhost:5000/api/v2/login
+Content-Type: application/json
+
+{
+  "email": "support@hopelives.org",
+  "password": "hopeLives789"
+}
+
+###
+###
+
+### NGO 3 – Hope Lives NGO
+POST http://localhost:5000/api/v2/create-profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTJiYTgwNTdiZmQ1OGFkZDVhYyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzY5NDQyNjMyLCJleHAiOjE3NzAwNDc0MzJ9.a1S_3R_jD8ocSWBtdRxCOaJJLVKB40YBcANFi78XZ5s
+
+{
+  "description": "Supporting disaster-affected families with relief and rehabilitation programs.",
+  "address": {
+    "street": "78 Relief Road",
+    "city": "Chennai",
+    "state": "Tamil Nadu",
+    "country": "India",
+    "zip": "600001"
+  },
+  "phone": "9234567810",
+  "registrationNumber": "URN345678",
+  "mission": "Restore hope in times of crisis",
+  "focusAreas": ["Disaster Relief", "Rehabilitation"],
+  "socialLinks": {
+    "website": "https://www.hopelives.org",
+    "facebook": "https://facebook.com/hopelives",
+    "twitter": "https://twitter.com/hopelives",
+    "instagram": "https://instagram.com/hopelives",
+    "linkedin": "https://linkedin.com/company/hopelives"
+  },
+  "preferences": {
+    "acceptVolunteers": true,
+    "acceptDonations": true
+  },
+  "urnNumber": "URN345678"
+}
+
+
+
+###
+
+### LOGIN NGO 4 – Green Earth Initiative
+POST http://localhost:5000/api/v2/login
+Content-Type: application/json
+
+{
+  "email": "admin@greenearth.org",
+  "password": "greenEarth321"
+}
+
+### NGO 4 – Green Earth Initiative
+POST http://localhost:5000/api/v2/create-profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTMwYTgwNTdiZmQ1OGFkZDViMSIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzY5NDQyNjcyLCJleHAiOjE3NzAwNDc0NzJ9.jJfgLbbDXeq9grRuOSJX2VFSPy3tXa-hmx0M2NkX69Y
+
+{
+  "description": "Working towards environmental conservation and climate awareness.",
+  "address": {
+    "street": "12 Green Park",
+    "city": "Bengaluru",
+    "state": "Karnataka",
+    "country": "India",
+    "zip": "560001"
+  },
+  "phone": "9345678120",
+  "registrationNumber": "URN456789",
+  "mission": "Protect nature for future generations",
+  "focusAreas": ["Environment", "Climate Action"],
+  "socialLinks": {
+    "website": "https://www.greenearth.org",
+    "facebook": "https://facebook.com/greenearth",
+    "twitter": "https://twitter.com/greenearth",
+    "instagram": "https://instagram.com/greenearth",
+    "linkedin": "https://linkedin.com/company/greenearth"
+  },
+  "preferences": {
+    "acceptVolunteers": true,
+    "acceptDonations": true
+  },
+  "urnNumber": "URN456789"
+}
+
+
+### LOGIN NGO 5 – Bright Future Foundation
+POST http://localhost:5000/api/v2/login
+Content-Type: application/json
+
+{
+  "email": "hello@brightfuture.org",
+  "password": "brightFuture654"
+}
+
+###
+###
+
+### NGO 5 – Bright Future Foundation
+POST http://localhost:5000/api/v2/create-profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTQwYTgwNTdiZmQ1OGFkZDViNyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzY5NDQyNzA0LCJleHAiOjE3NzAwNDc1MDR9.c_hh2Qy3d3jTbhob479pNEEse6YUVYrlVA7HrmOsvxs
+
+{
+  "description": "Empowering children through quality education and skill development.",
+  "address": {
+    "street": "90 Knowledge Street",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "country": "India",
+    "zip": "500001"
+  },
+  "phone": "9456781230",
+  "registrationNumber": "URN567890",
+  "mission": "Education as a path to opportunity",
+  "focusAreas": ["Education", "Skill Development"],
+  "socialLinks": {
+    "website": "https://www.brightfuture.org",
+    "facebook": "https://facebook.com/brightfuture",
+    "twitter": "https://twitter.com/brightfuture",
+    "instagram": "https://instagram.com/brightfuture",
+    "linkedin": "https://linkedin.com/company/brightfuture"
+  },
+  "preferences": {
+    "acceptVolunteers": true,
+    "acceptDonations": true
+  },
+  "urnNumber": "URN567890"
+}
+
+
+### LOGIN NGO 6 – Relief & Rescue Society
+POST http://localhost:5000/api/v2/login
+Content-Type: application/json
+
+{
+  "email": "contact@reliefrescue.org",
+  "password": "reliefRescue987"
+}
+###
+
+### NGO 6 – Relief & Rescue Society
+POST http://localhost:5000/api/v2/create-profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Nzc4YTVjYTgwNTdiZmQ1OGFkZDViZCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzY5NDQyNzY0LCJleHAiOjE3NzAwNDc1NjR9.l9qIbh95nb2yfsvEMdV0PaxEXa3pXccv0aWF5eTD3Lw
+
+{
+  "description": "Rapid response rescue and relief operations during emergencies.",
+  "address": {
+    "street": "15 Emergency Lane",
+    "city": "Delhi",
+    "state": "Delhi",
+    "country": "India",
+    "zip": "110001"
+  },
+  "phone": "9567812340",
+  "registrationNumber": "URN678901",
+  "mission": "Saving lives when every second counts",
+  "focusAreas": ["Disaster Relief", "Emergency Response"],
+  "socialLinks": {
+    "website": "https://www.reliefrescue.org",
+    "facebook": "https://facebook.com/reliefrescue",
+    "twitter": "https://twitter.com/reliefrescue",
+    "instagram": "https://instagram.com/reliefrescue",
+    "linkedin": "https://linkedin.com/company/reliefrescue"
+  },
+  "preferences": {
+    "acceptVolunteers": true,
+    "acceptDonations": true
+  },
+  "urnNumber": "URN678901"
+}

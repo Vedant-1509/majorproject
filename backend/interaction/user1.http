@@ -1,0 +1,462 @@
+@baseUrl = http://localhost:5000/api/v1
+
+# ==========================================
+# USER TOKENS
+# ==========================================
+@tokenSaraSingh = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZTkxZjI4ZmQ5NWU1YmY1Mjc3NSIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDM2OSwiZXhwIjoxNzc1NTY5MTY5fQ.0lIy1siVPQM81hZtFKZY1CXci2htJllILNNCd50DW5A
+@tokenGeetikaVarty = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZTk0ZjI4ZmQ5NWU1YmY1Mjc3ZiIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDM3MiwiZXhwIjoxNzc1NTY5MTcyfQ.guvFxueF0AjXbgws0mty-iK96_sCb98EHpzrjzsBQVM
+@tokenChristopherKeer = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZTk3ZjI4ZmQ5NWU1YmY1Mjc4OSIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDM3NSwiZXhwIjoxNzc1NTY5MTc1fQ.ZKkDIygBRlCIqyN19bWasviub7nY99pkJaPLzWt4FIM
+@tokenEktaChad = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZTlhZjI4ZmQ5NWU1YmY1Mjc5MyIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDM3OCwiZXhwIjoxNzc1NTY5MTc4fQ.9Vey7AiNKrt44QlmYyUq3TPXRzYDaEmyrzOr-eK0csg
+@tokenSamakshKala = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZTlkZjI4ZmQ5NWU1YmY1Mjc5YyIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDM4MSwiZXhwIjoxNzc1NTY5MTgxfQ.2fs90pXQ1ES6byWc1gU8VJetzsp9aSfl_n63XhAujQQ
+@tokenYochanaRamesh = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZWEwZjI4ZmQ5NWU1YmY1MjdhNyIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDM4NCwiZXhwIjoxNzc1NTY5MTg0fQ.SSOzm2HgZdVDHWsZGFoNyoY91BXCVwHJ_CBLJVCrvQw
+@tokenWazirTailor = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZWEzZjI4ZmQ5NWU1YmY1MjdiMSIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDM4NywiZXhwIjoxNzc1NTY5MTg3fQ.xvkdqnXtTQXyCYy2XhMih04AuKmbMjxYVFh1BIvjeTw
+@tokenZinalPai = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZWE2ZjI4ZmQ5NWU1YmY1MjdiYiIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDM5MCwiZXhwIjoxNzc1NTY5MTkwfQ.CY8NecSOq2x9RbCqRoHrfk5NJ9Mmi6Gfe-bsC0Ct0k8
+@tokenBahadurjitWarrior = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZWE5ZjI4ZmQ5NWU1YmY1MjdjNCIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDM5MywiZXhwIjoxNzc1NTY5MTkzfQ.gsmUO2wro5Cmbb7THdloIWkIVEafUHs5cNzj8DPCwOU
+@tokenAmaraBobal = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZWFjZjI4ZmQ5NWU1YmY1MjdjZiIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDM5NiwiZXhwIjoxNzc1NTY5MTk2fQ.P9rcSHW6S1AA5eu4gLkZMMsXc8x6BjI9wX7oUcGjgzI
+@tokenMatthewRamaswamy = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZWFlZjI4ZmQ5NWU1YmY1MjdkYSIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDM5OSwiZXhwIjoxNzc1NTY5MTk5fQ.QKuBZ4eLgYPPa_s6PazFq2Q2JJWLdlaui9iBWjMufIY
+@tokenIndrajitCheema = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZjAzZjI4ZmQ5NWU1YmY1MjkwMyIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDQ4MywiZXhwIjoxNzc1NTY5MjgzfQ.10x2zErv-m23q3lZKdGa2ek3yhr2SCoJz4zXrfSO3kw
+@tokenHiralTak = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZjA1ZjI4ZmQ5NWU1YmY1MjkwYyIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDQ4NiwiZXhwIjoxNzc1NTY5Mjg2fQ.OwsgIVZmz8dNa0TR6lhSOGdT-kUkn-Xvt7n541Kh7ng
+@tokenOmkaarRanganathan = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZjA4ZjI4ZmQ5NWU1YmY1MjkxNiIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDQ4OCwiZXhwIjoxNzc1NTY5Mjg4fQ.y7FjIYmncTLHrGUIbQ-QZIHnddptm5I1114NnGeqrHU
+@tokenDivyaWagle = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZjBiZjI4ZmQ5NWU1YmY1MjkxZiIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDQ5MSwiZXhwIjoxNzc1NTY5MjkxfQ.CU_Psv9Gu-5NXhlE_0ik6t-bBIJYGFSWoPnA5CZiaTc
+@tokenRachitSahota = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZjBlZjI4ZmQ5NWU1YmY1MjkyOSIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDQ5NCwiZXhwIjoxNzc1NTY5Mjk0fQ.t2hMNmiP-McifhtDyUXoO3RB2Sft6fCErvSZ-4t_P3c
+@tokenKashviChahal = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2JjZjExZjI4ZmQ5NWU1YmY1MjkzNCIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk2NDQ5NywiZXhwIjoxNzc1NTY5Mjk3fQ.3taS7ZssDqWo7PsNSVYBl6SH_l_RaWYsjAlDmeGTwFk
+
+
+### ========================================
+### 1. Sara Singh
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenSaraSingh}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenSaraSingh}}
+
+{
+  "campaignId": "69ca35dbede0bca4dfb87666",
+  "action": "click",
+  
+"features": {
+        "campaignType": "VOLUNTEER",
+        "semanticScore": 0.3177771418241579,
+        "categoryScore": 0,
+        "locationScore": 0.22875289789153408,
+        "distance": 95.8823389243498,
+        "urgencyScore": 0.024390243902439025
+      }
+}
+
+### ========================================
+### 2. Geetika Varty
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenGeetikaVarty}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenGeetikaVarty}}
+
+{
+  "campaignId": "69cbd330f28fd95e5bf52a1b",
+  "action": "donate",
+ "features": {
+        "campaignType": "VOLUNTEER",
+        "semanticScore": 0.2753124553003678,
+        "categoryScore": 0,
+        "locationScore": 0.9184732191610304,
+        "distance": 5.527764573398328,
+        "urgencyScore": 0.015873015873015872
+      }
+}
+
+### ========================================
+### 3. Christopher Keer
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenChristopherKeer}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenChristopherKeer}}
+
+{
+  "campaignId": "69ca35c7ede0bca4dfb87652",
+  "action": "click",
+  "features": {
+        "campaignType": "GOODS",
+        "semanticScore": 0.37815735425495167,
+        "categoryScore": 1,
+        "locationScore": 0.4740598714920326,
+        "distance": 48.51740751643619,
+        "urgencyScore": 0.01639344262295082
+      }
+}
+
+### ========================================
+### 4. Ekta Chad
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenEktaChad}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenEktaChad}}
+
+{
+  "campaignId": "69ca35c1ede0bca4dfb87643",
+  "action": "donate",
+  "features": {
+        "campaignType": "MONETARY",
+        "semanticScore": 0.27680439140503155,
+        "categoryScore": 1,
+        "locationScore": 0.5281465004544774,
+        "distance": 41.494802100676935,
+        "urgencyScore": 0.021739130434782608
+      }
+}
+
+### ========================================
+### 5. Samaksh Kala
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenSamakshKala}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenSamakshKala}}
+
+{
+  "campaignId": "69cbd333f28fd95e5bf52a25",
+  "action": "donate",
+    "features": {
+        "campaignType": "GOODS",
+        "semanticScore": 0.40852596862430457,
+        "categoryScore": 0,
+        "locationScore": 0.9184732191610304,
+        "distance": 5.527764573398328,
+        "urgencyScore": 0.010869565217391304
+      }
+
+
+}
+
+### ========================================
+### 6. Yochana Ramesh
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenYochanaRamesh}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenYochanaRamesh}}
+
+{
+  "campaignId": "69ca3609ede0bca4dfb8768e",
+  "action": "click",
+  "features": {
+        "campaignType": "GOODS",
+        "semanticScore": 0.37785356879473625,
+        "categoryScore": 1,
+        "locationScore": 0.020542091501680154,
+        "distance": 252.5431515020622,
+        "urgencyScore": 0.03225806451612903
+      }
+
+}
+
+### ========================================
+### 7. Wazir Tailor
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenWazirTailor}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenWazirTailor}}
+
+{
+  "campaignId": "69ca358dede0bca4dfb8762a",
+  "action": "donate",
+  "features": {
+        "campaignType": "MONETARY",
+        "semanticScore": 0.5170578048739926,
+        "categoryScore": 1,
+        "locationScore": 0.7491089977553647,
+        "distance": 18.776600809172596,
+        "urgencyScore": 0.012987012987012988
+      }
+
+}
+
+### ========================================
+### 8. Zinal Pai
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenZinalPai}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenZinalPai}}
+
+{
+  "campaignId": "69cbd34ff28fd95e5bf52a84",
+  "action": "click",
+  "features": {
+        "campaignType": "VOLUNTEER",
+        "semanticScore": 0.4435698502908186,
+        "categoryScore": 0,
+        "locationScore": 1,
+        "distance": 0,
+        "urgencyScore": 0.004166666666666667
+      }
+}
+
+### ========================================
+### 9. Bahadurjit Warrior
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenBahadurjitWarrior}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenBahadurjitWarrior}}
+
+{
+  "campaignId": "69ca35faede0bca4dfb87684",
+  "action": "donate",
+  "features": {
+        "campaignType": "MONETARY",
+        "semanticScore": 0.39360487480785744,
+        "categoryScore": 1,
+        "locationScore": 0.1590735591542037,
+        "distance": 119.4952555910797,
+        "urgencyScore": 0.00819672131147541
+      }
+}
+
+### ========================================
+### 10. Amara Bobal
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenAmaraBobal}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenAmaraBobal}}
+
+{
+  "campaignId": "69ca35f8ede0bca4dfb8767f",
+  "action": "click",
+  "features": {
+        "campaignType": "MONETARY",
+        "semanticScore": 0.3850084031022837,
+        "categoryScore": 0,
+        "locationScore": 1,
+        "distance": 0,
+        "urgencyScore": 0.01639344262295082
+      }
+}
+
+### ========================================
+### 11. Matthew Ramaswamy
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenMatthewRamaswamy}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenMatthewRamaswamy}}
+
+{
+  "campaignId": "69cbd368f28fd95e5bf52ade",
+  "action": "click",
+  "features": {
+        "campaignType": "VOLUNTEER",
+        "semanticScore": 0.4029300053134124,
+        "categoryScore": 1,
+        "locationScore": 0.1590735591542037,
+        "distance": 119.4952555910797,
+        "urgencyScore": 0.005025125628140704
+      }
+}
+###
+@baseUrl = http://localhost:5000/api/v1
+
+# ==========================================
+# USER TOKENS (Batch 2)
+# ==========================================
+
+
+### ========================================
+### 12. Indrajit Cheema
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenIndrajitCheema}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenIndrajitCheema}}
+
+{
+  "campaignId": "69ca360fede0bca4dfb87698",
+  "action": "click",
+  "features": {
+     "semanticScore": 0.2984144461639323,
+        "categoryScore": 1,
+        "locationScore": 0.008053275759721005,
+        "urgencyScore": 0.013513513513513514
+  }
+}
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenIndrajitCheema}}
+
+{
+  "campaignId": "69ca3611ede0bca4dfb8769d",
+  "action": "click",
+  "features": {
+     "semanticScore": 0.31436864607090764,
+        "categoryScore": 1,
+        "locationScore": 0.009330852786799885,
+        "urgencyScore": 0.010869565217391304
+  }
+}
+### ========================================
+### 13. Hiral Tak
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenHiralTak}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenHiralTak}}
+
+{
+  "campaignId": "69ca35f8ede0bca4dfb8767f",
+  "action": "donate",
+  "features": {
+    "semanticScore": 0.3684071377628733,
+        "categoryScore": 1,
+        "locationScore": 0.13647858089572235,
+        "urgencyScore": 0.01639344262295082
+  }
+}
+
+### ========================================
+### 14. Omkaar Ranganathan
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenOmkaarRanganathan}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenOmkaarRanganathan}}
+
+{
+  "campaignId": "69cbd367f28fd95e5bf52ad9",
+  "action": "donate",
+  "features": {
+     "semanticScore": 0.40253805665229103,
+        "categoryScore": 1,
+        "locationScore": 0.000011035178594789926,
+        "urgencyScore": 0.006493506493506494
+  }
+}
+
+### ========================================
+### 15. Divya Wagle
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenDivyaWagle}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenDivyaWagle}}
+
+{
+  "campaignId": "69ca35f8ede0bca4dfb8767f",
+  "action": "click",
+  "features": {
+     "semanticScore": 0.3684071377628733,
+        "categoryScore": 1,
+        "locationScore": 0.13647858089572235,
+        "urgencyScore": 0.01639344262295082
+  }
+}
+
+### ========================================
+### 16. Rachit Sahota
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenRachitSahota}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenRachitSahota}}
+
+{
+  "campaignId": "69cbd367f28fd95e5bf52ad9",
+  "action": "donate",
+  "features": {
+     "semanticScore": 0.40285675550332833,
+     "categoryScore": 0,
+     "locationScore": 0.5019158001618927,
+     "urgencyScore": 0.006493506493506494
+  }
+}
+
+### ========================================
+### 17. Kashvi Chahal
+### ========================================
+POST {{baseUrl}}/donor-recommendations
+Content-Type: application/json
+Authorization: Bearer {{tokenKashviChahal}}
+
+###
+POST {{baseUrl}}/loginteraction
+Content-Type: application/json
+Authorization: Bearer {{tokenKashviChahal}}
+
+{
+  "campaignId": "69cbd367f28fd95e5bf52ad9",
+  "action": "donate",
+  "features": {
+     "semanticScore": 0.40285675550332833,
+     "categoryScore": 0,
+     "locationScore": 0.5019158001618927,
+     "urgencyScore": 0.006493506493506494
+  }
+}

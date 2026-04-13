@@ -1,0 +1,174 @@
+### Register
+POST http://localhost:5000/api/v2/register
+Content-Type: application/json
+
+{
+  "name": "Shiksha Abhiyan Pune",
+  "email": "admin@shikshapune.org",
+  "password": "securePassword123",
+  "website": "https://shikshapune.org"
+}
+
+### Login
+POST http://localhost:5000/api/v2/login
+Content-Type: application/json
+
+{
+  "email": "admin@shikshapune.org",
+  "password": "securePassword123"  
+}
+
+###
+@baseUrl = http://localhost:5000/api/v2
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2EyN2M5ZGFiMzg2NTBlZjM3ZGVmMiIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzc0ODU2MTM5LCJleHAiOjE3NzU0NjA5Mzl9.PEjPMgd5COsgypk7nAlxgxBWMJuPR_OIbPS0UvEhhlY
+
+### Create Profile
+POST http://localhost:5000/api/v2/create-profile
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "description": "Bringing modern tech education and coding skills to underprivileged youth in Pune.",
+  "address": {
+    "street": "FC Road",
+    "city": "Pune",
+    "state": "Maharashtra",
+    "country": "India",
+    "zip": "411004"
+  },
+  "phone": "9876543214",
+  "registrationNumber": "URN-PUN-004",
+  "mission": "Digital literacy and career empowerment for every student.",
+  "focusAreas": ["Education", "Skill Development"],
+  "socialLinks": {
+    "website": "https://shikshapune.org"
+  },
+  "preferences": {
+    "acceptVolunteers": true,
+    "acceptDonations": true
+  },
+  "urnNumber": "URN-PUN-004"
+}
+
+
+
+
+### Campaign 1: Laptops for Learners (Goods)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Used Laptops Donation Drive",
+  "description": "Donate your old, working laptops to help students learn coding.",
+  "category": "Digital Literacy",
+  "campaignType": "GOODS",
+  "startDate": "2026-04-05T00:00:00.000Z",
+  "endDate": "2026-06-05T00:00:00.000Z",
+  "address": {
+    "city": "Pune",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Deccan Gymkhana"
+  },
+  "goods": {
+    "itemRequired": "Working Laptops (i3 processor or better)",
+    "quantity": 100
+  }
+}
+
+### Campaign 2: Coding Mentors Needed (Volunteer)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Weekend Web Dev Mentorship",
+  "description": "Looking for IT professionals to teach HTML, CSS, and basic JavaScript.",
+  "category": "Skill Development & Vocational Training",
+  "campaignType": "VOLUNTEER",
+  "startDate": "2026-05-01T00:00:00.000Z",
+  "endDate": "2026-07-31T00:00:00.000Z",
+  "address": {
+    "city": "Pune",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Hinjewadi Phase 1"
+  },
+  "volunteer": {
+    "volunteersRequired": 25,
+    "rolesNeeded": ["Coding Mentor", "Career Counselor"]
+  }
+}
+
+### Campaign 3: Computer Lab Setup (Monetary)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Sponsor a Computer Lab",
+  "description": "Raising funds to build a 20-PC computer lab in a municipal school.",
+  "category": "Technology for Social Good",
+  "campaignType": "MONETARY",
+  "startDate": "2026-04-15T00:00:00.000Z",
+  "endDate": "2026-05-30T00:00:00.000Z",
+  "address": {
+    "city": "Pune",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Shivajinagar"
+  },
+  "monetary": {
+    "targetAmount": 800000,
+    "minDonation": 1000
+  }
+}
+
+### Campaign 4: Higher Education Scholarships (Monetary)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "College Scholarship Fund",
+  "description": "Support the first-year engineering fees for 10 bright students from low-income families.",
+  "category": "Scholarships & Higher Education",
+  "campaignType": "MONETARY",
+  "startDate": "2026-06-01T00:00:00.000Z",
+  "endDate": "2026-07-30T00:00:00.000Z",
+  "address": {
+    "city": "Pune",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Kothrud"
+  },
+  "monetary": {
+    "targetAmount": 1000000,
+    "minDonation": 500
+  }
+}
+
+### Campaign 5: Internet Connectivity Subscriptions (Monetary)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Broadband for Slum Study Centers",
+  "description": "Funding high-speed internet connections for 5 community study halls.",
+  "category": "Digital Literacy",
+  "campaignType": "MONETARY",
+  "startDate": "2026-04-10T00:00:00.000Z",
+  "endDate": "2026-05-10T00:00:00.000Z",
+  "address": {
+    "city": "Pune",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Yerawada"
+  },
+  "monetary": {
+    "targetAmount": 60000,
+    "minDonation": 100
+  }
+}

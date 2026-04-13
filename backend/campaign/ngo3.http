@@ -1,0 +1,172 @@
+### Register
+POST http://localhost:5000/api/v2/register
+Content-Type: application/json
+
+{
+  "name": "Coastal Care Initiative",
+  "email": "help@coastalcareraigad.org",
+  "password": "securePassword123",
+  "website": "https://coastalcareraigad.org"
+}
+
+### Login
+POST http://localhost:5000/api/v2/login
+Content-Type: application/json
+
+{
+  "email": "help@coastalcareraigad.org",
+  "password": "securePassword123"  
+}
+###
+@baseUrl = http://localhost:5000/api/v2
+@token =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2EyNzc5ZGFiMzg2NTBlZjM3ZGVlOSIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzc0ODU2MDU5LCJleHAiOjE3NzU0NjA4NTl9.1_SfZ1JIxhYTUqZOPQe7U2zMf9QVPvIVlkuqHljg7rs
+### Create Profile
+POST http://localhost:5000/api/v2/create-profile
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "description": "Supporting the fishing communities and protecting the coastal ecosystem of Raigad district.",
+  "address": {
+    "street": "Shivaji Chowk",
+    "city": "Alibaug",
+    "state": "Maharashtra",
+    "country": "India",
+    "zip": "402201"
+  },
+  "phone": "9876543213",
+  "registrationNumber": "URN-RGD-003",
+  "mission": "Empowering coastal lives and preserving marine environments.",
+  "focusAreas": ["Disaster Relief", "Livelihood", "Environment"],
+  "socialLinks": {
+    "website": "https://coastalcareraigad.org"
+  },
+  "preferences": {
+    "acceptVolunteers": true,
+    "acceptDonations": true
+  },
+  "urnNumber": "URN-RGD-003"
+}
+
+ 
+
+
+### Campaign 1: Cyclone Preparedness Kits (Monetary)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Emergency Cyclone Kits for Fishermen",
+  "description": "Funding emergency kits containing torches, radios, and first-aid for fishing families.",
+  "category": "Disaster Relief",
+  "campaignType": "MONETARY",
+  "startDate": "2026-04-01T00:00:00.000Z",
+  "endDate": "2026-05-25T00:00:00.000Z",
+  "address": {
+    "city": "Alibaug",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Alibaug Beach"
+  },
+  "monetary": {
+    "targetAmount": 500000,
+    "minDonation": 500
+  }
+}
+
+### Campaign 2: Beach Clean-up Campaign (Volunteer)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Murud Beach Mega Clean-up",
+  "description": "Need volunteers to help clear plastic and fishing net debris from the coastline.",
+  "category": "Environment & Cleanliness",
+  "campaignType": "VOLUNTEER",
+  "startDate": "2026-04-18T00:00:00.000Z",
+  "endDate": "2026-04-19T00:00:00.000Z",
+  "address": {
+    "city": "Murud",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Murud Janjira Beach Area"
+  },
+  "volunteer": {
+    "volunteersRequired": 100,
+    "rolesNeeded": ["Volunteer Worker"]
+  }
+}
+
+### Campaign 3: Marine Life First-Responders (Volunteer)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Stranded Marine Animal Rescue Team",
+  "description": "Training locals to act as first responders for stranded turtles and dolphins.",
+  "category": "Wildlife Conservation",
+  "campaignType": "VOLUNTEER",
+  "startDate": "2026-05-05T00:00:00.000Z",
+  "endDate": "2026-05-10T00:00:00.000Z",
+  "address": {
+    "city": "Diveagar",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Diveagar Beach"
+  },
+  "volunteer": {
+    "volunteersRequired": 20,
+    "rolesNeeded": ["Trainee Rescuer"]
+  }
+}
+
+### Campaign 4: Life Jackets Donation (Goods)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Safety Gear for Small Boat Owners",
+  "description": "Collecting certified life jackets for low-income traditional fishermen.",
+  "category": "Livelihood Support",
+  "campaignType": "GOODS",
+  "startDate": "2026-04-10T00:00:00.000Z",
+  "endDate": "2026-05-30T00:00:00.000Z",
+  "address": {
+    "city": "Shrivardhan",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Fishing Harbor"
+  },
+  "goods": {
+    "itemRequired": "Life Jackets (Adult Size)",
+    "quantity": 150
+  }
+}
+
+### Campaign 5: Mobile Medical Van Setup (Monetary)
+POST {{baseUrl}}/create-campaign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Mobile Clinic for Coastal Villages",
+  "description": "Funding the retrofitting of a van into a mobile medical unit to visit remote coastal hamlets.",
+  "category": "Healthcare",
+  "campaignType": "MONETARY",
+  "startDate": "2026-04-01T00:00:00.000Z",
+  "endDate": "2026-06-30T00:00:00.000Z",
+  "address": {
+    "city": "Alibaug",
+    "state": "Maharashtra",
+    "country": "India",
+    "landmark": "Civil Hospital Road"
+  },
+  "monetary": {
+    "targetAmount": 1200000,
+    "minDonation": 1000
+  }
+}

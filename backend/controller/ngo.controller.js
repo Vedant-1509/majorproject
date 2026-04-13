@@ -1,0 +1,610 @@
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import Ngo from "../models/ngo.model.js";
+import NgoProfile from "../models/ngoProfile.model.js";
+import NgoDocument from "../models/NgoDocument.model.js";
+import Campaign from "../models/campaign.model.js";
+import { createCampaignEmbedding } from "../services/buildCampaignEmbeddingText.js";
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import { NGO_STATUS } from "../constants/ngoStatus.js";
+//service imports
+import { upsertNgoProfile } from "../services/ngoService.js";
+import { getCoordinatesFromAddress } from "../services/geocode.service.js";
+
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadDir = './uploads/ngo';
+    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+/* ────────────────────────────────
+   📍 Test Endpoint
+──────────────────────────────── */
+export const ngoHello = (req, res) => {
+  res.send("Hello from NGO controller");
+};
+
+/* ────────────────────────────────
+   🧾 Register NGO
+──────────────────────────────── */
+export const register = async (req, res) => {
+  try {
+    const { name, email, password, website } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email and password are required" });
+    }
+
+    // Check if NGO already exists
+    const existingNgo = await Ngo.findOne({ email });
+    if (existingNgo) {
+      return res.status(400).json({ message: "NGO already exists" });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create NGO
+    const newNgo = new Ngo({
+      name,
+      email,
+      password: hashedPassword,
+      role: "ngo",
+      website,
+      status: "registered", // explicitly set initial status
+      profilePicture: "default.jpg",
+    });
+
+    await newNgo.save();
+
+    // Create empty profile
+    const profile = new NgoProfile({
+      ngo: newNgo._id,
+      isCompleted: false,
+    });
+    await profile.save();
+
+    // Return safe fields only
+    return res.status(201).json({
+      message: "NGO registered successfully",
+      ngo: {
+        id: newNgo._id,
+        name: newNgo.name,
+        email: newNgo.email,
+        status: newNgo.status,
+        website: newNgo.website,
+      },
+    });
+
+  } catch (error) {
+    console.error("Register Error:", error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+/* ────────────────────────────────
+   🔐 Login NGO
+──────────────────────────────── */
+
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
+    const ngo = await Ngo.findOne({ email }).select("+password");
+    if (!ngo) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    const isValid = await bcrypt.compare(password, ngo.password);
+    if (!isValid) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // ✅ JWT creation
+    const token = jwt.sign(
+      { id: ngo._id, role: ngo.role, status: ngo.status },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    return res.status(200).json({
+      message: "Login successful",
+      token,
+      ngo: {
+        id: ngo._id,
+        name: ngo.name,
+        email: ngo.email,
+        role: ngo.role,
+        status: ngo.status,
+      },
+    });
+  } catch (error) {
+    console.error("Login Error:", error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+}
+
+/* ────────────────────────────────
+   🧾 Create NGO Profile
+──────────────────────────────── */
+export const createOrUpdateProfile = async (req, res) => {
+  try {
+    const ngoId = req.user.id; // from auth middleware
+
+    const profile = await upsertNgoProfile(ngoId, req.body);
+
+    return res.status(200).json({
+      message: "Profile saved successfully",
+      profile,
+    });
+
+  } catch (error) {
+    console.error("NGO Profile Error:", error.message);
+
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+/* ────────────────────────────────
+   📁 Submit Legal Documents
+──────────────────────────────── */
+export const submitDocuments = async (req, res) => {
+  try {
+    // ✅ ALWAYS from middleware
+    const ngoId = req.user.id;
+
+    if (!ngoId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
+    if (
+      !req.files.trustDeed ||
+      !req.files.certificate80G ||
+      !req.files.panCard
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Required documents missing",
+      });
+    }
+
+    const newDocs = new NgoDocument({
+      ngoId,
+      trustDeed: req.files.trustDeed[0].path,
+      certificate80G: req.files.certificate80G[0].path,
+      panCard: req.files.panCard[0].path,
+      registrationCertificate: req.files.registrationCertificate
+        ? req.files.registrationCertificate[0].path
+        : null,
+      financialReport: req.files.financialReport
+        ? req.files.financialReport[0].path
+        : null,
+      isSubmitted: true,
+    });
+
+    await newDocs.save();
+
+    await Ngo.findByIdAndUpdate(ngoId, {
+      status: NGO_STATUS.DOCUMENTS_SUBMITTED,
+      verified: false
+    });
+
+    res.json({
+      success: true,
+      message: "Documents submitted successfully for verification",
+      documents: newDocs,
+    });
+  } catch (error) {
+    console.error("Document Submission Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error submitting documents",
+      error: error.message,
+    });
+  }
+};
+/*
+───────────────────────────────
+   🚩 Create Campaign
+──────────────────────────────── */
+// export const createCampaign = async (req, res) => {
+//   try {
+//     const ngoId = req.user.id;
+
+//     // 1️⃣ Fetch NGO status
+//     const ngo = await Ngo.findById(ngoId).select("status");
+
+//     if (!ngo) {
+//       return res.status(404).json({
+//         message: "NGO not found"
+//       });
+//     }
+
+//     // 2️⃣ Status gate
+//     if (ngo.status !== NGO_STATUS.APPROVED) {
+//       return res.status(403).json({
+//         message: "Campaign creation allowed only for accepted NGOs"
+//       });
+//     }
+
+//     // 3️⃣ Extract request body
+//     const {
+//       title,
+//       description,
+//       category,
+//       campaignType,
+//       startDate,
+//       endDate,
+//       monetary,
+//       volunteer,
+//       goods,
+//       address // 👈 NEW
+//     } = req.body || {};
+
+//     // 4️⃣ Basic validation
+//     if (!title || !description || !category || !campaignType) {
+//       return res.status(400).json({
+//         message: "Missing required fields"
+//       });
+//     }
+
+//     // 5️⃣ Handle address + geocoding
+//     let locationData = {};
+
+//     if (address) {
+//       const { city, state, country, landmark } = address;
+
+//       if (!city || !state || !country) {
+//         return res.status(400).json({
+//           message: "Address must include city, state, and country"
+//         });
+//       }
+
+//       const fullAddress = `${city}, ${state}, ${country}`;
+
+//       // 🔥 Get coordinates
+//       const coordinates = await getCoordinatesFromAddress(fullAddress);
+
+//       locationData = {
+//         address: {
+//           city,
+//           state,
+//           country,
+//           landmark: landmark || null
+//         },
+//         location: {
+//           type: "Point",
+//           coordinates // [lng, lat]
+//         }
+//       };
+//     }
+
+//     // 6️⃣ Campaign data preparation
+//     const campaignData = {
+//       ngoId,
+//       title,
+//       description,
+//       category,
+//       campaignType,
+//       startDate,
+//       endDate,
+//       ...locationData // 👈 Inject location
+//     };
+
+//     if (campaignType === "MONETARY") campaignData.monetary = monetary;
+//     if (campaignType === "VOLUNTEER") campaignData.volunteer = volunteer;
+//     if (campaignType === "GOODS") campaignData.goods = goods;
+
+//     // 7️⃣ Create campaign
+//     const campaign = await Campaign.create(campaignData);
+
+//     // 8️⃣ Async embedding ingestion
+//     createCampaignEmbedding(campaign).catch(err => {
+//       console.error(
+//         "Embedding creation failed for campaign:",
+//         campaign._id,
+//         err.message
+//       );
+//     });
+
+//     // 9️⃣ Response
+//     res.status(201).json({
+//       message: "Campaign created successfully",
+//       campaign
+//     });
+
+//   } catch (error) {
+//     console.error("Error in createCampaign:", error);
+//     res.status(500).json({
+//       message: "Failed to create campaign",
+//       error: error.message
+//     });
+//   }
+// };
+
+export const createCampaign = async (req, res) => {
+  try {
+    const ngoId = req.user.id;
+
+    // 1️⃣ Fetch NGO status
+    const ngo = await Ngo.findById(ngoId).select("status");
+
+    if (!ngo) {
+      return res.status(404).json({
+        message: "NGO not found"
+      });
+    }
+
+    // 2️⃣ Status gate
+    if (ngo.status !== NGO_STATUS.APPROVED) {
+      return res.status(403).json({
+        message: "Campaign creation allowed only for accepted NGOs"
+      });
+    }
+
+    // 3️⃣ Extract request body
+    const {
+      title,
+      description,
+      category,
+      campaignType,
+      startDate,
+      endDate,
+      monetary,
+      volunteer,
+      goods,
+      address
+    } = req.body || {};
+
+    // 4️⃣ Basic validation
+    if (!title || !description || !category || !campaignType) {
+      return res.status(400).json({
+        message: "Missing required fields"
+      });
+    }
+
+    // 🔥 NEW: Date validation
+    if (!startDate || !endDate) {
+      return res.status(400).json({
+        message: "startDate and endDate are required"
+      });
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (start >= end) {
+      return res.status(400).json({
+        message: "End date must be after start date"
+      });
+    }
+
+    // 5️⃣ Handle address + geocoding
+    let locationData = {};
+
+    if (address) {
+      const { city, state, country, landmark } = address;
+
+      if (!city || !state || !country) {
+        return res.status(400).json({
+          message: "Address must include city, state, and country"
+        });
+      }
+
+      const fullAddress = `${city}, ${state}, ${country}`;
+
+      const coordinates = await getCoordinatesFromAddress(fullAddress);
+
+      locationData = {
+        address: {
+          city,
+          state,
+          country,
+          landmark: landmark || null
+        },
+        location: {
+          type: "Point",
+          coordinates
+        }
+      };
+    }
+
+    // 6️⃣ Campaign data preparation
+    const campaignData = {
+      ngoId,
+      title,
+      description,
+      category,
+      campaignType,
+      startDate: start,
+      endDate: end,
+      ...locationData
+    };
+
+    // 🔥 Optional: Initial urgencyScore calculation
+    const today = new Date();
+    const diffTime = end - today;
+    const daysLeft = Math.max(
+      Math.ceil(diffTime / (1000 * 60 * 60 * 24)),
+      0
+    );
+
+    campaignData.urgencyScore = 1 / (1 + daysLeft);
+
+    // 7️⃣ Type-specific fields
+    if (campaignType === "MONETARY") campaignData.monetary = monetary;
+    if (campaignType === "VOLUNTEER") campaignData.volunteer = volunteer;
+    if (campaignType === "GOODS") campaignData.goods = goods;
+
+    // 8️⃣ Create campaign
+    const campaign = await Campaign.create(campaignData);
+
+    // 9️⃣ Async embedding ingestion
+    createCampaignEmbedding(campaign).catch(err => {
+      console.error(
+        "Embedding creation failed for campaign:",
+        campaign._id,
+        err.message
+      );
+    });
+
+    // 🔟 Response
+    res.status(201).json({
+      message: "Campaign created successfully",
+      campaign
+    });
+
+  } catch (error) {
+    console.error("Error in createCampaign:", error);
+    res.status(500).json({
+      message: "Failed to create campaign",
+      error: error.message
+    });
+  }
+};
+
+/* ────────────────────────────────
+   🚩 Update Campaign Status
+──────────────────────────────── */
+
+export const updateCampaignStatus = async (req, res) => {
+  try {
+    const ngoId = req.user.id;
+    const { id: campaignId } = req.params;
+    const { status } = req.body;
+
+    const allowedStatuses = ["ACTIVE", "PAUSED", "COMPLETED"];
+
+    if (!allowedStatuses.includes(status)) {
+      return res.status(400).json({
+        message: "Invalid campaign status"
+      });
+    }
+
+    const campaign = await Campaign.findOneAndUpdate(
+      { _id: campaignId, ngoId },
+      { status },
+      { new: true }
+    );
+
+    if (!campaign) {
+      return res.status(404).json({
+        message: "Campaign not found or unauthorized"
+      });
+    }
+
+    res.json({
+      message: `Campaign status updated to ${status}`,
+      campaign
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to update campaign status",
+      error: error.message
+    });
+  }
+};
+
+
+export const getNgoCampaigns = async (req, res) => {
+  try {
+    const ngoId = req.user.id;
+
+    const campaigns = await Campaign.find({ ngoId }).sort({
+      createdAt: -1
+    });
+
+    res.json(campaigns);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch campaigns"
+    });
+  }
+};
+
+
+export const getNgo = async (req, res) => {
+  try {
+    const ngoId = req.user.id;
+
+    const ngo = await Ngo.findById(ngoId);
+    if (!ngo) {
+      return res.status(404).json({ message: "NGO not found" });
+    }
+
+    const profile = await NgoProfile.findOne({ ngo: ngo._id });
+    const docs = await NgoDocument.findOne({ ngoId: ngo._id });
+
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+
+    return res.status(200).json({
+      ngo,
+      profile,
+      docs
+    });
+
+  } catch (error) {
+    console.error("Error fetching NGO:", error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message
+    });
+  }
+};
+
+export const updateNGOProfilePicture = async (req, res) => {
+  try {
+    const { ngoId } = req.user;
+
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    const ngo = await Ngo.findById(ngoId);
+    if (!ngo) {
+      return res.status(404).json({ message: "NGO not found" });
+    }
+
+    if (ngo.profilePicture && ngo.profilePicture !== "default.jpg") {
+      const oldPath = `./uploads/${ngo.profilePicture}`;
+      if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+    }
+
+    ngo.profilePicture = req.file.filename;
+    await ngo.save();
+
+    return res.status(200).json({
+      message: "Profile picture updated successfully",
+      profilePicture: ngo.profilePicture
+    });
+
+  } catch (error) {
+    console.error("Error updating NGO profile picture:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};

@@ -1,0 +1,35 @@
+POST http://localhost:5000/api/admin/signup
+Content-Type: application/json
+
+{
+  "name": "System Admin",
+  "email": "admin@example.com",
+  "password": "Admin@123",
+  "bootstrapKey": "iamtheadmin"
+}
+
+### Admin Login ###
+POST http://localhost:5000/api/admin/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "Admin@123"
+}
+
+###
+GET http://localhost:5000/api/ngos/approved
+
+###
+GET http://localhost:5000/api/ngos/all
+
+### Verify NGO (Admin Only)
+PATCH http://localhost:5000/api/ngos/verify/69cbb975f28fd95e5bf52737
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YmMwNWU2MGRlNjUzZWRkNjAzM2EyZiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3NDc4MzU4OCwiZXhwIjoxNzc0ODY5OTg4fQ.RLKwt0hFohRs87hYbIItdvNOIUIdBU_yyaQxLV22VSE
+Content-Type: application/json
+
+###
+GET http://localhost:5000/api/ngos/pending
+
+
+
