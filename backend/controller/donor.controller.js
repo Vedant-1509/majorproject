@@ -240,20 +240,13 @@ export const updateProfile = async (req, res) => {
 //to be done: add profile picture update, and also add delete old picture if not default
 export const getUser = async (req, res) => {
   try {
-    const { token } = req.body;
-    if (!token) {
-      return res.status(400).json({ message: "Token is required" });
-    }
-    // find user by token
-    const user = await Donor.findOne({ token });
+    const userId = req.user.id;
+    const user = await Donor.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: "Invalid user" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const profile = await donorProfile.findOne({ userId: user._id });
-    if (profile) {
-      user.profile = profile; // attach profile to user object
-    }
     return res.status(200).json({ user, profile });
   }
   catch (error) {
@@ -265,12 +258,11 @@ export const getUser = async (req, res) => {
 
 export const updateProfilePicture = async (req, res) => {
   try {
-    const { token } = req.body;
+    const userId = req.user.id;
 
-    if (!token) return res.status(400).json({ message: 'Token is required' });
     if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
 
-    const donor = await Donor.findOne({ token });
+    const donor = await Donor.findById(userId);
     if (!donor) return res.status(404).json({ message: 'Donor not found' });
 
     // Optional: Delete old profile picture if not default

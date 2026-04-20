@@ -10,6 +10,8 @@ import {
   registerAdmin,
   getApprovedNGOs,
   getRejectedNGOs,
+  getDashboardStats,
+  getAllCampaigns,
 } from "../controller/admin.controller.js";
 const router = express.Router();
 
@@ -28,7 +30,8 @@ router.get("/ngos/all", getAllNGOs);
 
 router.put("/campaigns/disable/:campaignId", disableCampaign);
 router.get("/admin/reports", getReports);
-
+router.get("/admin/dashboard-stats", getDashboardStats);
+router.get("/admin/campaigns", getAllCampaigns);
 
 
 export default router;

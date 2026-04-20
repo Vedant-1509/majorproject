@@ -16,9 +16,9 @@ const profileSchema = new mongoose.Schema({
   },
 
   address: {
-    city: { type: String, required: true, trim: true },
-    state: { type: String, required: true, trim: true },
-    country: { type: String, required: true, trim: true },
+    city: { type: String, trim: true },
+    state: { type: String, trim: true },
+    country: { type: String, trim: true },
     landmark: { type: String, trim: true, default: null }
   },
 

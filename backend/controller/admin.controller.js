@@ -5,6 +5,7 @@ import NgoDocument from "../models/NgoDocument.model.js";
 import Campaign from "../models/campaign.model.js";
 import Report from "../models/report.model.js";
 import User from "../models/user.model.js";
+import Donor from "../models/donor.model.js";
 import axios from "axios";
 import { NGO_STATUS } from "../constants/ngoStatus.js";
 import { sendEmail } from "../middlewares/sendEmail.js";
@@ -379,3 +380,71 @@ export const getReports = async (req, res) => {
   }
 };
 
+// Dashboard aggregated stats for admin overview
+export const getDashboardStats = async (req, res) => {
+  try {
+    const [totalDonors, totalNgos, activeCampaigns, allCampaigns] = await Promise.all([
+      Donor.countDocuments(),
+      Ngo.countDocuments({ status: NGO_STATUS.APPROVED }),
+      Campaign.countDocuments({ status: "ACTIVE" }),
+      Campaign.find().select("monetary category status createdAt").lean(),
+    ]);
+
+    const totalDonations = allCampaigns.reduce(
+      (sum, c) => sum + (c.monetary?.collectedAmount || 0), 0
+    );
+    const avgDonation = totalDonors > 0 ? Math.round(totalDonations / totalDonors) : 0;
+
+    // Category breakdown
+    const catMap = {};
+    allCampaigns.forEach(c => {
+      if (c.category) {
+        catMap[c.category] = (catMap[c.category] || 0) + 1;
+      }
+    });
+    const categoryBreakdown = Object.entries(catMap).map(([name, value]) => ({ name, value }));
+
+    res.json({
+      success: true,
+      totalDonations,
+      totalDonors,
+      totalNgos,
+      activeCampaigns,
+      avgDonation,
+      categoryBreakdown,
+      monthlyGrowth: [], // Can be computed from createdAt later
+      recentActivity: [],
+    });
+  } catch (error) {
+    console.error("Dashboard stats error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Get ALL campaigns for admin management
+export const getAllCampaigns = async (req, res) => {
+  try {
+    const campaigns = await Campaign.find()
+      .populate("ngoId", "name email")
+      .sort({ createdAt: -1 })
+      .lean();
+
+    // Map to shape the UI expects
+    const mapped = campaigns.map(c => ({
+      _id: c._id,
+      title: c.title,
+      category: c.category,
+      goalAmount: c.monetary?.targetAmount || 0,
+      raisedAmount: c.monetary?.collectedAmount || 0,
+      donors: c.donationCount || 0,
+      status: c.status,
+      ngoName: c.ngoId?.name || "Unknown",
+      ngo: c.ngoId?.name || "Unknown",
+      cover: c.images?.[0] || null,
+    }));
+
+    res.json({ success: true, campaigns: mapped });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

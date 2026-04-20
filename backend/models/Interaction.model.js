@@ -5,46 +5,39 @@ const interactionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Donor",
     required: true,
-    index: true
+    index: true,
   },
-
   campaignId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Campaign",
     required: true,
-    index: true
+    index: true,
   },
-
-  // 🎯 LABEL (VERY IMPORTANT FOR LTR)
   action: {
     type: String,
     enum: ["impression", "click", "donate"],
-    required: true
+    required: true,
   },
-
-  // 🔥 FEATURE SNAPSHOT (CRITICAL)
   features: {
     campaignType: String,
     semanticScore: Number,
     categoryScore: Number,
     locationScore: Number,
     distance: Number,
-    urgencyScore: Number
+    urgencyScore: Number,
   },
-
-  // 🧠 CONTEXT (OPTIONAL BUT POWERFUL)
   context: {
     category: String,
   },
-
-  // 📊 POSITION (for bias correction later)
+  metadata: {
+    amount: Number,
+  },
   rankPosition: Number,
-
   createdAt: {
     type: Date,
     default: Date.now,
-    index: true
-  }
+    index: true,
+  },
 });
 
 const Interaction = mongoose.model("Interaction", interactionSchema);

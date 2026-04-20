@@ -35,6 +35,6 @@ router.post("/click", donorAuth, logClickEvent);
 router.put("/donate", donorAuth,logDonationEvent )
 router.post("/loginteraction", donorAuth, logUserInteraction);
 
-router.route("/donor-user").post(getUser)
-router.post('/donor-profile-picture', upload.single('profilePicture'), updateProfilePicture);
+router.route("/donor-user").post(donorAuth, getUser)
+router.post('/donor-profile-picture', donorAuth, upload.single('profilePicture'), updateProfilePicture);
 export default router

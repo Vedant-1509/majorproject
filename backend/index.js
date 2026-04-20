@@ -12,6 +12,26 @@ dotenv.config()
 console.log("ENV CHECK:", process.env.OPENCAGE_API_KEY);
 
 const app = express()
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:4173",
+  "http://localhost:5173",
+  "http://127.0.0.1:3000",
+  "http://127.0.0.1:4173",
+  "http://127.0.0.1:5173",
+];
+
+// app.use(
+//   cors({
+//     origin(origin, callback) {
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         return callback(null, true);
+//       }
+//       return callback(new Error(`CORS blocked for origin: ${origin}`));
+//     },
+//     credentials: true,
+//   })
+// )
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
@@ -32,3 +52,4 @@ const start = async () => {
 
 }
 start()
+
