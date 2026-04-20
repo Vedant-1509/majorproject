@@ -104,378 +104,6 @@ export const login = async (req, res) => {
   }
 };//done
 
-// export const createProfile = async (req, res) => {
-//   try {
-//     const {
-//       token,
-//       bio,
-//       PAN,
-//       address,
-//       skills,
-//       interests,
-//       availability,
-//       preferences,
-//       bloodType,
-//       lastBloodDonationDate
-//     } = req.body;
-
-//     if (!token) {
-//       return res.status(400).json({ message: "Token is required" });
-//     }
-
-//     // Find user by token
-//     const user = await Donor.findOne({ token });
-//     if (!user) {
-//       return res.status(404).json({ message: "Invalid user" });
-//     }
-
-//     // Check if profile already exists
-//     const existing = await donorProfile.findOne({ userId: user._id });
-//     if (existing) {
-//       return res.status(400).json({ message: "Profile already exists for this user" });
-//     }
-
-//     const profile = new donorProfile({
-//       userId: user._id,
-//       bio: bio || "",
-//       PAN: PAN || "",
-//       address,
-//       skills: skills || [],
-//       interests: interests || [],
-//       availability: availability || "anytime",
-//       preferences: preferences || {},
-//       bloodType: bloodType || null,
-//       lastBloodDonationDate: lastBloodDonationDate || null,
-//       participationScore: 0,
-//       isCompleted: true
-//     });
-
-//     user.isCompleted = true;
-//     await user.save();
-
-//     await profile.save();
-
-//     return res.status(201).json({ message: "Profile created successfully", profile });
-//   } catch (error) {
-//     console.error("Error creating profile:", error);
-//     return res.status(500).json({ message: "Internal Server Error", error: error.message });
-//   }
-// };
-
-// export const upsertProfile = async (req, res) => {
-//   try {
-//     const userId = req.user.id;
-
-//     const {
-//       bio,
-//       PAN,
-//       address,
-//       skills,
-//       interests,
-//       availability,
-//       preferences,
-//       bloodType,
-//       lastBloodDonationDate,
-//     } = req.body;
-
-//     const updateData = {};
-
-//     if (bio !== undefined) updateData.bio = bio;
-//     if (PAN !== undefined) updateData.PAN = PAN;
-//     if (address !== undefined) updateData.address = address;
-//     if (skills !== undefined) updateData.skills = skills;
-//     if (interests !== undefined) updateData.interests = interests;
-//     if (availability !== undefined) updateData.availability = availability;
-//     if (preferences !== undefined) updateData.preferences = preferences;
-//     if (bloodType !== undefined) updateData.bloodType = bloodType;
-//     if (lastBloodDonationDate !== undefined)
-//       updateData.lastBloodDonationDate = lastBloodDonationDate;
-
-//     let profile = await donorProfile.findOne({ userId });
-
-//     // CREATE
-//     if (!profile) {
-//       profile = await donorProfile.create({
-//         userId,
-//         ...updateData,
-//         participationScore: 0,
-//         isCompleted: true,
-//       });
-
-//       // ONE user update, no fetch needed
-//       await Donor.findByIdAndUpdate(userId, { isCompleted: true });
-
-//       return res.status(201).json({
-//         message: "Profile created successfully",
-//         profile,
-//       });
-//     }
-
-//     // UPDATE (no user DB call at all)
-//     Object.assign(profile, updateData, { updatedAt: Date.now() });
-//     await profile.save();
-
-//     return res.status(200).json({
-//       message: "Profile updated successfully",
-//       profile,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       message: "Internal Server Error",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// export const upsertProfile = async (req, res) => {
-//   try {
-//     const userId = req.user.id;
-//     const { address, ...rest } = req.body;
-
-//     const updateData = { ...rest };
-
-//     if (address) {
-//       const { latitude, longitude } = await geocodeAddress(address);
-
-//       updateData.address = address;
-//       updateData.location = {
-//         type: "Point",
-//         coordinates: [longitude, latitude],
-//       };
-//     }
-
-//     let profile = await donorProfile.findOne({ userId });
-
-//     if (!profile) {
-//       if (!updateData.location) {
-//         return res.status(400).json({
-//           message: "Address is required to create profile",
-//         });
-//       }
-
-//       profile = await donorProfile.create({
-//         userId,
-//         ...updateData,
-//       });
-
-//       await Donor.findByIdAndUpdate(userId, { isCompleted: true });
-
-//       return res.status(201).json({
-//         message: "Profile created successfully",
-//         profile,
-//       });
-//     }
-
-//     Object.assign(profile, updateData);
-//     await profile.save();
-
-//     return res.status(200).json({
-//       message: "Profile updated successfully",
-//       profile,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       message: error.message,
-//     });
-//   }
-// };
-
-// export const upsertProfile = async (req, res) => {
-//   try {
-//     const userId = req.user.id;
-//     const { address, ...rest } = req.body;
-
-//     const updateData = { ...rest };
-
-//     if (address) {
-//       //const addressString = buildAddressString(address);
-
-//       const { latitude, longitude } = await geocodeAddress(address);
-
-//       updateData.address = {
-//         city: address.city,
-//         state: address.state,
-//         country: address.country,
-//       };
-
-//       updateData.location = {
-//         type: "Point",
-//         coordinates: [longitude, latitude],
-//       };
-//     }
-
-//     let profile = await donorProfile.findOne({ userId });
-
-//     if (!profile) {
-//       if (!updateData.location) {
-//         return res.status(400).json({
-//           message: "Address (city, state, country) is required to create profile",
-//         });
-//       }
-
-//       profile = await donorProfile.create({
-//         userId,
-//         ...updateData,
-//       });
-
-//       await Donor.findByIdAndUpdate(userId, { isCompleted: true });
-
-//       return res.status(201).json({
-//         message: "Profile created successfully",
-//         profile,
-//       });
-//     }
-
-//     Object.assign(profile, updateData);
-//     await profile.save();
-
-//     return res.status(200).json({
-//       message: "Profile updated successfully",
-//       profile,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       message: error.message,
-//     });
-//   }
-// };
-
-// export const upsertProfile = async (req, res) => {
-//   try {
-//     const userId = req.user.id;
-//     const { address, ...rest } = req.body;
-
-//     const updateData = { ...rest };
-
-//     // 📍 Address handling (NO geocoding)
-//     if (address) {
-//       updateData.address = {
-//         city: address.city,
-//         state: address.state,
-//         country: address.country,
-//         landmark: address.landmark || null,
-//       };
-//     }
-
-//     let profile = await donorProfile.findOne({ userId });
-
-//     // 🆕 Create profile
-//     if (!profile) {
-//       if (
-//         !address?.city ||
-//         !address?.state ||
-//         !address?.country
-//       ) {
-//         return res.status(400).json({
-//           message: "Address (city, state, country) is required to create profile",
-//         });
-//       }
-
-//       profile = await donorProfile.create({
-//         userId,
-//         ...updateData,
-//       });
-
-//       await Donor.findByIdAndUpdate(userId, { isCompleted: true });
-
-//       return res.status(201).json({
-//         message: "Profile created successfully",
-//         profile,
-//       });
-//     }
-
-//     // ♻️ Update profile (partial updates allowed)
-//     Object.assign(profile, updateData);
-//     await profile.save();
-
-//     return res.status(200).json({
-//       message: "Profile updated successfully",
-//       profile,
-//     });
-//   } catch (error) {
-//     console.error("Error in upsertProfile:", error);
-//     return res.status(500).json({
-//       message: error.message,
-//     });
-//   }
-// };
-
-// export const upsertProfile = async (req, res) => {
-//   try {
-//     const userId = req.user.id;
-//     const { address, ...rest } = req.body;
-
-//     const updateData = { ...rest };
-
-//     // 📍 Address + Geocoding
-//     if (address) {
-//       const { city, state, country, landmark } = address;
-
-//       if (!city || !state || !country) {
-//         return res.status(400).json({
-//           message: "Address must include city, state, and country",
-//         });
-//       }
-
-//       // 🔥 Convert to string for geocoding
-//       const fullAddress = `${city}, ${state}, ${country}`;
-
-//       // 🔥 Get coordinates
-//       const coordinates = await getCoordinatesFromAddress(fullAddress);
-
-//       updateData.address = {
-//         city,
-//         state,
-//         country,
-//         landmark: landmark || null,
-//       };
-
-//       updateData.location = {
-//         type: "Point",
-//         coordinates, // [lng, lat]
-//       };
-//     }
-
-//     let profile = await donorProfile.findOne({ userId });
-
-//     // 🆕 Create profile
-//     if (!profile) {
-//       if (!address?.city || !address?.state || !address?.country) {
-//         return res.status(400).json({
-//           message:
-//             "Address (city, state, country) is required to create profile",
-//         });
-//       }
-
-//       profile = await donorProfile.create({
-//         userId,
-//         ...updateData,
-//       });
-
-//       await Donor.findByIdAndUpdate(userId, { isCompleted: true });
-
-//       return res.status(201).json({
-//         message: "Profile created successfully",
-//         profile,
-//       });
-//     }
-
-//     // ♻️ Update profile (partial updates allowed)
-//     Object.assign(profile, updateData);
-//     await profile.save();
-
-//     return res.status(200).json({
-//       message: "Profile updated successfully",
-//       profile,
-//     });
-//   } catch (error) {
-//     console.error("Error in upsertProfile:", error);
-//     return res.status(500).json({
-//       message: error.message,
-//     });
-//   }
-// };
-
 export const upsertProfile = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -662,39 +290,51 @@ export const updateProfilePicture = async (req, res) => {
 };
 
 //logging users actions: view, click
-// export const logViewEvent = async (req, res) => {
-//   try {
-//     const userId = req.user.id;
-//     const { campaignId } = req.body;
 
-//     if (!campaignId) {
-//       return res.status(400).json({ message: "campaignId is required" });
-//     }
+const logImpressions = async (userId, campaigns) => {
+  try {
+    if (!campaigns || campaigns.length === 0) return;
 
-//     // Optional: ensure campaign exists & is active
-//     const campaign = await Campaign.findOne({
-//       _id: campaignId,
-//       status: "ACTIVE"
-//     }).select("_id");
+    const events = campaigns.map((item, index) => {
+      const campaign = item.campaign || item;
+      const features = item.features || {};
 
-//     if (!campaign) {
-//       return res.status(404).json({ message: "Campaign not found or inactive" });
-//     }
+      return {
+        userId,
+        campaignId: campaign._id,
 
-//     await InteractionEvent.create({
-//       userId,
-//       campaignId,
-//       eventType: "VIEW"
-//     });
+        // ✅ LTR LABEL
+        action: "impression",
 
-//     res.sendStatus(200);
-//   } catch (error) {
-//     res.status(500).json({
-//       message: "Failed to log view event",
-//       error: error.message
-//     });
-//   }
-// };
+        // ✅ CRITICAL: snapshot features
+        features: {
+          campaignType: features.campaignType || campaign.campaignType,
+          semanticScore: features.semanticScore || 0,
+          categoryScore: features.categoryScore || 0,
+          locationScore: features.locationScore || 0,
+          distance: features.distance || 0,
+          urgencyScore: features.urgencyScore || 0
+        },
+
+        // ✅ CONTEXT
+        context: {
+          category: campaign.category
+        },
+
+        // ✅ POSITION BIAS
+        rankPosition: index + 1,
+
+        createdAt: new Date()
+      };
+    });
+
+    // 🚀 single DB call
+    await Interaction.insertMany(events);
+    updateUserInterestProfile(userId)
+  } catch (error) {
+    console.error("Impression logging error:", error);
+  }
+};
 
 // export const logClickEvent = async (req, res) => {
 //   try {
@@ -729,79 +369,144 @@ const getCampaignCategory = async (campaignId) => {
 };
 
 
+// export const logClickEvent = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+//     const { campaignId } = req.body;
+
+//     if (!campaignId) {
+//       return res.status(400).json({ message: "campaignId is required" });
+//     }
+
+//     const campaignCategory = await getCampaignCategory(campaignId);
+
+//     await InteractionEvent.create({
+//       userId,
+//       campaignId,
+//       campaignCategory,
+//       eventType: "CLICK"
+//     });
+
+//     res.sendStatus(200);
+//     console.log("Response sent, starting background update");
+
+//     updateUserInterestProfile(userId)
+//       .then(() => console.log("Interest profile updated successfully"))
+//       .catch(err => console.error("Interest profile update failed:", err));
+
+//   } catch (error) {
+//     res.status(error.message === "Campaign not found" ? 404 : 500).json({
+//       message: "Failed to log click event",
+//       error: error.message
+//     });
+//   }
+// };
+
 export const logClickEvent = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { campaignId } = req.body;
+    const { campaignId, features, rankPosition } = req.body;
 
-    if (!campaignId) {
-      return res.status(400).json({ message: "campaignId is required" });
+    const campaign = await Campaign.findById(campaignId)
+      .select("category campaignType")
+      .lean();
+
+    if (!campaign) {
+      return res.status(404).json({ message: "Campaign not found" });
     }
 
-    const campaignCategory = await getCampaignCategory(campaignId);
-
-    await InteractionEvent.create({
+    await Interaction.create({
       userId,
       campaignId,
-      campaignCategory,
-      eventType: "CLICK"
+      action: "click",
+
+      features: features || {}, // ✅ send from frontend
+      context: {
+        category: campaign.category
+      },
+
+      rankPosition
     });
 
     res.sendStatus(200);
-    console.log("Response sent, starting background update");
-
-    updateUserInterestProfile(userId)
-      .then(() => console.log("Interest profile updated successfully"))
-      .catch(err => console.error("Interest profile update failed:", err));
 
   } catch (error) {
-    res.status(error.message === "Campaign not found" ? 404 : 500).json({
-      message: "Failed to log click event",
+    res.status(500).json({
+      message: "Failed to log click",
       error: error.message
     });
   }
 };
 
 
+// export const logDonationEvent = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+//     const { campaignId, amount } = req.body;
 
+//     if (!campaignId || !amount) {
+//       return res.status(400).json({
+//         message: "campaignId and amount required"
+//       });
+//     }
+
+//     const campaignCategory = await getCampaignCategory(campaignId);
+
+//     await InteractionEvent.create({
+//       userId,
+//       campaignId,
+//       campaignCategory,
+//       eventType: "DONATION",
+//       metadata: { amount }
+//     });
+
+//     res.sendStatus(200);
+//     console.log("Response sent, starting background update");
+
+//     updateUserInterestProfile(userId)
+//       .then(() => console.log("Interest profile updated successfully"))
+//       .catch(err => console.error("Interest profile update failed:", err));
+
+//   } catch (error) {
+//     res.status(error.message === "Campaign not found" ? 404 : 500).json({
+//       message: "Failed to log donation event",
+//       error: error.message
+//     });
+//   }
+// };
 
 export const logDonationEvent = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { campaignId, amount } = req.body;
+    const { campaignId, amount, features, rankPosition } = req.body;
 
-    if (!campaignId || !amount) {
-      return res.status(400).json({
-        message: "campaignId and amount required"
-      });
-    }
+    const campaign = await Campaign.findById(campaignId)
+      .select("category")
+      .lean();
 
-    const campaignCategory = await getCampaignCategory(campaignId);
-
-    await InteractionEvent.create({
+    await Interaction.create({
       userId,
       campaignId,
-      campaignCategory,
-      eventType: "DONATION",
-      metadata: { amount }
+      action: "donate",
+
+      features: features || {},
+
+      context: {
+        category: campaign.category
+      },
+
+      rankPosition
     });
 
     res.sendStatus(200);
-    console.log("Response sent, starting background update");
-
-    updateUserInterestProfile(userId)
-      .then(() => console.log("Interest profile updated successfully"))
-      .catch(err => console.error("Interest profile update failed:", err));
 
   } catch (error) {
-    res.status(error.message === "Campaign not found" ? 404 : 500).json({
-      message: "Failed to log donation event",
+    res.status(500).json({
+      message: "Failed to log donation",
       error: error.message
     });
   }
 };
-
-
 
 const EVENT_WEIGHTS = {
   IMPRESSION: 0.5,
@@ -810,63 +515,182 @@ const EVENT_WEIGHTS = {
   DONATION: 5
 };
 
+// export const updateUserInterestProfile = async (userId) => {
+//   const events = await InteractionEvent.find({ userId })
+//     .sort({ createdAt: -1 })
+//     .limit(50)
+//     .lean();
+
+//   const categoryScores = {};
+
+//   for (const event of events) {
+//     const baseWeight = EVENT_WEIGHTS[event.eventType];
+//     if (!baseWeight || !event.campaignCategory) continue;
+
+//     let weight = baseWeight;
+
+//     // extra strength for donation amount
+//     if (event.eventType === "DONATION" && event.metadata?.amount) {
+//       weight *= Math.log(event.metadata.amount + 1);
+//     }
+
+//     categoryScores[event.campaignCategory] =
+//       (categoryScores[event.campaignCategory] || 0) + weight;
+//   }
+
+//   if (Object.keys(categoryScores).length === 0) {
+//     return {};
+//   }
+
+//   const maxScore = Math.max(...Object.values(categoryScores));
+//   const normalizedScores = {};
+
+//   for (const category in categoryScores) {
+//     normalizedScores[category] = categoryScores[category] / maxScore;
+//   }
+
+//   await UserInterestProfile.findOneAndUpdate(
+//     { userId },
+//     {
+//       categoryScores: normalizedScores,
+//       updatedAt: new Date()
+//     },
+//     { upsert: true }
+//   );
+
+//   return normalizedScores;
+// };
 export const updateUserInterestProfile = async (userId) => {
-  const events = await InteractionEvent.find({ userId })
+  console.log("Updating interest profile for user:", userId);
+  const events = await Interaction.find({ userId })
     .sort({ createdAt: -1 })
-    .limit(50)
+    .limit(100)
     .lean();
 
+  if (!events.length) return {};
+
   const categoryScores = {};
+  const campaignTypeScores = {};
+  const featurePreference = {
+    semantic: 0,
+    urgency: 0,
+    location: 0
+  };
+
+  const now = Date.now();
 
   for (const event of events) {
-    const baseWeight = EVENT_WEIGHTS[event.eventType];
-    if (!baseWeight || !event.campaignCategory) continue;
+    const { action, context, features, rankPosition, createdAt } = event;
 
-    let weight = baseWeight;
+    if (!context?.category) continue;
 
-    // extra strength for donation amount
-    if (event.eventType === "DONATION" && event.metadata?.amount) {
-      weight *= Math.log(event.metadata.amount + 1);
+    // 🎯 BASE WEIGHT (VERY IMPORTANT)
+    let weight =
+      action === "impression" ? 0.2 :
+      action === "click" ? 1 :
+      action === "donate" ? 3 :
+      0;
+
+    // 🧠 POSITION BIAS (top items matter more)
+    if (rankPosition) {
+      weight *= 1 / Math.log2(rankPosition + 1);
     }
 
-    categoryScores[event.campaignCategory] =
-      (categoryScores[event.campaignCategory] || 0) + weight;
+    // ⏳ TIME DECAY (recent actions matter more)
+    const ageInDays = (now - new Date(createdAt)) / (1000 * 60 * 60 * 24);
+    const decay = Math.exp(-0.05 * ageInDays); // tweakable
+    weight *= decay;
+
+    // 📊 CATEGORY SCORE
+    categoryScores[context.category] =
+      (categoryScores[context.category] || 0) + weight;
+
+    // 📊 CAMPAIGN TYPE SCORE
+    if (features?.campaignType) {
+      campaignTypeScores[features.campaignType] =
+        (campaignTypeScores[features.campaignType] || 0) + weight;
+    }
+
+    // 📊 FEATURE PREFERENCES (behavior learning)
+    if (features) {
+      featurePreference.semantic += weight * (features.semanticScore || 0);
+      featurePreference.urgency += weight * (features.urgencyScore || 0);
+      featurePreference.location += weight * (features.locationScore || 0);
+    }
   }
 
-  if (Object.keys(categoryScores).length === 0) {
-    return {};
-  }
+  // 🔥 NORMALIZATION FUNCTION
+  const normalize = (obj) => {
+    const max = Math.max(...Object.values(obj), 1);
+    const result = {};
+    for (const key in obj) {
+      result[key] = obj[key] / max;
+    }
+    return result;
+  };
 
-  const maxScore = Math.max(...Object.values(categoryScores));
-  const normalizedScores = {};
+  const normalizedCategory = normalize(categoryScores);
+  const normalizedCampaignType = normalize(campaignTypeScores);
 
-  for (const category in categoryScores) {
-    normalizedScores[category] = categoryScores[category] / maxScore;
-  }
+  const totalFeatureWeight =
+    featurePreference.semantic +
+    featurePreference.urgency +
+    featurePreference.location;
 
-  await UserInterestProfile.findOneAndUpdate(
+  const normalizedFeatures = {
+    semantic: featurePreference.semantic / (totalFeatureWeight || 1),
+    urgency: featurePreference.urgency / (totalFeatureWeight || 1),
+    location: featurePreference.location / (totalFeatureWeight || 1)
+  };
+
+  // 💾 SAVE PROFILE
+  const profile = await UserInterestProfile.findOneAndUpdate(
     { userId },
     {
-      categoryScores: normalizedScores,
+      categoryScores: normalizedCategory,
+      campaignTypeScores: normalizedCampaignType,
+      featurePreference: normalizedFeatures,
       updatedAt: new Date()
     },
-    { upsert: true }
+    { upsert: true, new: true }
   );
 
-  return normalizedScores;
+  return profile;
 };
+
+// export const donorRecommendations = async (req, res, next) => {
+//   try {
+//     const userId = req.user.id;
+//     console.log("Fetching recommendations for user:", userId);
+//     const campaigns = await getCandidateCampaigns(userId);
+
+//     return res.status(200).json({
+//       success: true,
+//       data: campaigns
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 
 export const donorRecommendations = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    console.log("Fetching recommendations for user:", userId);
+
     const campaigns = await getCandidateCampaigns(userId);
 
-    return res.status(200).json({
+    // ✅ send response first (fast)
+    res.status(200).json({
       success: true,
       data: campaigns
     });
+
+    // ✅ async impression logging
+    logImpressions(userId, campaigns)
+      .then(() => console.log("Impressions logged"))
+      .catch(err => console.error("Impression logging failed:", err));
+
   } catch (err) {
     next(err);
   }

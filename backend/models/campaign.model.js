@@ -52,7 +52,7 @@ const campaignSchema = new mongoose.Schema(
         "Animal Welfare",
         "Wildlife Conservation",
         "Stray Animal Support",
-        "Environment & Cleanliness",
+        "Environment",
         "Climate Change Action",
         "Afforestation & Tree Plantation",
         "Water Conservation",
@@ -93,6 +93,7 @@ const campaignSchema = new mongoose.Schema(
       required: true,
       index: true
     },
+ 
 
     // 🔁 Campaign type
     campaignType: {
@@ -183,6 +184,17 @@ const campaignSchema = new mongoose.Schema(
       pickupAvailable: { type: Boolean, default: false }
     },
 
+       // 🖼️ Campaign Images (max 3)
+    images: {
+      type: [String], // array of file paths/URLs
+      default: [],
+      validate: {
+        validator: function (val) {
+          return val.length <= 3;
+        },
+        message: "Maximum 3 images allowed per campaign"
+      }
+    },
     // 📊 Popularity
     viewCount: { type: Number, default: 0 },
     donationCount: { type: Number, default: 0 }

@@ -21,7 +21,7 @@ Content-Type: application/json
 ###
 POST http://localhost:5000/api/v1/profile
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2MxNTYyYTlmNzM5ZjlmMmQ0MjNlMyIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk4MjUwMiwiZXhwIjoxNzc1NTg3MzAyfQ.Nbf4LLPJcSoEAfnz9b68vyS94g21YVKjqvC9rYHgCZ0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZTUzODdlMWQyZDQ0MzI5ODZmYTY0NiIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NjYyOTg4OCwiZXhwIjoxNzc3MjM0Njg4fQ.317P2g1LYuewhTsFNpLTtQdKtgBsiIbAuFDNLtxaDG0
 
 {
   "bio": "Dedicated environmentalist and healthcare volunteer with 5 years of experience in rural teaching.",
@@ -72,7 +72,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2MxNTYyY
 ###
 POST  http://localhost:5000/api/v1/donor-recommendations
 Content-Type: application/json
-Authorization: BearereyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2MxNTYyYTlmNzM5ZjlmMmQ0MjNlMyIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NDk4MjUwMiwiZXhwIjoxNzc1NTg3MzAyfQ.Nbf4LLPJcSoEAfnz9b68vyS94g21YVKjqvC9rYHgCZ0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZTUzODdlMWQyZDQ0MzI5ODZmYTY0NiIsInJvbGUiOiJkb25vciIsImlhdCI6MTc3NjYyOTg4OCwiZXhwIjoxNzc3MjM0Njg4fQ.317P2g1LYuewhTsFNpLTtQdKtgBsiIbAuFDNLtxaDG0
+
 ###
 
 POST http://localhost:5000/api/v1/donor-register

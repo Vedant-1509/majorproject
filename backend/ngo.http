@@ -80,8 +80,8 @@ POST http://localhost:5000/api/v2/login
 Content-Type: application/json
 
 {
-  "email": "info@careforall.org",
-  "password": "careAll@456"  
+  "email": "vrm@vrm.com",
+  "password": "12345678"  
 }
 
 
@@ -122,8 +122,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2MwYjY0Y
 ### Get Profile
 POST http://localhost:5000/api/v2/getngo-profile
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YmJkNTAwOTlhODIyOWQ3ZGNlOTIwOCIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJyZWdpc3RlcmVkIiwiaWF0IjoxNzczOTI5NjIxLCJleHAiOjE3NzQ1MzQ0MjF9.8SoZebk3Gy5V2AVqRCzH9_Gl1WqDNlgdiKObNuUdfY0 
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZTRmYjgxOTU2NzBkYmM1OGVjYWFjNyIsInJvbGUiOiJuZ28iLCJzdGF0dXMiOiJhcHByb3ZlZCIsImlhdCI6MTc3NjYxNjk0NiwiZXhwIjoxNzc3MjIxNzQ2fQ.GxBCmZfTNNAUUdRNRWDm3WQz0HShQHTNa7kbF6ZNYZc
 
 ### --------------------------------------------
 ### 1️⃣ CREATE CAMPAIGN (MONETARY)
